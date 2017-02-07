@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "998915296878",
+    "firebase_url": "https://ophuot-62634.firebaseio.com",
+    "project_id": "ophuot-62634",
+    "storage_bucket": "ophuot-62634.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998915296878:android:5f2c64074e1d032a",
+        "android_client_info": {
+          "package_name": "com.thanhduy.ophuot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998915296878-8sdvot9j8mpaj0iu6cbavi08dikflnr7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCey3BWk3bL6vtMUKKTeY0GeeGO-7og5OE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998915296878-8sdvot9j8mpaj0iu6cbavi08dikflnr7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

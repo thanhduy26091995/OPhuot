@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_best"
+            android:icon="@drawable/ic_star"
+            android:title="Nổi Bật" />
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_search"
+            android:title="Tìm Kiếm" />
+        <item
+            android:id="@+id/nav_hobby"
+            android:icon="@drawable/ic_hobby"
+            android:title="Yêu Thích" />
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Chia Sẻ Kinh Nghiệm" />
+    </group>
+
+    <item android:title="Chủ Homestay">
+        <menu>
+            <item
+                android:id="@+id/nav_post"
+                android:icon="@drawable/ic_post"
+                android:title="Đăng Bài" />
+            <item
+                android:id="@+id/nav_my_post"
+                android:icon="@drawable/ic_my_post"
+                android:title="Homestay Của Tôi" />
+        </menu>
+    </item>
+    <item android:title="Khác">
+        <menu>
+            <item
+                android:id="@+id/nav_config"
+                android:icon="@drawable/ic_config"
+                android:title="Thiết Lập" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_help"
+                android:title="Trợ Giúp" />
+        </menu>
+    </item>
+
+
+</menu>
