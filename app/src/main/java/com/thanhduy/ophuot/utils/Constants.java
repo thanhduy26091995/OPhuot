@@ -17,4 +17,15 @@ public class Constants {
     public static final String LAT = "lat";
     public static final String LNG = "lng";
     public static final String AVATAR = "avatar";
+    public static final String CREATE_AT = "createAt";
+    public static final String DESCRIPTION = "description";
+    public static final String GENDER = "gender";
+
+    //SQLITE
+    public static final String PROVINCE_ID = "id";
+    public static final String PROVINCE_NAME = "name";
+    public static final String DISTRICT_ID = "id";
+    public static final String DISTRICT_NAME = "name";
+    public static final String DISTRICT_PROVINCE_ID = "province_id";
+    public static final String PROVINCES = "provinces";
 }

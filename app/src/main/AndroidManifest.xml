@@ -16,7 +16,7 @@
 
 
         <activity
-            android:name=".login_and_register.view.LoginActivity"
+            android:name=".main.view.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -32,7 +32,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <activity android:name=".main.view.MainActivity"></activity>
+        <activity android:name=".login_and_register.view.LoginActivity"></activity>
     </application>
 
 </manifest>

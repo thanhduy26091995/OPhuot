@@ -27,4 +27,17 @@
     <string name="register">Đăng ký</string>
     <string name="haveAccount">Đã có tài khoản?</string>
     <string name="authenFail">Xác thực thất bại</string>
+
+    <!--Title-->
+    <string-array name="nav_item_activity_titles">
+        <item>Profile</item>
+        <item>Highlights</item>
+        <item>Searching</item>
+        <item>Love</item>
+        <item>Share Expirence</item>
+        <item>Post</item>
+        <item>My Homestay</item>
+        <item>Config</item>
+        <item>Help</item>
+    </string-array>
 </resources>

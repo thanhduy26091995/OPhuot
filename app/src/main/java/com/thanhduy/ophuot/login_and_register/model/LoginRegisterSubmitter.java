@@ -3,6 +3,7 @@ package com.thanhduy.ophuot.login_and_register.model;
 import com.google.firebase.database.DatabaseReference;
 import com.thanhduy.ophuot.utils.Constants;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,8 @@ public class LoginRegisterSubmitter {
     }
 
     public void addUser(String currentId, String name, String phone, String email) {
+        //get createAt\
+        long createAt = new Date().getTime();
         //hashmap address
         Map<String, Object> mapAddress = new HashMap<>();
         mapAddress.put(Constants.ADDRESS, "");
@@ -31,6 +34,9 @@ public class LoginRegisterSubmitter {
         myMap.put(Constants.DEVICE_TOKEN, "");
         myMap.put(Constants.ADDRESS, mapAddress);
         myMap.put(Constants.AVATAR, "");
+        myMap.put(Constants.CREATE_AT, createAt);
+        myMap.put(Constants.DESCRIPTION, "");
+        myMap.put(Constants.GENDER, 1);
         //add firebase
         mDatabase.child(Constants.USERS).child(currentId).setValue(myMap);
     }

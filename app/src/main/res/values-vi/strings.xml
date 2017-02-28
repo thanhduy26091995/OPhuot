@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Title-->
+    <string-array name="nav_item_activity_titles">
+        <item>Thông Tin Cá Nhân</item>
+        <item>Nổi Bật</item>
+        <item>Tìm Kiếm</item>
+        <item>Yêu Thích</item>
+        <item>Chia Sẻ Kinh Nghiệm</item>
+        <item>Đăng Bài</item>
+        <item>Homestay Của Tôi</item>
+        <item>Thiết Lập</item>
+        <item>Trợ Giúp</item>
+
+    </string-array>
+</resources>

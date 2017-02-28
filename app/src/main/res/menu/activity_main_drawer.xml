@@ -20,7 +20,8 @@
             android:title="Chia Sẻ Kinh Nghiệm" />
     </group>
 
-    <item android:title="Chủ Homestay">
+
+    <item android:title="Là chủ nhà">
         <menu>
             <item
                 android:id="@+id/nav_post"

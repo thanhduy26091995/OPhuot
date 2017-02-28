@@ -3,6 +3,8 @@ package com.thanhduy.ophuot.base;
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 /**
  * Created by buivu on 13/01/2017.
  */
@@ -37,5 +39,9 @@ public class BaseActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         hideProgressDialog();
+    }
+
+    public static String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 }
