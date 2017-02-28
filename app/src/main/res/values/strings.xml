@@ -40,4 +40,9 @@
         <item>Config</item>
         <item>Help</item>
     </string-array>
+
+    <string name="profile">Profile</string>
+    <string name="chooseImageOrTakePicture">Chọn ảnh từ thư viện hoặc chụp ảnh</string>
+    <string name="chooseImage">Chọn Ảnh</string>
+    <string name="takePicture">Chụp Ảnh</string>
 </resources>

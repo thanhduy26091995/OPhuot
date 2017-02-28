@@ -1,5 +1,6 @@
 package com.thanhduy.ophuot.main.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.database.DatabaseAdapter;
+import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
 import com.thanhduy.ophuot.profile.view.ProfileUserFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -73,7 +75,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 navItemIndex = 0;
-                loadFragment();
+               // loadFragment();
+                startActivity(new Intent(MainActivity.this, ProfileUserActivity.class));
             }
         });
     }

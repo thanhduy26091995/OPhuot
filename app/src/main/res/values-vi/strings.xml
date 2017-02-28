@@ -11,6 +11,10 @@
         <item>Homestay Của Tôi</item>
         <item>Thiết Lập</item>
         <item>Trợ Giúp</item>
-
     </string-array>
+
+    <string name="profile">Thông Tin Cá Nhân</string>
+    <string name="chooseImageOrTakePicture">Chọn ảnh từ thư viện hoặc chụp ảnh</string>
+    <string name="chooseImage">Chọn Ảnh</string>
+    <string name="takePicture">Chụp Ảnh</string>
 </resources>

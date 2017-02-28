@@ -33,6 +33,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity android:name=".login_and_register.view.LoginActivity"></activity>
+        <activity android:name=".profile.view.ProfileUserActivity"></activity>
     </application>
 
 </manifest>
