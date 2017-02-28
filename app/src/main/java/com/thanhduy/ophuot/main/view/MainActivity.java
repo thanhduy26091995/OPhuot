@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.database.DatabaseAdapter;
 import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
-import com.thanhduy.ophuot.profile.view.ProfileUserFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 // update the main content by replacing fragments
-                Fragment fragment = getFragment();
+                Fragment fragment = null;
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
                 //overridePendingTransition(R.anim.comming_in_right, R.anim.comming_out_right);
@@ -124,16 +123,16 @@ public class MainActivity extends AppCompatActivity
         invalidateOptionsMenu();
     }
 
-    private Fragment getFragment() {
-        switch (navItemIndex) {
-            case 0: {
-                ProfileUserFragment profileUserFragment = new ProfileUserFragment();
-                return profileUserFragment;
-            }
-            default:
-                return new ProfileUserFragment();
-        }
-    }
+//    private Fragment getFragment() {
+//        switch (navItemIndex) {
+//            case 0: {
+//                ProfileUserFragment profileUserFragment = new ProfileUserFragment();
+//                return profileUserFragment;
+//            }
+//            default:
+//                return new ProfileUserFragment();
+//        }
+//    }
 
     private void setUpNavigationView() {
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu

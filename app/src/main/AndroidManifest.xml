@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.thanhduy.ophuot">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:name=".base.OPhuotApplication"
         android:allowBackup="true"
@@ -34,6 +39,7 @@
 
         <activity android:name=".login_and_register.view.LoginActivity"></activity>
         <activity android:name=".profile.view.ProfileUserActivity"></activity>
+        <activity android:name=".profile.edit_profile.view.EditProfileActivity"></activity>
     </application>
 
 </manifest>
