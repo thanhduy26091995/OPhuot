@@ -24,17 +24,19 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/linear_button"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -55,13 +57,12 @@
                         android:textSize="20sp" />
 
                     <EditText
-                        android:cursorVisible="false"
-                        android:id="@+id/txt_profile_gender"
+                        android:id="@+id/edt_edit_profile_name"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_weight="4.5"
-                        android:text="DA" />
+                        android:background="@android:color/transparent" />
                 </LinearLayout>
 
                 <View
@@ -88,17 +89,17 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
-                    <TextView
-                        android:padding="5dp"
-                        android:text="DASDas"
-                        android:id="@+id/txt_profile_phone"
+                    <EditText
+                        android:id="@+id/txt_edit_profile_address"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_weight="4.5"
+                        android:background="@android:color/transparent"
                         android:ellipsize="end"
                         android:enabled="false"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:textColor="@color/colorBlack" />
                 </LinearLayout>
 
                 <View
@@ -126,13 +127,13 @@
                         android:textSize="20sp" />
 
                     <EditText
-                        android:text='DAS'
+                        android:id="@+id/edt_edit_profile_phone"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_weight="4.5"
+                        android:background="@android:color/transparent"
                         android:ellipsize="end"
-                        android:enabled="false"
                         android:inputType="number"
                         android:maxLines="1" />
                 </LinearLayout>
@@ -170,7 +171,7 @@
                         android:weightSum="2">
 
                         <TextView
-                            android:id="@+id/txt_profile_male"
+                            android:id="@+id/txt_edit_profile_male"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -180,7 +181,7 @@
                             android:text="Nam" />
 
                         <TextView
-                            android:id="@+id/txt_profile_female"
+                            android:id="@+id/txt_edit_profile_female"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -191,16 +192,24 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_above="@+id/linear_button"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/darker_gray" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal"
                     android:padding="10dp"
                     android:weightSum="5">
 
                     <com.thanhduy.ophuot.base.IconTextView
+                        android:layout_gravity="top"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
@@ -213,24 +222,25 @@
                         android:layout_height="match_parent"
                         android:layout_weight="4.5">
 
-                        <TextView
-                            android:id="@+id/txt_profile_description"
+                        <EditText
+                            android:id="@+id/edt_edit_profile_description"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="top"
+                            android:background="@android:color/transparent"
                             android:hint="Mô tả về bản thân bạn" />
 
                     </android.support.v4.widget.NestedScrollView>
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_above="@+id/linear_button"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/darker_gray" />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
-
-        <View
-            android:id="@+id/line"
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_above="@+id/linear_button"
-            android:background="@android:color/darker_gray" />
 
     </RelativeLayout>
 

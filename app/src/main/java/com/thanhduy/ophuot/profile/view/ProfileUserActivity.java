@@ -51,10 +51,6 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
     TextView txtName;
     @BindView(R.id.txt_profile_address)
     TextView txtAddress;
-    //    @BindView(R.id.txt_profile_male)
-//    TextView txtMale;
-//    @BindView(R.id.txt_profile_female)
-//    TextView txtFemale;
     @BindView(R.id.txt_profile_gender)
     TextView txtGender;
     @BindView(R.id.txt_profile_phone)
@@ -77,6 +73,9 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private ProfileUserPresenter presenter;
+    private String name, address, phone, description;
+    private int gender;
+    private double lat, lng;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,6 +119,14 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
                         }
                         //checkGender(user.getGender());
                         ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, user.getAvatar(), imgAvatar);
+                        //save to instance
+                        name = user.getName();
+                        address = user.getAddress().get(Constants.ADDRESS).toString();
+                        lat = Double.parseDouble(user.getAddress().get(Constants.LAT).toString());
+                        lng = Double.parseDouble(user.getAddress().get(Constants.LNG).toString());
+                        gender = user.getGender();
+                        phone = user.getPhone();
+                        description = user.getDescription();
                     }
                 }
             }
@@ -132,19 +139,7 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
-    private void checkGender(int gender) {
-//        if (gender == 1) {
-//            txtMale.setBackground(ContextCompat.getDrawable(ProfileUserActivity.this, R.drawable.border_solid_textview_layout));
-//            txtMale.setTextColor(ContextCompat.getColor(ProfileUserActivity.this, R.color.colorWhite));
-//            txtFemale.setBackground(ContextCompat.getDrawable(ProfileUserActivity.this, R.drawable.border_stroke_textview_layout));
-//            txtFemale.setTextColor(ContextCompat.getColor(ProfileUserActivity.this, android.R.color.tab_indicator_text));
-//        } else {
-//            txtFemale.setBackground(ContextCompat.getDrawable(ProfileUserActivity.this, R.drawable.border_solid_textview_layout));
-//            txtFemale.setTextColor(ContextCompat.getColor(ProfileUserActivity.this, R.color.colorWhite));
-//            txtMale.setBackground(ContextCompat.getDrawable(ProfileUserActivity.this, R.drawable.border_stroke_textview_layout));
-//            txtMale.setTextColor(ContextCompat.getColor(ProfileUserActivity.this, android.R.color.tab_indicator_text));
-//        }
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -160,6 +155,13 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
             showAlertForCamera();
         } else if (v == txtEditProfile) {
             Intent intent = new Intent(ProfileUserActivity.this, EditProfileActivity.class);
+            intent.putExtra(Constants.NAME, name);
+            intent.putExtra(Constants.ADDRESS, address);
+            intent.putExtra(Constants.LAT, lat);
+            intent.putExtra(Constants.LNG, lng);
+            intent.putExtra(Constants.PHONE, phone);
+            intent.putExtra(Constants.GENDER, gender);
+            intent.putExtra(Constants.DESCRIPTION, description);
             startActivity(intent);
         }
     }

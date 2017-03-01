@@ -161,7 +161,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal"
@@ -176,19 +176,13 @@
                             android:textColor="@color/colorPrimary"
                             android:textSize="20sp" />
 
-                        <android.support.v4.widget.NestedScrollView
+                        <TextView
+                            android:id="@+id/txt_profile_description"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="4">
-
-                            <TextView
-                                android:id="@+id/txt_profile_description"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="top"
-                                android:hint="Mô tả về bản thân bạn" />
-
-                        </android.support.v4.widget.NestedScrollView>
+                            android:layout_gravity="top"
+                            android:layout_weight="4"
+                            android:hint="Mô tả về bản thân bạn" />
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
