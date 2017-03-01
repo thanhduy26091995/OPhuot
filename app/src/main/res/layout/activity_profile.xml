@@ -71,7 +71,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Thanh Duy"
+                            android:text="N/a"
                             android:textColor="@color/colorBlack"
                             android:textSize="@dimen/text_size_large"
                             android:textStyle="bold" />
@@ -83,7 +83,7 @@
                             android:ellipsize="end"
                             android:gravity="center"
                             android:maxLines="3"
-                            android:text="Biên Hòa"
+                            android:text="N/a"
                             android:textColor="@color/colorBlack" />
                     </LinearLayout>
 
@@ -170,7 +170,7 @@
 
                         <com.thanhduy.ophuot.base.IconTextView
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:text="@string/fa_info_circle"
                             android:textColor="@color/colorPrimary"

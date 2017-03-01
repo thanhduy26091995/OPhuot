@@ -10,6 +10,7 @@ public class Constants {
     public static final String[] FACEBOOK_PERMISSION = new String[]{"public_profile", "user_friends", "email"};
     public static final int GALLERY_INTENT = 2;
     public static final int CAMERA_INTENT = 3;
+    public static final int PLACE_PICKER_REQUEST = 1;
     public static String USER_FILE_PATH = null;
     public static final String USER_AVATAR = "userAvatar";
     //User

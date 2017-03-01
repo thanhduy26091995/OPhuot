@@ -1,5 +1,6 @@
 package com.thanhduy.ophuot.profile.edit_profile.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -8,8 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.profile.edit_profile.presenter.EditProfilePresenter;
@@ -25,7 +31,7 @@ import butterknife.ButterKnife;
  * Created by buivu on 01/03/2017.
  */
 
-public class EditProfileActivity extends BaseActivity {
+public class EditProfileActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -36,11 +42,13 @@ public class EditProfileActivity extends BaseActivity {
     @BindView(R.id.edt_edit_profile_description)
     EditText edtDescription;
     @BindView(R.id.txt_edit_profile_address)
-    EditText txtAddress;
+    TextView txtAddress;
     @BindView(R.id.txt_edit_profile_male)
     TextView txtMale;
     @BindView(R.id.txt_edit_profile_female)
     TextView txtFemale;
+    @BindView(R.id.linear_address)
+    LinearLayout linearAddress;
 
     private String name, address, phone, description;
     private int gender;
@@ -74,20 +82,9 @@ public class EditProfileActivity extends BaseActivity {
         txtAddress.setText(address);
         checkGender(gender);
         //event click
-        txtMale.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkGender(1);
-                gender = 1;
-            }
-        });
-        txtFemale.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkGender(0);
-                gender = 0;
-            }
-        });
+        txtMale.setOnClickListener(this);
+        txtFemale.setOnClickListener(this);
+        linearAddress.setOnClickListener(this);
 
     }
 
@@ -118,6 +115,7 @@ public class EditProfileActivity extends BaseActivity {
             finish();
         } else if (item.getItemId() == R.id.action_confirm) {
             updateDataUser();
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -136,17 +134,46 @@ public class EditProfileActivity extends BaseActivity {
 
     private void showGooglePlaces() {
 
-//        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-//        Intent myIntent;
-//
-//        try {
-//            myIntent = builder.build(view);
-//            view.startActivityForResult(myIntent, Constants.PLACE_PICKER_REQUEST);
-//        } catch (GooglePlayServicesRepairableException e) {
-//            e.printStackTrace();
-//        } catch (GooglePlayServicesNotAvailableException e) {
-//            e.printStackTrace();
-//        }
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        Intent myIntent;
+        try {
+            myIntent = builder.build(EditProfileActivity.this);
+            startActivityForResult(myIntent, Constants.PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == txtMale) {
+            checkGender(1);
+            gender = 1;
+        } else if (v == txtFemale) {
+            checkGender(0);
+            gender = 0;
+        } else if (v == linearAddress) {
+            showGooglePlaces();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constants.PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+                String address = String.format("%s", place.getAddress());
+                txtAddress.setText(address);
+                lat = place.getLatLng().latitude;
+                lng = place.getLatLng().longitude;
+            }
+
+        }
 
     }
 }

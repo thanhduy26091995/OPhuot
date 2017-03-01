@@ -9,18 +9,29 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
+import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.ImageLoader;
 import com.thanhduy.ophuot.database.DatabaseAdapter;
+import com.thanhduy.ophuot.login_and_register.view.LoginActivity;
+import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
+import com.thanhduy.ophuot.utils.Constants;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private DatabaseAdapter databaseAdapter;
@@ -29,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     private View headerView;
     private ImageView imgAvatar;
+    private TextView txtName, txtEmail;
 
     //tag using for fragment
     private static final String TAG_PROFILE = "profile";
@@ -36,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     private String[] activityTitles;
     private Handler mHandler;
     public static int navItemIndex = 0;
+    private DatabaseReference mDatabase;
 
 
     @Override
@@ -49,14 +62,38 @@ public class MainActivity extends AppCompatActivity
         databaseAdapter = new DatabaseAdapter(this);
         //  databaseAdapter.copyDatabase();
         databaseAdapter.copyDatabase();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         //createData();
-
-//        if (FirebaseAuth.getInstance().getCurrentUser() == null){
-//            Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
-//
-//        }
         initViews();
         setUpNavigationView();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
+
+        } else {
+            showDataUserIntoHeader();
+        }
+    }
+
+    private void showDataUserIntoHeader() {
+        showProgessDialog();
+        mDatabase.child(Constants.USERS).child(getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user != null) {
+                    ImageLoader.getInstance().loadImageAvatar(MainActivity.this, user.getAvatar(), imgAvatar);
+                    txtName.setText(user.getName());
+                    txtEmail.setText(user.getEmail());
+                }
+                //hide progress dialog
+                hideProgressDialog();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                hideProgressDialog();
+            }
+        });
     }
 
     private void initViews() {
@@ -67,6 +104,8 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         headerView = navigationView.getHeaderView(0);
         imgAvatar = (ImageView) headerView.findViewById(R.id.img_avatar);
+        txtName = (TextView) headerView.findViewById(R.id.txt_header_name);
+        txtEmail = (TextView) headerView.findViewById(R.id.txt_header_email);
         //init title
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
         //event click avatar
@@ -74,7 +113,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 navItemIndex = 0;
-               // loadFragment();
+                // loadFragment();
                 startActivity(new Intent(MainActivity.this, ProfileUserActivity.class));
             }
         });
