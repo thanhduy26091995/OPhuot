@@ -7,4 +7,16 @@
     <string name="fa_info_circle">&#xf05a;</string>
     <string name="fa_user">&#xf007;</string>
     <string name="fa_home">&#xf015;</string>
+    <string name="fa_usd">&#xf155;</string>
+    <string name="fa_tags">&#xf02c;</string>
+    <string name="fa_vcard_o">&#xf2bc;</string>
+    <string name="fa_users">&#xf0c0;</string>
+    <string name="fa_bed">&#xf236;</string>
+    <string name="fa_moon">&#xf186;</string>
+    <string name="fa_bath">&#xf2cd;</string>
+    <string name="fa_github_alt">&#xf113;</string>
+    <string name="fa_clock_o">&#xf017;</string>
+    <string name="fa_close">&#xf00d;</string>
+    <string name="fa_hand_pointer_o">&#xf25a;</string>
+    <string name="fa_plus">&#xf067;</string>
 </resources>

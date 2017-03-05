@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_next"
+        android:layout_below="@+id/appbar"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:gravity="left|center"
+                    android:paddingLeft="5dp"
+                    android:text="Chọn tỉnh/thành" />
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2.5"></android.support.v7.widget.AppCompatSpinner>
+            </LinearLayout>
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0.1dp"-->
+            <!--android:layout_above="@+id/linear_button"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:background="@android:color/darker_gray" />-->
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorWhite"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.5"
+                    android:gravity="left|center"
+                    android:paddingLeft="5dp"
+                    android:text="Chọn quận/huyện" />
+
+                <android.support.v7.widget.AppCompatSpinner
+
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2.5"></android.support.v7.widget.AppCompatSpinner>
+            </LinearLayout>
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0.1dp"-->
+            <!--android:layout_above="@+id/linear_button"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:background="@android:color/darker_gray" />-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <com.thanhduy.ophuot.base.IconTextView
+                    android:id="@+id/iconTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:gravity="left|center"
+                    android:text="@string/fa_home"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+                <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1.5"-->
+                <!--android:text="Địa chỉ" />-->
+
+                <TextView
+                    style="@style/AppNormalText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.5"
+                    android:ellipsize="end"
+                    android:hint="Chọn địa chỉ"
+                    android:maxLines="1"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"></TextView>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_above="@+id/linear_button"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1.5"-->
+                <!--android:gravity="left|center"-->
+                <!--android:text="Tên bài đăng" />-->
+
+                <com.thanhduy.ophuot.base.IconTextView
+
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="0.5"
+                    android:gravity="top"
+                    android:text="@string/fa_vcard_o"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    style="@style/AppNormalText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.5"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:hint="Tên homestay" />
+
+                <!--<EditText-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="3.5"-->
+                <!--android:background="@android:color/transparent"-->
+                <!--android:gravity="top"-->
+                <!--android:hint="Tên homestay"-->
+                <!--android:maxLines="2"></EditText>-->
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_above="@+id/linear_button"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <com.thanhduy.ophuot.base.IconTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="0.5"
+                    android:gravity="top"
+                    android:text="@string/fa_info_circle"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    style="@style/AppNormalText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.5"
+                    android:background="@android:color/transparent"
+                    android:hint="Mô tả về homestay"></EditText>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_above="@+id/linear_button"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <com.thanhduy.ophuot.base.IconTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_weight="0.5"
+                    android:text="@string/fa_tags"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.5"></android.support.v7.widget.AppCompatSpinner>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_above="@+id/linear_button"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <com.thanhduy.ophuot.base.IconTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:gravity="left|center"
+                    android:text="@string/fa_usd"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+                <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1.5"-->
+                <!--android:gravity="left|center"-->
+                <!--android:text="Giá" />-->
+
+                <EditText
+                    style="@style/AppNormalText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.5"
+                    android:background="@android:color/transparent"
+                    android:hint="Giá của homestay"></EditText>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_above="@+id/linear_button"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimary"
+        android:text="Next"
+        android:textColor="@color/colorWhite" />
+</RelativeLayout>

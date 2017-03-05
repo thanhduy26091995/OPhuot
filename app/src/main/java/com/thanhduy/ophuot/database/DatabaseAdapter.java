@@ -93,6 +93,28 @@ public class DatabaseAdapter {
         return districtId;
     }
 
+    //get districtName by districtId
+    public String getDistrictNameByDistrictId(String districtId) {
+        String selectQuery = "select name from districts where id = '" + districtId + "'";
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        String districtName = cursor.getString(0);
+        return districtName;
+    }
+
+    //get provinceName by provinceId
+    public String getProvinceNameByProvinceId(String provinceId) {
+        String selectQuery = "select name from provinces where id = '" + provinceId + "'";
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        String provinceName = cursor.getString(0);
+        return provinceName;
+    }
+
     public void copyDatabase() {
         File dbFile = context.getDatabasePath(DATABASE_NAME);
         if (!dbFile.exists()) {

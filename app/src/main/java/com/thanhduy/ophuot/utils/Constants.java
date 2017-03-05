@@ -11,6 +11,7 @@ public class Constants {
     public static final int GALLERY_INTENT = 2;
     public static final int CAMERA_INTENT = 3;
     public static final int PLACE_PICKER_REQUEST = 1;
+    public static final int INTENT_REQUEST_GET_IMAGES = 13;
     public static String USER_FILE_PATH = null;
     public static final String USER_AVATAR = "userAvatar";
     //User

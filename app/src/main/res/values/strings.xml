@@ -47,4 +47,22 @@
     <string name="takePicture">Chụp Ảnh</string>
     <string name="postImage">Tải ảnh lên</string>
     <string name="editProfile">Chỉnh sửa thông tin</string>
+    <string name="createHomestay">Tạo Homestay</string>
+    <string name="maxPassenger">Số khách tối đa</string>
+    <string name="numberBedrrom">Số phòng ngủ</string>
+    <string name="numberBed">Số giường</string>
+    <string name="numberBathroom">Số phòng tắm</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="timeOpen">Mở cửa</string>
+    <string name="timeClose">Đóng cửa</string>
+    <string name="airCondition">Máy lạnh</string>
+    <string name="smoke">Cho phép hút thuốc</string>
+    <string name="tivi">Tivi truyền hình cáp</string>
+    <string name="wifi">Có wifi</string>
+    <string name="heater">Lò sưởi</string>
+    <string name="animal">Cho phép vật nuôi</string>
+    <string name="waterHeater">Máy nóng lạnh</string>
+    <string name="ok">Chọn</string>
+    <string name="cancel">Hủy bỏ</string>
 </resources>

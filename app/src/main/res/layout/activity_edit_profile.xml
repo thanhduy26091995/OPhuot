@@ -57,6 +57,7 @@
                         android:textSize="20sp" />
 
                     <EditText
+                        style="@style/AppNormalText"
                         android:id="@+id/edt_edit_profile_name"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -91,6 +92,7 @@
                         android:textSize="20sp" />
 
                     <TextView
+                        style="@style/AppNormalText"
                         android:id="@+id/txt_edit_profile_address"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -130,6 +132,7 @@
                         android:textSize="20sp" />
 
                     <EditText
+                        style="@style/AppNormalText"
                         android:id="@+id/edt_edit_profile_phone"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -204,7 +207,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal"
@@ -213,27 +216,25 @@
 
                     <com.thanhduy.ophuot.base.IconTextView
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="top"
+                        android:layout_marginTop="2.5dp"
                         android:layout_weight="0.5"
+                        android:gravity="top"
                         android:text="@string/fa_info_circle"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
-                    <android.support.v4.widget.NestedScrollView
+
+                    <EditText
+                        android:id="@+id/edt_edit_profile_description"
+                        style="@style/AppNormalText"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="4.5">
+                        android:layout_weight="4.5"
+                        android:background="@android:color/transparent"
+                        android:hint="Mô tả về homestay"></EditText>
 
-                        <EditText
-                            android:id="@+id/edt_edit_profile_description"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="top"
-                            android:background="@android:color/transparent"
-                            android:hint="Mô tả về bản thân bạn" />
-
-                    </android.support.v4.widget.NestedScrollView>
                 </LinearLayout>
 
                 <View

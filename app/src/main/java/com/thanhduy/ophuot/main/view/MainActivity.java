@@ -3,6 +3,7 @@ package com.thanhduy.ophuot.main.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -28,6 +29,7 @@ import com.thanhduy.ophuot.base.ImageLoader;
 import com.thanhduy.ophuot.database.DatabaseAdapter;
 import com.thanhduy.ophuot.login_and_register.view.LoginActivity;
 import com.thanhduy.ophuot.model.User;
+import com.thanhduy.ophuot.my_homestay.view.MyHomestayFragment;
 import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
 import com.thanhduy.ophuot.utils.Constants;
 
@@ -43,8 +45,17 @@ public class MainActivity extends BaseActivity
     private TextView txtName, txtEmail;
 
     //tag using for fragment
-    private static final String TAG_PROFILE = "profile";
-    public static String CURRENT_TAG = TAG_PROFILE;
+    private static final String TAG_HIGHLIGHT = "highlight";
+    private static final String TAG_SEARCH = "search";
+    private static final String TAG_LIKE = "like";
+    private static final String TAG_SHARE = "share";
+    private static final String TAG_SUPPORT = "support";
+    private static final String TAG_INBOX = "inbox";
+    private static final String TAG_MY_HOMESTAY = "myHomestay";
+    private static final String TAG_CONFIG = "config";
+    private static final String TAG_HELP = "help";
+
+    public static String CURRENT_TAG = TAG_INBOX;
     private String[] activityTitles;
     private Handler mHandler;
     public static int navItemIndex = 0;
@@ -129,12 +140,12 @@ public class MainActivity extends BaseActivity
         setToolbarTitle();
         // if user select the current navigation menu again, don't do anything
         // just close the navigation drawer
-//        if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
-//            drawer.closeDrawers();
-//            // show or hide the fab button
-//
-//            return;
-//        }
+        if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
+            drawerLayout.closeDrawers();
+            // show or hide the fab button
+
+            return;
+        }
         // Sometimes, when fragment has huge data, screen seems hanging
         // when switching between navigation menus
         // So using runnable, the fragment is loaded with cross fade effect
@@ -143,7 +154,7 @@ public class MainActivity extends BaseActivity
             @Override
             public void run() {
                 // update the main content by replacing fragments
-                Fragment fragment = null;
+                Fragment fragment = getFragment();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
                 //overridePendingTransition(R.anim.comming_in_right, R.anim.comming_out_right);
@@ -162,77 +173,86 @@ public class MainActivity extends BaseActivity
         invalidateOptionsMenu();
     }
 
-//    private Fragment getFragment() {
-//        switch (navItemIndex) {
-//            case 0: {
-//                ProfileUserFragment profileUserFragment = new ProfileUserFragment();
-//                return profileUserFragment;
-//            }
-//            default:
-//                return new ProfileUserFragment();
-//        }
-//    }
+    private Fragment getFragment() {
+        switch (navItemIndex) {
+            case 7: {
+                MyHomestayFragment myHomestayFragment = new MyHomestayFragment();
+                return myHomestayFragment;
+            }
+            default:
+                return new MyHomestayFragment();
+        }
+    }
 
     private void setUpNavigationView() {
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.nav_home_page:
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_best:
 //                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
-//                        CURRENT_TAG = TAG_HOME;
-//                        navItemIndex = 0;
-//                        break;
-//                    case R.id.nav_contacts:
+                        CURRENT_TAG = TAG_HIGHLIGHT;
+                        navItemIndex = 0;
+                        break;
+                    case R.id.nav_search:
 //                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.VISIBLE);
-//                        CURRENT_TAG = TAG_CONTACTS_REQUESTS;
-//                        navItemIndex = 1;
-//                        break;
-//                    case R.id.nav_messages:
+                        CURRENT_TAG = TAG_SEARCH;
+                        navItemIndex = 1;
+                        break;
+                    case R.id.nav_hobby:
 //                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
-//                        CURRENT_TAG = TAG_MESSAGE;
-//                        navItemIndex = 2;
-//                        break;
-//                    case R.id.nav_room:
+                        CURRENT_TAG = TAG_LIKE;
+                        navItemIndex = 2;
+                        break;
+                    case R.id.nav_share:
 //                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
-//                        CURRENT_TAG = TAG_CHAT_ROOM;
-//                        navItemIndex = 3;
-//                        break;
-//                    case R.id.nav_member_around:
+                        CURRENT_TAG = TAG_SHARE;
+                        navItemIndex = 3;
+                        break;
+                    case R.id.nav_support:
 //                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
-//                        CURRENT_TAG = TAG_MEMBER_AROUND;
-//                        navItemIndex = 4;
+                        CURRENT_TAG = TAG_SUPPORT;
+                        navItemIndex = 4;
+                        break;
+                    case R.id.nav_inbox:
+//                        isClickLogout = false;
+//                        linearAddFriend.setVisibility(View.GONE);
+                        CURRENT_TAG = TAG_INBOX;
+                        navItemIndex = 5;
+                        break;
+//                    case R.id.nav_discount:
+//                        isClickLogout = false;
+//                        linearAddFriend.setVisibility(View.GONE);
+//                        CURRENT_TAG = TAG_DISCOUNT;
+//                        navItemIndex = 5;
 //                        break;
-////                    case R.id.nav_discount:
-////                        isClickLogout = false;
-////                        linearAddFriend.setVisibility(View.GONE);
-////                        CURRENT_TAG = TAG_DISCOUNT;
-////                        navItemIndex = 5;
-////                        break;
-//                    case R.id.nav_news:
+                    case R.id.nav_my_post:
 //                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
 //                        startActivity(new Intent(MainActivity.this, BrowserActivity.class));
 //                        drawer.closeDrawers();
 //                        return true;
-//                    case R.id.nav_events:
+                        CURRENT_TAG = TAG_MY_HOMESTAY;
+                        navItemIndex = 6;
+                        break;
+                    case R.id.nav_config:
 //                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
-//                        CURRENT_TAG = TAG_EVENTS;
-//                        navItemIndex = 7;
-//                        break;
-//                    case R.id.nav_settings:
+                        CURRENT_TAG = TAG_CONFIG;
+                        navItemIndex = 7;
+                        break;
+                    case R.id.nav_help:
 //                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
-//                        CURRENT_TAG = TAG_SETTING;
-//                        navItemIndex = 8;
-//                        break;
+                        CURRENT_TAG = TAG_HELP;
+                        navItemIndex = 8;
+                        break;
 //                    case R.id.nav_logout:
 //                        isClickLogout = true;
 //                        //show alert xác nhận
@@ -254,26 +274,24 @@ public class MainActivity extends BaseActivity
 //                                });
 //                        builder.create().show();
 //                        break;
-//                    default:
-//                        isClickLogout = false;
-//                        navItemIndex = 0;
-//                }
-//                //checking if the item is in checked or not, if not make it in checked state
-//                if (item.isChecked()) {
-//                    item.setChecked(false);
-//                } else {
-//                    item.setChecked(true);
-//                }
-//                item.setChecked(true);
-//                if (!isClickLogout) {
-//                    loadHomeFragment();
-//                }
-//
-//
-//                return true;
-//            }
-//
-//        });
+                    default:
+                        //  isClickLogout = false;
+                        navItemIndex = 0;
+                }
+                //checking if the item is in checked or not, if not make it in checked state
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                } else {
+                    item.setChecked(true);
+                }
+                item.setChecked(true);
+                loadFragment();
+
+
+                return true;
+            }
+
+        });
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
             @Override
@@ -310,7 +328,7 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 

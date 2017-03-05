@@ -41,4 +41,20 @@ public class ImageLoader {
 
 
     }
+
+    public void loadImageOther(final Activity activity, final String url, final ImageView imageView) {
+
+        try {
+            Glide.with(activity)
+                    .load(url)
+                    .error(R.drawable.load_image_fail)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerCrop()
+                    .into(imageView);
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+        }
+
+
+    }
 }

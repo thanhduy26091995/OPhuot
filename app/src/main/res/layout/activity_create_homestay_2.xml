@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimary"
+        android:text="Next"
+        android:textColor="@color/colorWhite" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_next"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/appbar"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1.5"-->
+                <!--android:gravity="left|center"-->
+                <!--android:text="Tên bài đăng" />-->
+
+                <com.thanhduy.ophuot.base.IconTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="0.5"
+                    android:gravity="top"
+                    android:text="@string/fa_users"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/edit_create_2_max_passenger"
+                    style="@style/AppNormalText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.5"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:hint="@string/maxPassenger"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_above="@+id/linear_button"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1.5"-->
+                <!--android:gravity="left|center"-->
+                <!--android:text="Tên bài đăng" />-->
+
+                <com.thanhduy.ophuot.base.IconTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="0.5"
+                    android:gravity="top"
+                    android:text="@string/fa_bed"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/edit_create_2_number_bedroom"
+                    style="@style/AppNormalText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.5"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:hint="@string/numberBedrrom"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_above="@+id/linear_button"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1.5"-->
+                <!--android:gravity="left|center"-->
+                <!--android:text="Tên bài đăng" />-->
+
+                <com.thanhduy.ophuot.base.IconTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="0.5"
+                    android:gravity="top"
+                    android:text="@string/fa_moon"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/edit_create_2_number_bed"
+                    style="@style/AppNormalText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.5"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:hint="@string/numberBed"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_above="@+id/linear_button"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1.5"-->
+                <!--android:gravity="left|center"-->
+                <!--android:text="Tên bài đăng" />-->
+
+                <com.thanhduy.ophuot.base.IconTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="0.5"
+                    android:gravity="top"
+                    android:text="@string/fa_bath"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/edit_create_2_number_bathroom"
+                    style="@style/AppNormalText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.5"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:hint="@string/numberBathroom"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_above="@+id/linear_button"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray" />
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:weightSum="4">-->
+
+            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_weight="1.5"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:gravity="left|center"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:text="Tên bài đăng" />&ndash;&gt;-->
+
+            <!--<com.thanhduy.ophuot.base.IconTextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="top"-->
+            <!--android:layout_marginTop="2.5dp"-->
+            <!--android:layout_weight="0.5"-->
+            <!--android:gravity="top"-->
+            <!--android:text="@string/fa_github_alt"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:textSize="20sp" />-->
+
+
+            <!--<LinearLayout-->
+            <!--android:id="@+id/linear_gender"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_below="@+id/linear_line"-->
+            <!--android:layout_weight="3.5"-->
+            <!--android:weightSum="2">-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/txt_edit_profile_male"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@drawable/border_stroke_textview_layout"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="5dp"-->
+            <!--android:text="@string/yes" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/txt_edit_profile_female"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@drawable/border_stroke_textview_layout"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="5dp"-->
+            <!--android:text="@string/no" />-->
+            <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0.1dp"-->
+            <!--android:layout_above="@+id/linear_button"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:background="@android:color/darker_gray" />-->
+
+            <LinearLayout
+                android:id="@+id/linear_time_open"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <com.thanhduy.ophuot.base.IconTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="0.5"
+                    android:gravity="top"
+                    android:text="@string/fa_clock_o"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+
+                <TextView
+                    android:id="@+id/txt_create_2_time_open"
+                    style="@style/AppNormalText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.5"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:hint="@string/timeOpen" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_above="@+id/linear_button"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:id="@+id/linear_time_close"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <com.thanhduy.ophuot.base.IconTextView
+                    android:id="@+id/iconTextView2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="0.5"
+                    android:gravity="top"
+                    android:text="@string/fa_close"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+
+                <TextView
+                    android:id="@+id/txt_create_2_time_close"
+                    style="@style/AppNormalText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.5"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:hint="@string/timeClose" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_above="@+id/linear_button"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="4">
+
+                <com.thanhduy.ophuot.base.IconTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="0.5"
+                    android:gravity="top"
+                    android:text="@string/fa_hand_pointer_o"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.5"
+                    android:background="@android:color/transparent"
+                    android:gravity="top">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4">
+
+                            <CheckBox
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                style="@style/AppNormalText"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_weight="3"
+                                android:gravity="center|left"
+                                android:text="@string/airCondition" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4">
+
+                            <CheckBox
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                style="@style/AppNormalText"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_weight="3"
+                                android:gravity="center|left"
+                                android:text="@string/smoke" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4">
+
+                            <CheckBox
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                style="@style/AppNormalText"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_weight="3"
+                                android:gravity="center|left"
+                                android:text="@string/tivi" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4">
+
+                            <CheckBox
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                style="@style/AppNormalText"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_weight="3"
+                                android:gravity="center|left"
+                                android:text="@string/wifi" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4">
+
+                            <CheckBox
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                style="@style/AppNormalText"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_weight="3"
+                                android:gravity="center|left"
+                                android:text="@string/heater" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4">
+
+                            <CheckBox
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                style="@style/AppNormalText"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_weight="3"
+                                android:gravity="center|left"
+                                android:text="@string/waterHeater" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4">
+
+                            <CheckBox
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                style="@style/AppNormalText"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_weight="3"
+                                android:gravity="center|left"
+                                android:text="@string/animal" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_above="@+id/linear_button"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</RelativeLayout>

@@ -104,7 +104,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_confirm, menu);
+        getMenuInflater().inflate(R.menu.menu_confirm_edit_profile, menu);
         return true;
     }
 
