@@ -71,6 +71,26 @@ public class DatabaseAdapter {
         return districts;
     }
 
+    //get list district by provinceName
+    public List<District> getDistrictsByProvinceId(int provinceId) {
+        List<District> districts = new ArrayList<>();
+        String selectQuery = "SELECT * FROM districts where province_id = '" + provinceId + "'";
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        while (cursor.moveToNext()) {
+            District district = new District();
+            int districtId = cursor.getInt(0);
+            String districtName = cursor.getString(2);
+            //save data
+            district.setProvinceId(provinceId);
+            district.setDistrictId(districtId);
+            district.setDistrictName(districtName);
+            //save data to list
+            districts.add(district);
+        }
+        cursor.close();
+        return districts;
+    }
+
     //get provinceId by province_name
     public int getProvinceIdByProvinceName(String provinceName) {
         String selectQuery = "select id from provinces where name like '%" + provinceName + "%'";

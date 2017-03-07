@@ -65,4 +65,5 @@
     <string name="waterHeater">Máy nóng lạnh</string>
     <string name="ok">Chọn</string>
     <string name="cancel">Hủy bỏ</string>
+    <string name="wrongTime">Thời gian đóng cửa phải lớn hơn thời gian mở</string>
 </resources>

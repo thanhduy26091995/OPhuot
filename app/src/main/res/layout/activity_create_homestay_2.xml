@@ -52,12 +52,6 @@
                 android:paddingTop="10dp"
                 android:weightSum="4">
 
-                <!--<TextView-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1.5"-->
-                <!--android:gravity="left|center"-->
-                <!--android:text="Tên bài đăng" />-->
 
                 <com.thanhduy.ophuot.base.IconTextView
                     android:layout_width="0dp"
@@ -408,11 +402,13 @@
                             android:layout_weight="4">
 
                             <CheckBox
+                                android:id="@+id/chk_air_condition"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />
 
                             <TextView
+                                android:id="@+id/txt_create_2_air"
                                 style="@style/AppNormalText"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -428,11 +424,13 @@
                             android:layout_weight="4">
 
                             <CheckBox
+                                android:id="@+id/chk_allow_smoke"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />
 
                             <TextView
+                                android:id="@+id/txt_create_2_smoke"
                                 style="@style/AppNormalText"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -448,11 +446,13 @@
                             android:layout_weight="4">
 
                             <CheckBox
+                                android:id="@+id/chk_tv"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />
 
                             <TextView
+                                android:id="@+id/txt_create_2_tivi"
                                 style="@style/AppNormalText"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -468,11 +468,13 @@
                             android:layout_weight="4">
 
                             <CheckBox
+                                android:id="@+id/chk_wifi"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />
 
                             <TextView
+                                android:id="@+id/txt_create_2_wifi"
                                 style="@style/AppNormalText"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -488,11 +490,13 @@
                             android:layout_weight="4">
 
                             <CheckBox
+                                android:id="@+id/chk_heater"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />
 
                             <TextView
+                                android:id="@+id/txt_create_2_heater"
                                 style="@style/AppNormalText"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -508,11 +512,13 @@
                             android:layout_weight="4">
 
                             <CheckBox
+                                android:id="@+id/chk_water_heater"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />
 
                             <TextView
+                                android:id="@+id/txt_create_2_water_heater"
                                 style="@style/AppNormalText"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -528,6 +534,7 @@
                             android:layout_weight="4">
 
                             <CheckBox
+                                android:id="@+id/chk_animal"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />

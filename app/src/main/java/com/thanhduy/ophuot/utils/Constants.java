@@ -26,6 +26,22 @@ public class Constants {
     public static final String CREATE_AT = "createAt";
     public static final String DESCRIPTION = "description";
     public static final String GENDER = "gender";
+    //Homestay
+    public static final String HOMESTAY_NAME = "homestayName";
+    public static final String HOMESTAY_DESCRIPTION = "homestayDescription";
+    public static final String HOMESTAY_TYPE = "homestayType";
+    public static final String HOMESTAY_PRICE = "homestayPrice";
+    public static final String ID_PROVINCE = "provinceId";
+    public static final String ID_DISTRICT = "districtId";
+    public static final String BATH_ROOM = "bathRoom";
+    public static final String BED = "bed";
+    public static final String BED_ROOM = "bedRoom";
+    public static final String CONVENIENT = "convenient";
+    public static final String MAX = "max";
+    public static final String PET = "pet";
+    public static final String TIME_CLOSE = "timeClose";
+    public static final String TIME_OPEN = "timeOpen";
+    public static final String DETAILS = "details";
 
     //SQLITE
     public static final String PROVINCE_ID = "id";
