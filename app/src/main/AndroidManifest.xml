@@ -55,6 +55,8 @@
         <activity
             android:name="com.gun0912.tedpicker.ImagePickerActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".create_homestay.view.CreateHomeStayActivityFour"></activity>
     </application>
 
 </manifest>

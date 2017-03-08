@@ -1,5 +1,6 @@
 package com.thanhduy.ophuot.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -15,14 +16,15 @@ public class User {
     private String name;
     private String phone;
     private HashMap<String, Object> address = new HashMap<>();
-    private HashMap<String, Boolean> favourite;
-    private HashMap<String, Boolean> post;
+    private HashMap<String, Object> favourite;
+    private HashMap<String, Object> post;
+    private ArrayList<String> images;
 
     public User() {
     }
 
     public User(String avatar, long createAt, String description, String email, int gender, String name, String phone,
-                HashMap<String, Object> address, HashMap<String, Boolean> favourite, HashMap<String, Boolean> post) {
+                HashMap<String, Object> address, HashMap<String, Object> favourite, HashMap<String, Object> post) {
         this.avatar = avatar;
         this.createAt = createAt;
         this.description = description;
@@ -100,19 +102,27 @@ public class User {
         this.address = address;
     }
 
-    public HashMap<String, Boolean> getFavourite() {
+    public HashMap<String, Object> getFavourite() {
         return favourite;
     }
 
-    public void setFavourite(HashMap<String, Boolean> favourite) {
+    public void setFavourite(HashMap<String, Object> favourite) {
         this.favourite = favourite;
     }
 
-    public HashMap<String, Boolean> getPost() {
+    public HashMap<String, Object> getPost() {
         return post;
     }
 
-    public void setPost(HashMap<String, Boolean> post) {
+    public void setPost(HashMap<String, Object> post) {
         this.post = post;
+    }
+
+    public ArrayList<String> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<String> images) {
+        this.images = images;
     }
 }

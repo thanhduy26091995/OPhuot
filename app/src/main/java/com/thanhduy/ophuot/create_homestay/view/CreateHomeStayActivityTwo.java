@@ -1,5 +1,6 @@
 package com.thanhduy.ophuot.create_homestay.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -86,18 +87,19 @@ public class CreateHomeStayActivityTwo extends BaseActivity implements View.OnCl
     private String strAddress, strHomestayName, strDescription, strType, strPrice;
     private double lat, lng;
     private long timeOpenInMinute = 0, timeCloseInMinute = 0;
-
+    public static Activity createHomestayActivity2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_homestay_2);
         ButterKnife.bind(this);
+        createHomestayActivity2 = this;
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getResources().getString(R.string.createHomestay));
+        getSupportActionBar().setTitle(getResources().getString(R.string.baseInformation));
         //event click
         btnNext.setOnClickListener(this);
         linearTimeOpen.setOnClickListener(this);
@@ -143,11 +145,13 @@ public class CreateHomeStayActivityTwo extends BaseActivity implements View.OnCl
                 edtNumberBathroom.getText().length() == 0 || txtTimeOpen.getText().length() == 0 || txtTimeClose.getText().length() == 0) {
             isSuccess = false;
             ShowAlertDialog.showAlert(getResources().getString(R.string.fillAllData), this);
+        } else {
+            if (timeOpenInMinute >= timeCloseInMinute) {
+                isSuccess = false;
+                ShowAlertDialog.showAlert(getResources().getString(R.string.wrongTime), this);
+            }
         }
-        if (timeOpenInMinute >= timeCloseInMinute) {
-            isSuccess = false;
-            ShowAlertDialog.showAlert(getResources().getString(R.string.wrongTime), this);
-        }
+
         return isSuccess;
     }
 
@@ -208,6 +212,7 @@ public class CreateHomeStayActivityTwo extends BaseActivity implements View.OnCl
         intent.putExtra(Constants.HOMESTAY_TYPE, strType);
         intent.putExtra(Constants.HOMESTAY_PRICE, strPrice);
         intent.putExtra(Constants.DETAILS, (Serializable) mapDetail);
+        startActivity(intent);
 
     }
 

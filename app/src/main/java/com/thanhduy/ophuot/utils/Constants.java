@@ -42,6 +42,15 @@ public class Constants {
     public static final String TIME_CLOSE = "timeClose";
     public static final String TIME_OPEN = "timeOpen";
     public static final String DETAILS = "details";
+    public static final String LIST_URI = "listUri";
+    public static final String ID = "id";
+    public static final String POST_BY = "postBy";
+    public static final String PRICE = "price";
+    public static final String TYPE = "type";
+    public static final String HOMESTAY = "homestay";
+    public static final String HOMESTAY_ID = "homestayId";
+    public static final String POST = "post";
+    public static final String IMAGES = "images";
 
     //SQLITE
     public static final String PROVINCE_ID = "id";

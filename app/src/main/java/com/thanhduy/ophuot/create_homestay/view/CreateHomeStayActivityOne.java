@@ -1,5 +1,6 @@
 package com.thanhduy.ophuot.create_homestay.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -69,16 +70,18 @@ public class CreateHomeStayActivityOne extends BaseActivity implements View.OnCl
     private Double lat, lng;
     private int provinceId, districtId;
     private String strAddress, strHomestayName, strHomestayDes, strHomestayType, strHomestayPrice;
+    public static Activity createHomestayActivity1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_homestay_1);
         ButterKnife.bind(this);
+        createHomestayActivity1 = this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getResources().getString(R.string.createHomestay));
+        getSupportActionBar().setTitle(getResources().getString(R.string.baseInformation));
         //event click
         btnNext.setOnClickListener(this);
         linearAddress.setOnClickListener(this);

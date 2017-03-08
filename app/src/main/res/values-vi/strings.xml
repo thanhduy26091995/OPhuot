@@ -66,6 +66,19 @@
     <string name="ok">Chọn</string>
     <string name="cancel">Hủy bỏ</string>
     <string name="wrongTime">Thời gian đóng cửa phải lớn hơn thời gian mở</string>
+    <string name="chooseAtLeast1Image">Hãy chọn ít nhất 1 bức ảnh</string>
+    <string name="complete">Hoàn Tất</string>
+    <string name="provinceName">Tên tỉnh/thành</string>
+    <string name="districtName">Tên quận/huyện</string>
+    <string name="address">Địa chỉ</string>
+    <string name="homestayName">Tên homestay</string>
+    <string name="homestayDes">Mô tả</string>
+    <string name="homestayType">Thể loại</string>
+    <string name="homestayPrice">Giá tiền</string>
+    <string name="numberPassenger">Số khách</string>
+    <string name="convenient">Tiện ích</string>
+    <string name="confirmInformation">Xác Minh Thông Tin</string>
+    <string name="baseInformation">Thông Tin Cơ Bản</string>
     <!--array for spinner-->
     <string-array name="arrType">
         <item>Nguyên căn</item>
