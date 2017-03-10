@@ -47,7 +47,7 @@ public class ImageLoader {
         try {
             Glide.with(activity)
                     .load(url)
-                    .error(R.drawable.load_image_fail)
+                    .error(R.drawable.no_image)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
                     .into(imageView);

@@ -105,7 +105,7 @@ public class EncodeImage {
         //rotate orientation
         Bitmap bmRotated = rotateBitmap(bitmap, orientation);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmRotated.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+        bmRotated.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] arrByte = baos.toByteArray();
         return arrByte;
 

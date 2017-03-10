@@ -61,7 +61,7 @@
     <string name="tivi">Tivi truyền hình cáp</string>
     <string name="wifi">Có wifi</string>
     <string name="heater">Lò sưởi</string>
-    <string name="animal">Cho phép vật nuôi</string>
+    <string name="animal">Cho phép thú cưng</string>
     <string name="waterHeater">Máy nóng lạnh</string>
     <string name="ok">Chọn</string>
     <string name="cancel">Hủy bỏ</string>
@@ -73,8 +73,10 @@
     <string name="address">Địa chỉ</string>
     <string name="homestayName">Tên homestay</string>
     <string name="homestayDes">Mô tả</string>
-    <string name="homestayType">Thể loại</string>
+    <string name="homestayType">Loại phòng</string>
     <string name="homestayPrice">Giá tiền</string>
-    <string name="convenient">Tiện ích</string>
-    <string name="confirmInformation">Xác minh thông tin</string>
+    <string name="convenient">Tiện nghi</string>
+    <string name="confirmInformation">Xác Minh Thông Tin</string>
+    <string name="location">Địa điểm</string>
+    <string name="detail">Chi tiết</string>
 </resources>

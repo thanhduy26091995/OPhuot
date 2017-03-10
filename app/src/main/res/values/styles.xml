@@ -25,4 +25,10 @@
     <style name="AppNormalText">
         <item name="android:textSize">16sp</item>
     </style>
+
+    <!--customize rating bar-->
+    <style name="customRatingBar"  parent="@android:style/Widget.RatingBar">
+        <item name="android:minHeight">20dp</item>
+        <item name="android:maxHeight">20dp</item>
+    </style>
 </resources>

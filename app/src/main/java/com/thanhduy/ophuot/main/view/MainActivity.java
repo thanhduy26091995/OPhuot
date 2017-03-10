@@ -123,9 +123,15 @@ public class MainActivity extends BaseActivity
         imgAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navItemIndex = 0;
-                // loadFragment();
-                startActivity(new Intent(MainActivity.this, ProfileUserActivity.class));
+                if (FirebaseAuth.getInstance().getCurrentUser() != null){
+                    navItemIndex = 0;
+                    // loadFragment();
+                    startActivity(new Intent(MainActivity.this, ProfileUserActivity.class));
+                }
+                else{
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
+
             }
         });
     }

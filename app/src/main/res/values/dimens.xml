@@ -9,4 +9,6 @@
 
     <dimen name="text_size_large">25sp</dimen>
     <dimen name="text_size_normal">20sp</dimen>
+
+    <dimen name="size_text_title">17sp</dimen>
 </resources>

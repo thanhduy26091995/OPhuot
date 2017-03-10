@@ -27,6 +27,8 @@ public class CreateHomestaySubmitter {
         data.put(Constants.DESCRIPTION, homestay.getDescription());
         data.put(Constants.DETAILS, homestay.getDetails());
         data.put(Constants.ID, pushId);
+        data.put(Constants.ID_PROVINCE, provinceId);
+        data.put(Constants.ID_DISTRICT, districtId);
         data.put(Constants.NAME, homestay.getName());
         data.put(Constants.POST_BY, homestay.getPostBy());
         data.put(Constants.PRICE, homestay.getPrice());
