@@ -56,6 +56,10 @@ dependencies {
     compile 'com.github.ParkSangGwon:TedPicker:v1.0.10'
     //time picker
     compile 'com.code-troopers.betterpickers:library:3.1.0'
+    //picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    //map api
+    compile 'com.google.android.gms:play-services-maps:10.0.1'
 
 }
 apply plugin: 'com.google.gms.google-services'

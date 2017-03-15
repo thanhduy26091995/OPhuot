@@ -33,7 +33,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="250dp">
 
                 <ImageView
                     android:id="@+id/imgPoster_detailResort"
@@ -114,10 +114,10 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
-                        android:text="@string/numberBedrrom" />
+                        android:text="@string/numberBathroom" />
 
                     <TextView
-                        android:id="@+id/txt_manage_title_number_bedroom"
+                        android:id="@+id/txt_manage_title_number_bathroom"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="3" />
@@ -376,6 +376,7 @@
                     android:id="@+id/txt_manage_animal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginTop="5dp"
                     android:padding="5dp"
                     android:textSize="@dimen/size_text_title" />

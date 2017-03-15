@@ -18,13 +18,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- google map api -->
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD-t4FZRyd41wT9JQKkK__LtluD1_C0Tr4" />
+            android:value="AIzaSyC_6U59ULg_PZQ62a24z6VakVB7XQX2EDg" />
 
 
         <activity
@@ -57,6 +59,8 @@
             android:screenOrientation="portrait" />
 
         <activity android:name=".create_homestay.view.CreateHomeStayActivityFour"></activity>
+        <activity android:name=".manage_homestay.view.ManageHomestayActivity"></activity>
+        <activity android:name=".manage_homestay.view.FullScreenGoogleMapActivity"></activity>
     </application>
 
 </manifest>

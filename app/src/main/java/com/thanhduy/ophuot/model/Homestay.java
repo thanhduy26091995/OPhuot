@@ -1,5 +1,6 @@
 package com.thanhduy.ophuot.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -7,7 +8,7 @@ import java.util.Map;
  * Created by buivu on 08/03/2017.
  */
 
-public class Homestay {
+public class Homestay implements Serializable {
     private Map<String, Object> address;
     private String description;
     private Map<String, Object> details;
