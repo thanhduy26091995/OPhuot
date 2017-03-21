@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by buivu on 13/01/2017.
+ * Lớp baseactivity này để các lớp khác kế thừa, mục đích là để sử dụng lại phương thức getUid
  */
 public class BaseActivity extends AppCompatActivity {
     public ProgressDialog mProgressDialog;

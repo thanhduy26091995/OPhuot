@@ -23,7 +23,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
-import com.thanhduy.ophuot.database.DatabaseAdapter;
+import com.thanhduy.ophuot.database.SqlLiteDbHelper;
 import com.thanhduy.ophuot.database.model.District;
 import com.thanhduy.ophuot.database.model.Province;
 import com.thanhduy.ophuot.utils.Constants;
@@ -62,7 +62,8 @@ public class CreateHomeStayActivityOne extends BaseActivity implements View.OnCl
     @BindView(R.id.edt_create_1_price)
     EditText edtPrice;
 
-    private DatabaseAdapter databaseAdapter;
+    private SqlLiteDbHelper databaseAdapter;
+    //private DatabaseAdapter databaseAdapter;
     private List<String> listProvinceName, listDistrictName;
     private ArrayAdapter<String> spinnerProvinceAdapter, spinnerDistrictAdapter, spinnerTypeAdapter;
     private List<Province> listProvince;
@@ -86,7 +87,8 @@ public class CreateHomeStayActivityOne extends BaseActivity implements View.OnCl
         btnNext.setOnClickListener(this);
         linearAddress.setOnClickListener(this);
         //init
-        databaseAdapter = new DatabaseAdapter(this);
+        databaseAdapter = new SqlLiteDbHelper(this);
+        databaseAdapter.openDataBase();
         listProvinceName = new ArrayList<>();
         listProvince = new ArrayList<>();
         listDistrict = new ArrayList<>();
@@ -191,6 +193,8 @@ public class CreateHomeStayActivityOne extends BaseActivity implements View.OnCl
         if (v == btnNext) {
             moveToActivityTwo();
         } else if (v == linearAddress) {
+            //block linear address
+            linearAddress.setEnabled(false);
             showGooglePlaces();
         }
     }
@@ -243,7 +247,8 @@ public class CreateHomeStayActivityOne extends BaseActivity implements View.OnCl
                 lat = place.getLatLng().latitude;
                 lng = place.getLatLng().longitude;
             }
-
+            //un-block linear address
+            linearAddress.setEnabled(true);
         }
 
     }

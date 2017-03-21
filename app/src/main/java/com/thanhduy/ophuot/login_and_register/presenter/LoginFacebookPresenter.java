@@ -23,9 +23,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.login_and_register.model.LoginRegisterSubmitter;
 import com.thanhduy.ophuot.login_and_register.view.LoginActivity;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 import java.util.Arrays;
 
@@ -93,11 +95,10 @@ public class LoginFacebookPresenter {
                 Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
                 //login fail
                 if (!task.isSuccessful()) {
+                    ShowAlertDialog.showAlert(view.getResources().getString(R.string.authenFail), view);
                     Log.w(TAG, "signInWithCredential", task.getException());
                 } else {
-
                     onAuthSuccess(task.getResult().getUser());
-
                 }
                 view.hideProgressDialog();
             }

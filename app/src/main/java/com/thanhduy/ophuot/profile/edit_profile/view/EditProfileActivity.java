@@ -156,6 +156,8 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             checkGender(0);
             gender = 0;
         } else if (v == linearAddress) {
+            //block textview
+            linearAddress.setEnabled(false);
             showGooglePlaces();
         }
     }
@@ -172,7 +174,8 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 lat = place.getLatLng().latitude;
                 lng = place.getLatLng().longitude;
             }
-
+            //un-block textview
+            linearAddress.setEnabled(true);
         }
 
     }

@@ -1,5 +1,7 @@
 package com.thanhduy.ophuot.manage_homestay.view;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,9 +21,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.manage_homestay.AdapterViewPager;
+import com.thanhduy.ophuot.manage_homestay.presenter.ManageHomestayPresenter;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.utils.Constants;
 
@@ -69,11 +77,16 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
     private Homestay homestay;
     private AdapterViewPager mViewPagerAdapter;
     private GoogleMap googleMap;
+    private ManageHomestayPresenter presenter;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_homestay_detail);
+        setContentView(R.layout.activity_my_homestay_detail);
+        presenter = new ManageHomestayPresenter(this);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -94,7 +107,40 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
         mViewPager.setAdapter(mViewPagerAdapter);
         //show data
         loadData();
+        loadDataAfterEdited();
         setUpMapIfNeeded();
+    }
+
+    private void loadDataAfterEdited() {
+        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(homestay.getProvinceId())).child(String.valueOf(homestay.getDistrictId())).child(homestay.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    Homestay homestay = dataSnapshot.getValue(Homestay.class);
+                    if (homestay != null) {
+                        //load title
+                        getSupportActionBar().setTitle(homestay.getName());
+                        txtTitleType.setText(homestay.getType());
+                        txtTitlePrice.setText(homestay.getPrice());
+                        txtTitleNumberBathroom.setText(homestay.getDetails().get(Constants.BATH_ROOM).toString());
+                        txtDescription.setText(homestay.getDescription());
+                        txtType.setText(homestay.getType());
+                        txtNumberPassenger.setText(homestay.getDetails().get(Constants.MAX).toString());
+                        txtNumberBedroom.setText(homestay.getDetails().get(Constants.BED_ROOM).toString());
+                        txtTimeClose.setText(homestay.getDetails().get(Constants.TIME_CLOSE).toString());
+                        txtTimeOpen.setText(homestay.getDetails().get(Constants.TIME_OPEN).toString());
+                        txtNumberBed.setText(homestay.getDetails().get(Constants.BED).toString());
+                        txtConvenient.setText(homestay.getDetails().get(Constants.CONVENIENT).toString());
+                        txtAnimal.setText(Boolean.parseBoolean(homestay.getDetails().get(Constants.PET).toString()) ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void loadData() {
@@ -168,7 +214,40 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
+        } else if (item.getItemId() == R.id.action_delete) {
+            alertDeleteHomestay();
+        } else if (item.getItemId() == R.id.action_edit) {
+            moveToActivityEditHomestay();
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void moveToActivityEditHomestay() {
+        Intent intent = new Intent(ManageHomestayActivity.this, EditHomestayActivity.class);
+        intent.putExtra(Constants.HOMESTAY, homestay);
+        startActivity(intent);
+    }
+
+    private void alertDeleteHomestay() {
+        //show alert xác nhận
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.confirmDeleteHomestay)
+                .setCancelable(false)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        presenter.deleteHomestay(String.valueOf(homestay.getProvinceId()), String.valueOf(homestay.getDistrictId()), homestay.getId(), getUid());
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        builder.create().show();
+    }
+
+
 }

@@ -20,7 +20,7 @@ import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
 import com.thanhduy.ophuot.create_homestay.presenter.CreateHomestayPresenter;
-import com.thanhduy.ophuot.database.DatabaseAdapter;
+import com.thanhduy.ophuot.database.SqlLiteDbHelper;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.utils.Constants;
 
@@ -81,9 +81,10 @@ public class CreateHomeStayActivityFour extends BaseActivity implements View.OnC
     private Map<String, Object> mapDataDetails = new HashMap<>();
     private int provinceId, districtId;
     private ArrayList<Uri> listImage = new ArrayList<>();
-    private DatabaseAdapter databaseAdapter;
+    //private DatabaseAdapter databaseAdapter;
     private CreateHomestayPresenter presenter;
     public ProgressDialog mProgressDialog;
+    private SqlLiteDbHelper databaseAdapter;
 
 
     @Override
@@ -91,7 +92,7 @@ public class CreateHomeStayActivityFour extends BaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_homestay_4);
         ButterKnife.bind(this);
-        databaseAdapter = new DatabaseAdapter(this);
+        databaseAdapter = new SqlLiteDbHelper(this);
         presenter = new CreateHomestayPresenter(this);
         //set toolbar
         setSupportActionBar(toolbar);

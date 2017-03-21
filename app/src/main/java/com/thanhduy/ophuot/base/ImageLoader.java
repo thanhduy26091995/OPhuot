@@ -49,6 +49,7 @@ public class ImageLoader {
                     .load(url)
                     .error(R.drawable.no_image)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.no_image)
                     .centerCrop()
                     .into(imageView);
         } catch (Exception e) {

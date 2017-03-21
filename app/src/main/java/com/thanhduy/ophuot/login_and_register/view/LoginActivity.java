@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -68,6 +69,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     ImageButton btnFacebook;
     @BindView(R.id.img_google)
     ImageButton btnGoogle;
+    @BindView(R.id.toolbar)
+    android.support.v7.widget.Toolbar toolbar;
 
     public static final String TAG = "LoginActivity";
     private LoginRegisterPresenter presenter;
@@ -80,6 +83,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getResources().getString(R.string.loginOrRegister));
+
         presenter = new LoginRegisterPresenter(this);
         googlePresenter = new LoginGooglePresenter(this);
         facebookPresenter = new LoginFacebookPresenter(this);
@@ -179,6 +188,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     //chuyển tới MainActivity
     public void moveToMainActivity() {
+        if (MainActivity.mainActivity != null) {
+            MainActivity.mainActivity.finish();
+        }
         Intent myIntent = new Intent(this, MainActivity.class);
         myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(myIntent);
@@ -207,5 +219,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

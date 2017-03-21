@@ -51,6 +51,8 @@ public class Constants {
     public static final String HOMESTAY_ID = "homestayId";
     public static final String POST = "post";
     public static final String IMAGES = "images";
+    public static final String IS_HAS_DISTRICT = "isHasDistrict";
+    public static final String IS_LOAD_SUCCESS = "isLoadSuccess";
 
     //SQLITE
     public static final String PROVINCE_ID = "id";
@@ -59,4 +61,16 @@ public class Constants {
     public static final String DISTRICT_NAME = "name";
     public static final String DISTRICT_PROVINCE_ID = "province_id";
     public static final String PROVINCES = "provinces";
+
+    //featured
+    public static final String DA_LAT = "Đà Lạt";
+    public static final String DA_NANG = "Đà Nẵng";
+    public static final String HOI_AN = "Hội An";
+    public static final String SAI_GON = "Sài Gòn";
+    public static final String HA_NOI = "Hà Nội";
+    public static final String HUE = "Huế";
+    public static final String VINH_HA_LONG = "Vịnh Hạ Long";
+    public static final String NHA_TRANG = "Nha Trang";
+    public static final String SAPA = "Sapa";
+
 }

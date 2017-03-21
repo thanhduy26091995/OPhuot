@@ -18,6 +18,7 @@ public class CreateHomestaySubmitter {
         this.mDatabase = mDatabase;
     }
 
+    //thêm thông tin homestay vào csdl
     public void createHomestay(String provinceId, String districtId, Homestay homestay) {
         String pushId = mDatabase.child(Constants.HOMESTAY).child(provinceId).child(districtId).push().getKey();
         //add homestayid
@@ -27,8 +28,8 @@ public class CreateHomestaySubmitter {
         data.put(Constants.DESCRIPTION, homestay.getDescription());
         data.put(Constants.DETAILS, homestay.getDetails());
         data.put(Constants.ID, pushId);
-        data.put(Constants.ID_PROVINCE, provinceId);
-        data.put(Constants.ID_DISTRICT, districtId);
+        data.put(Constants.ID_PROVINCE, Integer.parseInt(provinceId));
+        data.put(Constants.ID_DISTRICT, Integer.parseInt(districtId));
         data.put(Constants.NAME, homestay.getName());
         data.put(Constants.POST_BY, homestay.getPostBy());
         data.put(Constants.PRICE, homestay.getPrice());

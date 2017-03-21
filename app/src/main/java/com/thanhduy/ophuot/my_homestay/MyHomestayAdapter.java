@@ -46,26 +46,29 @@ public class MyHomestayAdapter extends RecyclerView.Adapter<MyHomestayViewHolder
     public void onBindViewHolder(final MyHomestayViewHolder holder, int position) {
         final MyPost myPost = myPosts.get(position);
         mDatabase.child(Constants.HOMESTAY).child(String.valueOf(myPost.getProvinceId())).child(String.valueOf(myPost.getDistrictId()))
-                .child(myPost.getHomestayId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                .child(myPost.getHomestayId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     final Homestay homestay = dataSnapshot.getValue(Homestay.class);
-                    //load data
-                    holder.txtName.setText(homestay.getName());
-                    holder.txtAddress.setText(homestay.getAddress().get(Constants.ADDRESS).toString());
-                    holder.txtType.setText(homestay.getType());
-                    holder.txtPrice.setText(homestay.getPrice());
-                    ImageLoader.getInstance().loadImageOther(activity, homestay.getImages().get(0), holder.imgPoster);
-                    //event click
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(activity, ManageHomestayActivity.class);
-                            intent.putExtra(Constants.HOMESTAY, homestay);
-                            activity.startActivity(intent);
-                        }
-                    });
+                    if (homestay != null) {
+                        //load data
+                        holder.txtName.setText(homestay.getName());
+                        holder.txtAddress.setText(homestay.getAddress().get(Constants.ADDRESS).toString());
+                        holder.txtType.setText(homestay.getType());
+                        holder.txtPrice.setText(homestay.getPrice());
+                        ImageLoader.getInstance().loadImageOther(activity, homestay.getImages().get(0), holder.imgPoster);
+                        //event click
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(activity, ManageHomestayActivity.class);
+                                intent.putExtra(Constants.HOMESTAY, homestay);
+                                activity.startActivity(intent);
+                            }
+                        });
+                    }
+
                 }
             }
 
@@ -74,11 +77,11 @@ public class MyHomestayAdapter extends RecyclerView.Adapter<MyHomestayViewHolder
 
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
         return myPosts.size();
     }
+
 }

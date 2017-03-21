@@ -12,6 +12,7 @@ import com.thanhduy.ophuot.utils.Constants;
 
 /**
  * Created by buivu on 08/10/2016.
+ * Lớp này là lớp singleton, dùng để sử dụng cho việc đăng nhập bằng google
  */
 public class GoogleAuthController {
     //có 1 phương thức tĩnh có kiểu là Singleton (GoogleAuthController)

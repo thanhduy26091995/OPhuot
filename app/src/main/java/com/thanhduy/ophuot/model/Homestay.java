@@ -20,6 +20,8 @@ public class Homestay implements Serializable {
     private float rating;
     private String type;
     private long createAt;
+    private int districtId;
+    private int provinceId;
 
     public Homestay() {
     }
@@ -53,6 +55,22 @@ public class Homestay implements Serializable {
 
     //getter and setter
 
+
+    public int getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(int districtId) {
+        this.districtId = districtId;
+    }
+
+    public int getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(int provinceId) {
+        this.provinceId = provinceId;
+    }
 
     public long getCreateAt() {
         return createAt;

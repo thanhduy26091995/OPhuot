@@ -22,7 +22,7 @@ android {
     }
 }
 repositories {
-    maven { url "https://repo.commonsware.com.s3.amazonaws.com" }
+    maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
     maven { url "https://jitpack.io" }
 
 }
@@ -60,6 +60,8 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     //map api
     compile 'com.google.android.gms:play-services-maps:10.0.1'
+    //crash reporting
+    compile 'com.google.firebase:firebase-crash:10.0.1'
 
 }
 apply plugin: 'com.google.gms.google-services'

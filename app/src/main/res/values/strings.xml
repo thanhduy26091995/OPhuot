@@ -79,4 +79,17 @@
     <string name="confirmInformation">Xác Minh Thông Tin</string>
     <string name="location">Địa điểm</string>
     <string name="detail">Chi tiết</string>
+    <string name="confirmDeleteHomestay">Bạn có chắc chắn muốn xóa homestay này không?</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="delete">Xóa</string>
+    <string name="logOut">Đăng Xuất</string>
+    <string name="confirmLogOut">Bạn có chắc chắn không?</string>
+    <string name="loginFirst">Hãy đăng nhập trước khi sử dụng tính năng này!</string>
+    <string name="contact">Liên Hệ</string>
+    <string name="comment">Nhận xét</string>
+    <string name="joinAt">Là thành viên từ </string>
+    <string name="loginOrRegister">Đăng Ký Hoặc Đăng Nhập</string>
+    <string name="emailDuplicate">Email đã được sử dụng, vui lòng thử lại với email khác</string>
+    <string name="loginFail">Đăng nhập thất bại, vui lòng kiểm tra lại email hoặc mật khẩu</string>
 </resources>

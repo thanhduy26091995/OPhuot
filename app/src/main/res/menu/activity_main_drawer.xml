@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_guess"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_best"
             android:icon="@drawable/ic_star"
@@ -24,31 +26,38 @@
             android:title="Hỗ Trợ" />
     </group>
 
+    <group
+        android:id="@+id/group_owner"
+        android:checkableBehavior="single">
+        <!--<item android:title="Là chủ nhà">-->
+        <!--<menu>-->
+        <item
+            android:id="@+id/nav_inbox"
+            android:icon="@drawable/ic_message_black_24dp"
+            android:title="Hộp thư" />
+        <item
+            android:id="@+id/nav_my_post"
+            android:icon="@drawable/ic_my_post"
+            android:title="Homestay Của Tôi" />
+        <!--</menu>-->
+        <!--</item>-->
+    </group>
 
-    <item android:title="Là chủ nhà">
-        <menu>
-            <item
-                android:id="@+id/nav_inbox"
-                android:icon="@drawable/ic_message_black_24dp"
-                android:title="Hộp thư" />
-            <item
-                android:id="@+id/nav_my_post"
-                android:icon="@drawable/ic_my_post"
-                android:title="Homestay Của Tôi" />
-        </menu>
-    </item>
-    <item android:title="Khác">
-        <menu>
-            <item
-                android:id="@+id/nav_config"
-                android:icon="@drawable/ic_config"
-                android:title="Thiết Lập" />
-            <item
-                android:id="@+id/nav_help"
-                android:icon="@drawable/ic_help"
-                android:title="Trợ Giúp" />
-        </menu>
-    </item>
-
+    <group
+        android:id="@+id/group_settings"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_config"
+            android:icon="@drawable/ic_config"
+            android:title="Thiết Lập" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help"
+            android:title="Trợ Giúp" />
+        <item
+            android:id="@+id/nav_sign_out"
+            android:icon="@drawable/ic_settings_power_black_24dp"
+            android:title="@string/logOut" />
+    </group>
 
 </menu>

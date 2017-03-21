@@ -1,5 +1,7 @@
 package com.thanhduy.ophuot.main.view;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
-import com.thanhduy.ophuot.database.DatabaseAdapter;
+import com.thanhduy.ophuot.featured.view.FeaturedFragment;
 import com.thanhduy.ophuot.login_and_register.view.LoginActivity;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.my_homestay.view.MyHomestayFragment;
@@ -36,16 +39,17 @@ import com.thanhduy.ophuot.utils.Constants;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DatabaseAdapter databaseAdapter;
+    //private DatabaseAdapter databaseAdapter;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private View headerView;
     private ImageView imgAvatar;
     private TextView txtName, txtEmail;
+    public static Activity mainActivity;
 
     //tag using for fragment
-    private static final String TAG_HIGHLIGHT = "highlight";
+    private static final String TAG_FEATURED = "featured";
     private static final String TAG_SEARCH = "search";
     private static final String TAG_LIKE = "like";
     private static final String TAG_SHARE = "share";
@@ -60,29 +64,49 @@ public class MainActivity extends BaseActivity
     private Handler mHandler;
     public static int navItemIndex = 0;
     private DatabaseReference mDatabase;
-
+    private boolean isShowIconLogOut = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainActivity = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mHandler = new Handler();
 
-        databaseAdapter = new DatabaseAdapter(this);
+        //databaseAdapter = new DatabaseAdapter(this);
         //  databaseAdapter.copyDatabase();
-        databaseAdapter.copyDatabase();
+        //databaseAdapter.copyDatabase();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         //createData();
         initViews();
         setUpNavigationView();
+        if (savedInstanceState == null) {
+            navItemIndex = 0;
+            CURRENT_TAG = TAG_FEATURED;
+            loadFragment();
+        }
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
-
+            hideItemLogOut();
         } else {
+            showItemLogOut();
             showDataUserIntoHeader();
         }
+    }
+
+    private void hideItemLogOut() {
+        //set boolean
+        isShowIconLogOut = false;
+        Menu nav_menu = navigationView.getMenu();
+        nav_menu.findItem(R.id.nav_sign_out).setVisible(false);
+    }
+
+    //
+    private void showItemLogOut() {
+        isShowIconLogOut = true;
+        Menu nav_menu = navigationView.getMenu();
+        nav_menu.findItem(R.id.nav_sign_out).setVisible(true);
     }
 
     private void showDataUserIntoHeader() {
@@ -123,12 +147,11 @@ public class MainActivity extends BaseActivity
         imgAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (FirebaseAuth.getInstance().getCurrentUser() != null){
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                     navItemIndex = 0;
                     // loadFragment();
                     startActivity(new Intent(MainActivity.this, ProfileUserActivity.class));
-                }
-                else{
+                } else {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 }
 
@@ -141,7 +164,12 @@ public class MainActivity extends BaseActivity
         // txtTitle.setText(activityTitles[navItemIndex]);
     }
 
+    private void selectNavMenu() {
+        navigationView.getMenu().getItem(navItemIndex).setChecked(true);
+    }
+
     private void loadFragment() {
+        selectNavMenu();
         //set toolbar title
         setToolbarTitle();
         // if user select the current navigation menu again, don't do anything
@@ -177,16 +205,21 @@ public class MainActivity extends BaseActivity
 
         // refresh toolbar menu
         invalidateOptionsMenu();
+
     }
 
     private Fragment getFragment() {
         switch (navItemIndex) {
-            case 7: {
+            case 0: {
+                FeaturedFragment featuredFragment = new FeaturedFragment();
+                return featuredFragment;
+            }
+            case 6: {
                 MyHomestayFragment myHomestayFragment = new MyHomestayFragment();
                 return myHomestayFragment;
             }
             default:
-                return new MyHomestayFragment();
+                return new FeaturedFragment();
         }
     }
 
@@ -199,7 +232,7 @@ public class MainActivity extends BaseActivity
                     case R.id.nav_best:
 //                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
-                        CURRENT_TAG = TAG_HIGHLIGHT;
+                        CURRENT_TAG = TAG_FEATURED;
                         navItemIndex = 0;
                         break;
                     case R.id.nav_search:
@@ -259,27 +292,27 @@ public class MainActivity extends BaseActivity
                         CURRENT_TAG = TAG_HELP;
                         navItemIndex = 8;
                         break;
-//                    case R.id.nav_logout:
-//                        isClickLogout = true;
-//                        //show alert xác nhận
-//                        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                        builder.setMessage(R.string.confirmLogOut)
-//                                .setCancelable(false)
-//                                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialogInterface, int i) {
-//                                        logOut();
-//                                        //initInfo();
-//                                    }
-//                                })
-//                                .setNegativeButton(R.string.huy, new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialogInterface, int i) {
-//                                        dialogInterface.cancel();
-//                                    }
-//                                });
-//                        builder.create().show();
-//                        break;
+                    case R.id.nav_sign_out:
+                        //is = true;
+                        //show alert xác nhận
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage(R.string.confirmLogOut)
+                                .setCancelable(false)
+                                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        logOut();
+                                        //initInfo();
+                                    }
+                                })
+                                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                    }
+                                });
+                        builder.create().show();
+                        break;
                     default:
                         //  isClickLogout = false;
                         navItemIndex = 0;
@@ -320,6 +353,15 @@ public class MainActivity extends BaseActivity
         actionBarDrawerToggle.syncState();
     }
 
+
+    private void logOut() {
+        FirebaseAuth.getInstance().signOut();
+
+        Intent refresh = new Intent(MainActivity.this, MainActivity.class);
+        startActivity(refresh);
+        finish();
+
+    }
 
     @Override
     public void onBackPressed() {

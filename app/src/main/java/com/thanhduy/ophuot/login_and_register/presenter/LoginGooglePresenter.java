@@ -66,7 +66,6 @@ public class LoginGooglePresenter {
                     ShowAlertDialog.showAlert(view.getResources().getString(R.string.authenFail), view);
 
                 } else {
-
                     onAuthSuccess(task.getResult().getUser(), acct);
                 }
                 view.hideProgressDialog();

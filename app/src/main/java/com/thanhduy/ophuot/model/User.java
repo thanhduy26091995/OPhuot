@@ -1,5 +1,6 @@
 package com.thanhduy.ophuot.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -7,7 +8,7 @@ import java.util.HashMap;
  * Created by buivu on 28/02/2017.
  */
 
-public class User {
+public class User implements Serializable{
     private String avatar;
     private long createAt;
     private String description;

@@ -10,8 +10,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.login_and_register.model.LoginRegisterSubmitter;
 import com.thanhduy.ophuot.login_and_register.view.LoginActivity;
+import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 /**
  * Created by buivu on 07/02/2017.
@@ -43,7 +45,8 @@ public class LoginRegisterPresenter {
                     submitter.addUser(task.getResult().getUser().getUid(), name, phone, email);
                     view.moveToMainActivity();
                 } else {
-                    Log.d(view.TAG, "Fail");
+                    ShowAlertDialog.showAlert(view.getResources().getString(R.string.emailDuplicate), view);
+                    Log.d(view.TAG, task.getException().getMessage());
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -62,6 +65,9 @@ public class LoginRegisterPresenter {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     view.moveToMainActivity();
+                }
+                else{
+                    ShowAlertDialog.showAlert(view.getResources().getString(R.string.loginFail), view);
                 }
                 view.hideProgressDialog();
             }

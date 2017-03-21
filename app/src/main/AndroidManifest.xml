@@ -3,7 +3,9 @@
     package="com.thanhduy.ophuot">
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -46,7 +48,9 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <activity android:name=".login_and_register.view.LoginActivity"></activity>
+        <activity
+            android:name=".login_and_register.view.LoginActivity"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity android:name=".profile.view.ProfileUserActivity"></activity>
         <activity android:name=".profile.edit_profile.view.EditProfileActivity"></activity>
         <activity
@@ -61,6 +65,9 @@
         <activity android:name=".create_homestay.view.CreateHomeStayActivityFour"></activity>
         <activity android:name=".manage_homestay.view.ManageHomestayActivity"></activity>
         <activity android:name=".manage_homestay.view.FullScreenGoogleMapActivity"></activity>
+        <activity android:name=".manage_homestay.view.EditHomestayActivity"></activity>
+        <activity android:name=".list_homestay.view.ListHomestayActivity"></activity>
+        <activity android:name=".homestay_detail.view.ActivityHomestayDetail"></activity>
     </application>
 
 </manifest>

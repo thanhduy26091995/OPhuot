@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,6 +21,7 @@ import com.thanhduy.ophuot.model.MyPost;
 import com.thanhduy.ophuot.my_homestay.MyHomestayAdapter;
 import com.thanhduy.ophuot.my_homestay.presenter.MyHomestayPresenter;
 import com.thanhduy.ophuot.utils.MyLinearLayoutManager;
+import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,13 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
         mRecycler.setAdapter(myHomestayAdapter);
         //event click
         fabCreateHomestay.setOnClickListener(this);
-        loadData();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            fabCreateHomestay.setVisibility(View.VISIBLE);
+            loadData();
+        } else {
+            fabCreateHomestay.setVisibility(View.GONE);
+            ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), getActivity());
+        }
         return rootView;
     }
 
@@ -81,7 +89,16 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                MyPost myPost = dataSnapshot.getValue(MyPost.class);
+//                for (MyPost post : myPosts) {
+//                    if (myPost.getHomestayId().equals(post.getHomestayId())) {
+//                        myPosts.remove();
+//                        myHomestayAdapter.notifyDataSetChanged();
+//                    }
+//                }
+                int indexMyPostInList = findIndexMyPost(myPost);
+                myPosts.remove(indexMyPostInList);
+                myHomestayAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -94,6 +111,17 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
 
             }
         });
+    }
+
+    private int findIndexMyPost(MyPost myPost) {
+        int index = 0;
+        for (int i = 0; i < myPosts.size(); i++) {
+            if (myPosts.get(i).getHomestayId().equals(myPost.getHomestayId())) {
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
 
     @Override
