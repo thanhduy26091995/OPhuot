@@ -1,18 +1,20 @@
 package com.thanhduy.ophuot.model;
 
+import java.io.Serializable;
+
 /**
  * Created by buivu on 09/03/2017.
  */
 
-public class MyPost {
+public class PostInfo implements Serializable {
     private int districtId;
     private int provinceId;
     private String homestayId;
 
-    public MyPost() {
+    public PostInfo() {
     }
 
-    public MyPost(int districtId, int provinceId, String homestayId) {
+    public PostInfo(int districtId, int provinceId, String homestayId) {
         this.districtId = districtId;
         this.provinceId = provinceId;
         this.homestayId = homestayId;

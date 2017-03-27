@@ -22,6 +22,8 @@ public class Homestay implements Serializable {
     private long createAt;
     private int districtId;
     private int provinceId;
+    private Comments comments;
+    private Map<String, Boolean> favorite;
 
     public Homestay() {
     }
@@ -55,6 +57,22 @@ public class Homestay implements Serializable {
 
     //getter and setter
 
+
+    public Map<String, Boolean> getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Map<String, Boolean> favorite) {
+        this.favorite = favorite;
+    }
+
+    public Comments getComments() {
+        return comments;
+    }
+
+    public void setComments(Comments comments) {
+        this.comments = comments;
+    }
 
     public int getDistrictId() {
         return districtId;

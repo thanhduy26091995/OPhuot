@@ -7,7 +7,11 @@ import java.text.SimpleDateFormat;
  */
 
 public class DateFormatter {
-    public static String formatDate(long miliseconds){
+    public static String formatDate(long miliseconds) {
         return new SimpleDateFormat("MM, yyyy").format(miliseconds);
+    }
+
+    public static String formatDateByYMD(long miliseconds) {
+        return new SimpleDateFormat("dd/ MM/ yyyy").format(miliseconds);
     }
 }

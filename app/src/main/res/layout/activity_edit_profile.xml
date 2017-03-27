@@ -233,7 +233,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="4.5"
                         android:background="@android:color/transparent"
-                        android:hint="Mô tả về homestay"></EditText>
+                        android:hint="@string/aboutMe"></EditText>
 
                 </LinearLayout>
 

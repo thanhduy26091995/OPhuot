@@ -15,7 +15,7 @@ import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.ImageLoader;
 import com.thanhduy.ophuot.manage_homestay.view.ManageHomestayActivity;
 import com.thanhduy.ophuot.model.Homestay;
-import com.thanhduy.ophuot.model.MyPost;
+import com.thanhduy.ophuot.model.PostInfo;
 import com.thanhduy.ophuot.my_homestay.model.MyHomestayViewHolder;
 import com.thanhduy.ophuot.utils.Constants;
 
@@ -26,12 +26,12 @@ import java.util.List;
  */
 
 public class MyHomestayAdapter extends RecyclerView.Adapter<MyHomestayViewHolder> {
-    private List<MyPost> myPosts;
+    private List<PostInfo> postInfos;
     private Activity activity;
     private DatabaseReference mDatabase;
 
-    public MyHomestayAdapter(List<MyPost> myPosts, Activity activity) {
-        this.myPosts = myPosts;
+    public MyHomestayAdapter(List<PostInfo> postInfos, Activity activity) {
+        this.postInfos = postInfos;
         this.activity = activity;
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
@@ -44,9 +44,9 @@ public class MyHomestayAdapter extends RecyclerView.Adapter<MyHomestayViewHolder
 
     @Override
     public void onBindViewHolder(final MyHomestayViewHolder holder, int position) {
-        final MyPost myPost = myPosts.get(position);
-        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(myPost.getProvinceId())).child(String.valueOf(myPost.getDistrictId()))
-                .child(myPost.getHomestayId()).addValueEventListener(new ValueEventListener() {
+        final PostInfo postInfo = postInfos.get(position);
+        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
+                .child(postInfo.getHomestayId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
@@ -81,7 +81,7 @@ public class MyHomestayAdapter extends RecyclerView.Adapter<MyHomestayViewHolder
 
     @Override
     public int getItemCount() {
-        return myPosts.size();
+        return postInfos.size();
     }
 
 }

@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
+import com.thanhduy.ophuot.comment.view.CommentActivity;
 import com.thanhduy.ophuot.manage_homestay.AdapterViewPager;
 import com.thanhduy.ophuot.manage_homestay.view.FullScreenGoogleMapActivity;
 import com.thanhduy.ophuot.model.Homestay;
@@ -42,7 +43,7 @@ import butterknife.ButterKnife;
  * Created by buivu on 21/03/2017.
  */
 
-public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCallback {
+public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCallback, View.OnClickListener {
 
     @BindView(R.id.txt_manage_type_title)
     TextView txtTitleType;
@@ -109,7 +110,7 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         //get intent
         homestay = (Homestay) getIntent().getSerializableExtra(Constants.HOMESTAY);
         isLoadSuccess = getIntent().getBooleanExtra(Constants.IS_LOAD_SUCCESS, false);
-        Log.d("LOAD_SUCCESS_VIEW", ""+isLoadSuccess);
+        Log.d("LOAD_SUCCESS_VIEW", "" + isLoadSuccess);
         if (isLoadSuccess) {
             user = (User) getIntent().getSerializableExtra(Constants.USERS);
         }
@@ -127,6 +128,15 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         //show data
         loadData();
         setUpMapIfNeeded();
+        //event click
+        btnComment.setOnClickListener(this);
+        changeTextCommentIfYes();
+    }
+
+    private void changeTextCommentIfYes() {
+        if (homestay.getComments() != null) {
+            btnComment.setText(String.format("%s (%d)", getResources().getString(R.string.comment), homestay.getComments().getCommentCount()));
+        }
     }
 
     private void loadData() {
@@ -225,5 +235,14 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == btnComment) {
+            Intent intent = new Intent(ActivityHomestayDetail.this, CommentActivity.class);
+            intent.putExtra(Constants.HOMESTAY, homestay);
+            startActivity(intent);
+        }
     }
 }

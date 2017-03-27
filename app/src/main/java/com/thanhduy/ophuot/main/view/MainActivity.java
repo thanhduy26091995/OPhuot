@@ -65,6 +65,7 @@ public class MainActivity extends BaseActivity
     public static int navItemIndex = 0;
     private DatabaseReference mDatabase;
     private boolean isShowIconLogOut = false;
+    private boolean isClickLogout = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +73,10 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         mainActivity = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         mHandler = new Handler();
 
-        //databaseAdapter = new DatabaseAdapter(this);
-        //  databaseAdapter.copyDatabase();
-        //databaseAdapter.copyDatabase();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         //createData();
         initViews();
@@ -109,6 +108,7 @@ public class MainActivity extends BaseActivity
         nav_menu.findItem(R.id.nav_sign_out).setVisible(true);
     }
 
+
     private void showDataUserIntoHeader() {
         showProgessDialog();
         mDatabase.child(Constants.USERS).child(getUid()).addValueEventListener(new ValueEventListener() {
@@ -122,6 +122,7 @@ public class MainActivity extends BaseActivity
                 }
                 //hide progress dialog
                 hideProgressDialog();
+
             }
 
             @Override
@@ -230,37 +231,37 @@ public class MainActivity extends BaseActivity
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_best:
-//                        isClickLogout = false;
+                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_FEATURED;
                         navItemIndex = 0;
                         break;
                     case R.id.nav_search:
-//                        isClickLogout = false;
+                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.VISIBLE);
                         CURRENT_TAG = TAG_SEARCH;
                         navItemIndex = 1;
                         break;
                     case R.id.nav_hobby:
-//                        isClickLogout = false;
+                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_LIKE;
                         navItemIndex = 2;
                         break;
                     case R.id.nav_share:
-//                        isClickLogout = false;
+                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_SHARE;
                         navItemIndex = 3;
                         break;
                     case R.id.nav_support:
-//                        isClickLogout = false;
+                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_SUPPORT;
                         navItemIndex = 4;
                         break;
                     case R.id.nav_inbox:
-//                        isClickLogout = false;
+                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_INBOX;
                         navItemIndex = 5;
@@ -272,7 +273,7 @@ public class MainActivity extends BaseActivity
 //                        navItemIndex = 5;
 //                        break;
                     case R.id.nav_my_post:
-//                        isClickLogout = false;
+                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
 //                        startActivity(new Intent(MainActivity.this, BrowserActivity.class));
 //                        drawer.closeDrawers();
@@ -281,19 +282,19 @@ public class MainActivity extends BaseActivity
                         navItemIndex = 6;
                         break;
                     case R.id.nav_config:
-//                        isClickLogout = false;
+                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_CONFIG;
                         navItemIndex = 7;
                         break;
                     case R.id.nav_help:
-//                        isClickLogout = false;
+                        isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_HELP;
                         navItemIndex = 8;
                         break;
                     case R.id.nav_sign_out:
-                        //is = true;
+                        isClickLogout = true;
                         //show alert xác nhận
                         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setMessage(R.string.confirmLogOut)
@@ -324,7 +325,9 @@ public class MainActivity extends BaseActivity
                     item.setChecked(true);
                 }
                 item.setChecked(true);
-                loadFragment();
+                if (!isClickLogout) {
+                    loadFragment();
+                }
 
 
                 return true;

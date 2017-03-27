@@ -77,6 +77,7 @@
     <string name="homestayPrice">Giá tiền</string>
     <string name="convenient">Tiện nghi</string>
     <string name="confirmInformation">Xác Minh Thông Tin</string>
+    <string name="baseInformation">Thông Tin Cơ Bản</string>
     <string name="location">Địa điểm</string>
     <string name="detail">Chi tiết</string>
     <string name="confirmDeleteHomestay">Bạn có chắc chắn muốn xóa homestay này không?</string>
@@ -92,4 +93,22 @@
     <string name="loginOrRegister">Đăng Ký Hoặc Đăng Nhập</string>
     <string name="emailDuplicate">Email đã được sử dụng, vui lòng thử lại với email khác</string>
     <string name="loginFail">Đăng nhập thất bại, vui lòng kiểm tra lại email hoặc mật khẩu</string>
+    <string name="aboutMe">Mô tả về bản thân bạn</string>
+    <string name="enterComment">Nhập nhận xét</string>
+    <string name="addFavorite">Bạn đã thêm</string>
+    <string name="into">vào danh sách yêu thích</string>
+    <string name="deleteFavorite">Bạn đã xóa</string>
+    <string name="outOfFavorite">khỏi danh sách yêu thích</string>
+    <string name="myFavorite">Yêu thích của tôi</string>
+
+    <!--array for spinner-->
+    <string-array name="arrType">
+        <item>Nguyên căn</item>
+        <item>Nhà riêng</item>
+        <item>Ký túc xá</item>
+    </string-array>
+
+    <string name="saveInto">Lưu vào</string>
+    <string name="createNewList">Tạo một danh sách mới</string>
+    <string name="post">bài đăng</string>
 </resources>

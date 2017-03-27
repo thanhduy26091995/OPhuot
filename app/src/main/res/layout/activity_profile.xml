@@ -182,7 +182,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="top"
                             android:layout_weight="4"
-                            android:hint="Mô tả về bản thân bạn" />
+                            android:hint="@string/aboutMe" />
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>

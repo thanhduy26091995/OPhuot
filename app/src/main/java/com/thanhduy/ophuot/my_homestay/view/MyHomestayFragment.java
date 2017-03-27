@@ -17,7 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.create_homestay.view.CreateHomeStayActivityOne;
-import com.thanhduy.ophuot.model.MyPost;
+import com.thanhduy.ophuot.model.PostInfo;
 import com.thanhduy.ophuot.my_homestay.MyHomestayAdapter;
 import com.thanhduy.ophuot.my_homestay.presenter.MyHomestayPresenter;
 import com.thanhduy.ophuot.utils.MyLinearLayoutManager;
@@ -43,7 +43,7 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
     RecyclerView mRecycler;
 
     private MyHomestayPresenter presenter;
-    private List<MyPost> myPosts = new ArrayList<>();
+    private List<PostInfo> postInfos = new ArrayList<>();
     private MyHomestayAdapter myHomestayAdapter;
     private MyLinearLayoutManager customLinearLayoutManager;
 
@@ -53,7 +53,7 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
         rootView = inflater.inflate(R.layout.activity_my_homestay, container, false);
         ButterKnife.bind(this, rootView);
         presenter = new MyHomestayPresenter(this);
-        myHomestayAdapter = new MyHomestayAdapter(myPosts, getActivity());
+        myHomestayAdapter = new MyHomestayAdapter(postInfos, getActivity());
         customLinearLayoutManager = new MyLinearLayoutManager(getActivity());
         mRecycler.setLayoutManager(customLinearLayoutManager);
         mRecycler.setAdapter(myHomestayAdapter);
@@ -74,9 +74,9 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot != null) {
-                    MyPost myPost = dataSnapshot.getValue(MyPost.class);
-                    if (!myPosts.contains(myPost)) {
-                        myPosts.add(myPost);
+                    PostInfo postInfo = dataSnapshot.getValue(PostInfo.class);
+                    if (!postInfos.contains(postInfo)) {
+                        postInfos.add(postInfo);
                         myHomestayAdapter.notifyDataSetChanged();
                     }
                 }
@@ -89,15 +89,15 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                MyPost myPost = dataSnapshot.getValue(MyPost.class);
-//                for (MyPost post : myPosts) {
-//                    if (myPost.getHomestayId().equals(post.getHomestayId())) {
-//                        myPosts.remove();
+                PostInfo postInfo = dataSnapshot.getValue(PostInfo.class);
+//                for (PostInfo post : postInfos) {
+//                    if (postInfo.getHomestayId().equals(post.getHomestayId())) {
+//                        postInfos.remove();
 //                        myHomestayAdapter.notifyDataSetChanged();
 //                    }
 //                }
-                int indexMyPostInList = findIndexMyPost(myPost);
-                myPosts.remove(indexMyPostInList);
+                int indexMyPostInList = findIndexMyPost(postInfo);
+                postInfos.remove(indexMyPostInList);
                 myHomestayAdapter.notifyDataSetChanged();
             }
 
@@ -113,10 +113,10 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
         });
     }
 
-    private int findIndexMyPost(MyPost myPost) {
+    private int findIndexMyPost(PostInfo postInfo) {
         int index = 0;
-        for (int i = 0; i < myPosts.size(); i++) {
-            if (myPosts.get(i).getHomestayId().equals(myPost.getHomestayId())) {
+        for (int i = 0; i < postInfos.size(); i++) {
+            if (postInfos.get(i).getHomestayId().equals(postInfo.getHomestayId())) {
                 index = i;
                 break;
             }

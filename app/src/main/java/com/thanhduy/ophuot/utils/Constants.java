@@ -53,7 +53,20 @@ public class Constants {
     public static final String IMAGES = "images";
     public static final String IS_HAS_DISTRICT = "isHasDistrict";
     public static final String IS_LOAD_SUCCESS = "isLoadSuccess";
-
+    public static final String COMMENTS = "comments";
+    public static final String CONTENTS = "contents";
+    public static final String COMMENT_BY = "commentBy";
+    public static final String CONTENT = "content";
+    public static final String RATING = "rating";
+    public static final String COMMENT_TIME = "commentTime";
+    public static final String COMMENT_COUNT = "commentCount";
+    public static final String FAVORITE = "favorite";
+    public static final String POST_INFO = "postInfo";
+    public static final String FAVORITE_NAME = "favoriteName";
+    public static final String FAVORITE_COUNT = "favoriteCount";
+    public static final String INFO = "info";
+    public static final String LIST_HOMESTAY = "listHomestay";
+    public static final String POSITION = "position";
     //SQLITE
     public static final String PROVINCE_ID = "id";
     public static final String PROVINCE_NAME = "name";

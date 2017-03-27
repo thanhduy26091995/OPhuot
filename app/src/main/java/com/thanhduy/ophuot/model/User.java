@@ -17,7 +17,7 @@ public class User implements Serializable{
     private String name;
     private String phone;
     private HashMap<String, Object> address = new HashMap<>();
-    private HashMap<String, Object> favourite;
+    private HashMap<String, Object> favorite;
     private HashMap<String, Object> post;
     private ArrayList<String> images;
 
@@ -25,7 +25,7 @@ public class User implements Serializable{
     }
 
     public User(String avatar, long createAt, String description, String email, int gender, String name, String phone,
-                HashMap<String, Object> address, HashMap<String, Object> favourite, HashMap<String, Object> post) {
+                HashMap<String, Object> address, HashMap<String, Object> favorite, HashMap<String, Object> post) {
         this.avatar = avatar;
         this.createAt = createAt;
         this.description = description;
@@ -34,10 +34,11 @@ public class User implements Serializable{
         this.name = name;
         this.phone = phone;
         this.address = address;
-        this.favourite = favourite;
+        this.favorite = favorite;
         this.post = post;
     }
     //getter and setter
+
 
     public String getAvatar() {
         return avatar;
@@ -103,12 +104,12 @@ public class User implements Serializable{
         this.address = address;
     }
 
-    public HashMap<String, Object> getFavourite() {
-        return favourite;
+    public HashMap<String, Object> getFavorite() {
+        return favorite;
     }
 
-    public void setFavourite(HashMap<String, Object> favourite) {
-        this.favourite = favourite;
+    public void setFavorite(HashMap<String, Object> favorite) {
+        this.favorite = favorite;
     }
 
     public HashMap<String, Object> getPost() {
