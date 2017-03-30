@@ -5,5 +5,5 @@ package com.thanhduy.ophuot.fragment;
  */
 
 public interface PositionCallback {
-    public void positionCallBack(int position);
+    void positionCallBack(int position);
 }

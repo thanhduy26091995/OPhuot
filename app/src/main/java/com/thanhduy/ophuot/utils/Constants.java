@@ -67,6 +67,8 @@ public class Constants {
     public static final String INFO = "info";
     public static final String LIST_HOMESTAY = "listHomestay";
     public static final String POSITION = "position";
+    public static final String LIST_POST_INFO = "listPostInfo";
+    public static final String FAVORITE_ID = "favoriteId";
     //SQLITE
     public static final String PROVINCE_ID = "id";
     public static final String PROVINCE_NAME = "name";

@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
+import com.thanhduy.ophuot.favorite.view.FavoriteFragment;
 import com.thanhduy.ophuot.featured.view.FeaturedFragment;
 import com.thanhduy.ophuot.login_and_register.view.LoginActivity;
 import com.thanhduy.ophuot.model.User;
@@ -51,7 +52,7 @@ public class MainActivity extends BaseActivity
     //tag using for fragment
     private static final String TAG_FEATURED = "featured";
     private static final String TAG_SEARCH = "search";
-    private static final String TAG_LIKE = "like";
+    private static final String TAG_FAVORITE = "favorite";
     private static final String TAG_SHARE = "share";
     private static final String TAG_SUPPORT = "support";
     private static final String TAG_INBOX = "inbox";
@@ -215,6 +216,10 @@ public class MainActivity extends BaseActivity
                 FeaturedFragment featuredFragment = new FeaturedFragment();
                 return featuredFragment;
             }
+            case 2: {
+                FavoriteFragment favoriteFragment = new FavoriteFragment();
+                return favoriteFragment;
+            }
             case 6: {
                 MyHomestayFragment myHomestayFragment = new MyHomestayFragment();
                 return myHomestayFragment;
@@ -242,10 +247,10 @@ public class MainActivity extends BaseActivity
                         CURRENT_TAG = TAG_SEARCH;
                         navItemIndex = 1;
                         break;
-                    case R.id.nav_hobby:
+                    case R.id.nav_favorite:
                         isClickLogout = false;
 //                        linearAddFriend.setVisibility(View.GONE);
-                        CURRENT_TAG = TAG_LIKE;
+                        CURRENT_TAG = TAG_FAVORITE;
                         navItemIndex = 2;
                         break;
                     case R.id.nav_share:

@@ -42,7 +42,7 @@ public class LoginRegisterPresenter {
                 //nếu tạo tài khoản thành công
                 if (task.isSuccessful()) {
                     //thêm data vào database
-                    submitter.addUser(task.getResult().getUser().getUid(), name, phone, email);
+                    submitter.addUser(task.getResult().getUser().getUid(), name, phone, email, view.getResources().getString(R.string.myFavorite));
                     view.moveToMainActivity();
                 } else {
                     ShowAlertDialog.showAlert(view.getResources().getString(R.string.emailDuplicate), view);
@@ -65,8 +65,7 @@ public class LoginRegisterPresenter {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     view.moveToMainActivity();
-                }
-                else{
+                } else {
                     ShowAlertDialog.showAlert(view.getResources().getString(R.string.loginFail), view);
                 }
                 view.hideProgressDialog();

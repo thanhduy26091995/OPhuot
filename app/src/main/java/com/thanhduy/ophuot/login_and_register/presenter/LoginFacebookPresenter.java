@@ -113,7 +113,7 @@ public class LoginFacebookPresenter {
                 if (dataSnapshot.exists()) {
                     view.moveToMainActivity();
                 } else {
-                    submitter.addUser(user.getUid(), user.getDisplayName(), "", user.getEmail());
+                    submitter.addUser(user.getUid(), user.getDisplayName(), "", user.getEmail(), view.getResources().getString(R.string.myFavorite));
                     view.moveToMainActivity();
                 }
             }

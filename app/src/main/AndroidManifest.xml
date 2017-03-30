@@ -69,6 +69,7 @@
         <activity android:name=".list_homestay.view.ListHomestayActivity"></activity>
         <activity android:name=".homestay_detail.view.ActivityHomestayDetail"></activity>
         <activity android:name=".comment.view.CommentActivity"></activity>
+        <activity android:name=".favorite.view.ListFavoriteActivity"></activity>
     </application>
 
 </manifest>

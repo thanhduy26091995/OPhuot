@@ -27,6 +27,7 @@
                 android:textSize="@dimen/text_size_favorite" />
 
             <LinearLayout
+                android:id="@+id/linear_create_new_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -66,9 +67,11 @@
                     android:background="@color/md_grey_200">
 
                     <ImageView
+                        android:id="@+id/img_my_favorite_poster"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/ic_add_black_24dp" />
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/no_image" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -80,7 +83,7 @@
                     android:paddingRight="10dp">
 
                     <TextView
-                        android:id="@+id/textView"
+                        android:id="@+id/txt_favorite_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -90,18 +93,19 @@
                         android:textSize="@dimen/text_size_favorite" />
 
                     <TextView
+                        android:id="@+id/txt_favorite_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="1.5dp"
                         android:gravity="left|center"
-                        android:text="@string/createNewList"
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
+                android:id="@+id/recycler_list_favorite"
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/item_save_into_favorite"></android.support.v7.widget.RecyclerView>
         </LinearLayout>

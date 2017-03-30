@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.thanhduy.ophuot.favorite.model.FavoriteSubmitter;
 import com.thanhduy.ophuot.model.PostInfo;
 
@@ -22,9 +23,15 @@ public class FavoritePresenter {
         submitter = new FavoriteSubmitter(mDatabase);
     }
 
+
+
     //add member's favorite
     public void addDataToFavoriteHomestay(PostInfo postInfo, String uid) {
         submitter.addDataToFavoriteHomestay(postInfo, uid);
+    }
+
+    public Query getAllFavoriteHomestay(String uid) {
+        return submitter.getAllFavoriteHomestay(uid);
     }
 
 }

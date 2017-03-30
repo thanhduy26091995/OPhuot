@@ -1,6 +1,7 @@
 package com.thanhduy.ophuot.favorite.model;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.thanhduy.ophuot.model.PostInfo;
 import com.thanhduy.ophuot.utils.Constants;
 
@@ -33,4 +34,7 @@ public class FavoriteSubmitter {
                 .child(postInfo.getHomestayId()).child(Constants.FAVORITE).updateChildren(dataFavoriteHomestay);
     }
 
+    public Query getAllFavoriteHomestay(String uid) {
+        return mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE);
+    }
 }

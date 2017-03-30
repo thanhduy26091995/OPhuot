@@ -17,6 +17,7 @@ import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
 import com.thanhduy.ophuot.fragment.BottomDialogFragment;
+import com.thanhduy.ophuot.fragment.FavoriteListAdapterForBottomDialog;
 import com.thanhduy.ophuot.fragment.PositionCallback;
 import com.thanhduy.ophuot.homestay_detail.view.ActivityHomestayDetail;
 import com.thanhduy.ophuot.list_homestay.model.ListHomestayViewHolder;
@@ -41,11 +42,13 @@ public class ListHomestayAdapter extends RecyclerView.Adapter<ListHomestayViewHo
     private DatabaseReference mDatabase;
     private User user;
     private boolean isLoadSuccess = false;
+    private FavoriteListAdapterForBottomDialog favoriteListAdapterForBottomDialog;
 
     public ListHomestayAdapter(Activity activity, List<Homestay> homestayList) {
         this.activity = activity;
         this.homestayList = homestayList;
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        this.favoriteListAdapterForBottomDialog = new FavoriteListAdapterForBottomDialog(this);
     }
 
     @Override
@@ -126,11 +129,21 @@ public class ListHomestayAdapter extends RecyclerView.Adapter<ListHomestayViewHo
                                 notifyDataSetChanged();
                             }
                         });
+                        //change icon heart from FavoriteListAdapterBottom
+                        favoriteListAdapterForBottomDialog.setPositionCallback(new PositionCallback() {
+                            @Override
+                            public void positionCallBack(int position) {
+                                Homestay homestay = homestayList.get(position);
+                                homestay.getFavorite().put(BaseActivity.getUid(), true);
+                                notifyDataSetChanged();
+                            }
+                        });
                         Bundle dataMove = new Bundle();
                         dataMove.putSerializable(Constants.POST_INFO, postInfo);
                         dataMove.putSerializable(Constants.POSITION, position);
                         bottomDialogFragment.setArguments(dataMove);
                         bottomDialogFragment.show(((AppCompatActivity) activity).getSupportFragmentManager(), bottomDialogFragment.getTag());
+
                     }
                 } else {
                     BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();

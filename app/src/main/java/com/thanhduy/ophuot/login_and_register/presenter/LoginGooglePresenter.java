@@ -84,7 +84,7 @@ public class LoginGooglePresenter {
                     view.moveToMainActivity();
                 } else {
                     try {
-                        submitter.addUser(user.getUid(), acct.getDisplayName(), "", acct.getEmail());
+                        submitter.addUser(user.getUid(), acct.getDisplayName(), "", acct.getEmail(), view.getResources().getString(R.string.myFavorite));
                         view.moveToMainActivity();
                     } catch (Exception e) {
                         Log.d("onAuthSuccessGoogle", "" + e.getMessage());

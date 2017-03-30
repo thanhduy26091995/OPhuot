@@ -64,7 +64,7 @@
     <string name="animal">Cho phép thú cưng</string>
     <string name="waterHeater">Máy nóng lạnh</string>
     <string name="ok">Chọn</string>
-    <string name="cancel">Hủy bỏ</string>
+    <string name="cancel">Hủy</string>
     <string name="wrongTime">Thời gian đóng cửa phải lớn hơn thời gian mở</string>
     <string name="chooseAtLeast1Image">Hãy chọn ít nhất 1 bức ảnh</string>
     <string name="complete">Complete</string>
@@ -108,7 +108,16 @@
         <item>Ký túc xá</item>
     </string-array>
 
+    <string name="editFavoriteName">Chỉnh sửa tên danh sách</string>
+    <string name="deleteFavoriteList">Xóa danh sách</string>
     <string name="saveInto">Lưu vào</string>
     <string name="createNewList">Tạo một danh sách mới</string>
     <string name="post">bài đăng</string>
+    <string name="myFavoriteTitle">Danh Sách Yêu Thích</string>
+    <string name="editFavoriteNameTitle">Thay Đổi Tên Danh Sách</string>
+    <string name="change">Thay đổi</string>
+    <string name="createNewFavoriteListTitle">Tạo Một Danh Sách Mới</string>
+    <string name="createNew">Tạo mới</string>
+    <string name="confirmDelete">Bạn có chắc chắn muốn xóa danh sách này?</string>
+    <string name="cannotDeleteList">Bạn không thể xóa danh sách mặc định này</string>
 </resources>

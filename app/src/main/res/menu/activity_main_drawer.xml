@@ -13,7 +13,7 @@
             android:icon="@drawable/ic_search"
             android:title="Tìm Kiếm" />
         <item
-            android:id="@+id/nav_hobby"
+            android:id="@+id/nav_favorite"
             android:icon="@drawable/ic_hobby"
             android:title="Yêu Thích" />
         <item

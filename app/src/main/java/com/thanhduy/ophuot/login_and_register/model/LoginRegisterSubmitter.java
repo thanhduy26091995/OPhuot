@@ -18,7 +18,7 @@ public class LoginRegisterSubmitter {
         this.mDatabase = mDatabase;
     }
 
-    public void addUser(String currentId, String name, String phone, String email) {
+    public void addUser(String currentId, String name, String phone, String email, String favoriteName) {
         //get createAt\
         long createAt = new Date().getTime();
         //hashmap address
@@ -39,5 +39,11 @@ public class LoginRegisterSubmitter {
         myMap.put(Constants.GENDER, 1);
         //add firebase
         mDatabase.child(Constants.USERS).child(currentId).setValue(myMap);
+
+
+        //hashmap favorite
+        Map<String, Object> mapInfo = new HashMap<>();
+        mapInfo.put(Constants.FAVORITE_NAME, favoriteName);
+        mDatabase.child(Constants.USERS).child(currentId).child(Constants.FAVORITE).child(currentId).child(Constants.INFO).updateChildren(mapInfo);
     }
 }
