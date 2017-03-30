@@ -218,7 +218,7 @@ public class BottomDialogFragment extends BottomSheetDialogFragment implements V
                         FavoriteInfo favoriteInfo = dataSnapshot.child(Constants.INFO).getValue(FavoriteInfo.class);
                         if (favoriteInfo != null) {
                             txtFavoriteName.setText(favoriteInfo.getFavoriteName());
-                            if (getActivity().getResources() != null){
+                            if (getActivity().getResources() != null) {
                                 txtFavoriteNumber.setText(String.format("%d %s", dataSnapshot.child(Constants.LIST_HOMESTAY).getChildrenCount(), getActivity().getResources().getString(R.string.post)));
                             }
                         }

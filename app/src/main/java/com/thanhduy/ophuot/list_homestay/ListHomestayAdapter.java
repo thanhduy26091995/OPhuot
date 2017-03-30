@@ -65,6 +65,7 @@ public class ListHomestayAdapter extends RecyclerView.Adapter<ListHomestayViewHo
         holder.txtType.setText(homestay.getType());
         holder.txtPrice.setText(homestay.getPrice());
         ImageLoader.getInstance().loadImageOther(activity, homestay.getImages().get(0), holder.imgPoster);
+        holder.rating.setRating(homestay.getRating());
         //check if current user favorite this homestay, if it has, use heart with red color
         if (homestay.getFavorite() != null) {
             if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {

@@ -37,6 +37,7 @@ public class LoginRegisterSubmitter {
         myMap.put(Constants.CREATE_AT, createAt);
         myMap.put(Constants.DESCRIPTION, "");
         myMap.put(Constants.GENDER, 1);
+        myMap.put(Constants.USER_ID, currentId);
         //add firebase
         mDatabase.child(Constants.USERS).child(currentId).setValue(myMap);
 

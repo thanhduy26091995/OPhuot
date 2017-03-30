@@ -36,13 +36,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="330dp">
 
+
                 <ImageView
                     android:id="@+id/imgPoster_detailResort"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/no_image" />
-
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewPager"
                     android:layout_width="match_parent"

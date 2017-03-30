@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.ImageLoader;
@@ -38,6 +39,7 @@ public class AdapterViewPager extends PagerAdapter {
         layoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = layoutInflater.inflate(R.layout.activity_custom_swip, container, false);
         ImageView imageView = (ImageView) itemView.findViewById(R.id.swip_image_view);
+        TextView txtDigit = (TextView) itemView.findViewById(R.id.txt_swip_digit);
 
         if (list.size() > 0) {
 //            Picasso.with(ctx).load(list.get(position))
@@ -46,6 +48,7 @@ public class AdapterViewPager extends PagerAdapter {
 //                    .error(R.drawable.no_image)
 //                    .into(imageView);
             ImageLoader.getInstance().loadImageOther((Activity) ctx, list.get(position), imageView);
+            txtDigit.setText(String.format("%d / %d", position + 1, list.size()));
         } else if (list.size() < 0) {
             imageView.setImageResource(R.drawable.no_image);
         }

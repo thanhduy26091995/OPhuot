@@ -72,4 +72,11 @@ public class CommentSubmitter {
         mDatabase.child(Constants.HOMESTAY).child(String.valueOf(homestay.getProvinceId())).child(String.valueOf(homestay.getDistrictId()))
                 .child(homestay.getId()).child(Constants.COMMENTS).updateChildren(dataUpdateCommentCount);
     }
+
+    public void updateRating(float rating, Homestay homestay) {
+        Map<String, Object> dataRating = new HashMap<>();
+        dataRating.put(Constants.RATING, rating);
+        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(homestay.getProvinceId())).child(String.valueOf(homestay.getDistrictId()))
+                .child(homestay.getId()).updateChildren(dataRating);
+    }
 }

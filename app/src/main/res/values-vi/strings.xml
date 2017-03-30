@@ -94,7 +94,7 @@
     <string name="loginOrRegister">Đăng Ký Hoặc Đăng Nhập</string>
     <string name="emailDuplicate">Email đã được sử dụng, vui lòng thử lại với email khác</string>
     <string name="loginFail">Đăng nhập thất bại, vui lòng kiểm tra lại email hoặc mật khẩu</string>
-    <string name="aboutMe">Mô tả về bản thân bạn</string>
+    <string name="aboutMe">Mô tả về bản thân</string>
     <string name="enterComment">Nhập nhận xét</string>
     <string name="addFavorite">Bạn đã thêm</string>
     <string name="into">vào danh sách yêu thích</string>
@@ -120,4 +120,6 @@
     <string name="createNew">Tạo mới</string>
     <string name="confirmDelete">Bạn có chắc chắn muốn xóa danh sách này?</string>
     <string name="cannotDeleteList">Bạn không thể xóa danh sách mặc định này</string>
+    <string name="male">Nam</string>
+    <string name="female">Nữ</string>
 </resources>

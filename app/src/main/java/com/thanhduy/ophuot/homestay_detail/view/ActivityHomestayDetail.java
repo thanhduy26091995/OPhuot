@@ -29,10 +29,13 @@ import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
 import com.thanhduy.ophuot.comment.view.CommentActivity;
+import com.thanhduy.ophuot.list_homestay.GetUserInfoCallback;
 import com.thanhduy.ophuot.manage_homestay.AdapterViewPager;
 import com.thanhduy.ophuot.manage_homestay.view.FullScreenGoogleMapActivity;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.model.User;
+import com.thanhduy.ophuot.profile.guess_profile.GuessProfileActivitiy;
+import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.DateFormatter;
 
@@ -96,6 +99,9 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
     private DatabaseReference mDatabase;
     private User user;
     private boolean isLoadSuccess = false;
+    private GetUserInfoCallback getUserInfoCallback;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,6 +116,7 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         //get intent
         homestay = (Homestay) getIntent().getSerializableExtra(Constants.HOMESTAY);
         isLoadSuccess = getIntent().getBooleanExtra(Constants.IS_LOAD_SUCCESS, false);
+
         Log.d("LOAD_SUCCESS_VIEW", "" + isLoadSuccess);
         if (isLoadSuccess) {
             user = (User) getIntent().getSerializableExtra(Constants.USERS);
@@ -130,6 +137,8 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         setUpMapIfNeeded();
         //event click
         btnComment.setOnClickListener(this);
+        imgFavorite.setOnClickListener(this);
+        imgAvatar.setOnClickListener(this);
         changeTextCommentIfYes();
     }
 
@@ -183,7 +192,16 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
             ImageLoader.getInstance().loadImageAvatar(ActivityHomestayDetail.this,
                     user.getAvatar(), imgAvatar);
         }
-
+        //yêu thích hoặc không
+        if (homestay.getFavorite() != null) {
+            if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
+                imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+            } else {
+                imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+            }
+        } else {
+            imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+        }
     }
 
     private void setUpMapIfNeeded() {
@@ -243,6 +261,18 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
             Intent intent = new Intent(ActivityHomestayDetail.this, CommentActivity.class);
             intent.putExtra(Constants.HOMESTAY, homestay);
             startActivity(intent);
+        }
+        else if (v == imgAvatar){
+            if (user.getUid().equals(getUid())){
+                Intent intent = new Intent(ActivityHomestayDetail.this, ProfileUserActivity.class);
+                intent.putExtra(Constants.USERS, user);
+                startActivity(intent);
+            }
+            else{
+                Intent intent = new Intent(ActivityHomestayDetail.this, GuessProfileActivitiy.class);
+                intent.putExtra(Constants.USERS, user);
+                startActivity(intent);
+            }
         }
     }
 }

@@ -20,6 +20,7 @@ public class User implements Serializable{
     private HashMap<String, Object> favorite;
     private HashMap<String, Object> post;
     private ArrayList<String> images;
+    private String uid;
 
     public User() {
     }
@@ -39,6 +40,14 @@ public class User implements Serializable{
     }
     //getter and setter
 
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getAvatar() {
         return avatar;

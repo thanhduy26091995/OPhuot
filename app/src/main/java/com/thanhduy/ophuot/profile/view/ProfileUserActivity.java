@@ -44,7 +44,6 @@ import butterknife.ButterKnife;
 public class ProfileUserActivity extends BaseActivity implements View.OnClickListener {
     private DatabaseReference mDatabase;
 
-
     @BindView(R.id.img_profile_avatar)
     ImageView imgAvatar;
     @BindView(R.id.txt_profile_name)
