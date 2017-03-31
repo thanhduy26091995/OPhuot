@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.firebase.database.ChildEventListener;
@@ -81,6 +82,7 @@ public class ListHomestayActivity extends BaseActivity {
                             if (!homestayList.contains(homestay)) {
                                 homestayList.add(homestay);
                                 listHomestayAdapter.notifyDataSetChanged();
+                                Log.d("OWNER", homestay.getPostBy());
                             }
                         }
                     }

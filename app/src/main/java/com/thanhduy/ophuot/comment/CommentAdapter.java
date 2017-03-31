@@ -1,6 +1,7 @@
 package com.thanhduy.ophuot.comment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,15 @@ import com.thanhduy.ophuot.base.ImageLoader;
 import com.thanhduy.ophuot.comment.model.CommentViewHolder;
 import com.thanhduy.ophuot.model.Comment;
 import com.thanhduy.ophuot.model.User;
+import com.thanhduy.ophuot.profile.guess_profile.GuessProfileActivitiy;
+import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.DateFormatter;
 
 import java.util.HashMap;
 import java.util.List;
+
+import static com.thanhduy.ophuot.base.BaseActivity.getUid;
 
 /**
  * Created by buivu on 22/03/2017.
@@ -54,22 +59,37 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
         holder.ratingBar.setRating((int) comment.getRating());
         //load name and avatar
         if (listUserCommented.get(comment.getCommentBy()) != null) {
-            User user = listUserCommented.get(comment.getCommentBy());
+            final User user = listUserCommented.get(comment.getCommentBy());
             //load info
             holder.txtName.setText(user.getName());
             ImageLoader.getInstance().loadImageAvatar(activity, user.getAvatar(), holder.imgAvatar);
+            //event click
+            holder.imgAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    eventClickAvatar(activity, user);
+                }
+            });
+
         } else {
             mDatabase.child(Constants.USERS).child(comment.getCommentBy()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot != null) {
-                        User user = dataSnapshot.getValue(User.class);
+                        final User user = dataSnapshot.getValue(User.class);
                         if (user != null) {
                             //save to hashmap
                             listUserCommented.put(comment.getCommentBy(), user);
                             //load data
                             holder.txtName.setText(user.getName());
                             ImageLoader.getInstance().loadImageAvatar(activity, user.getAvatar(), holder.imgAvatar);
+                            //event click
+                            holder.imgAvatar.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    eventClickAvatar(activity, user);
+                                }
+                            });
                         }
                     }
                 }
@@ -79,6 +99,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
 
                 }
             });
+        }
+    }
+
+    private void eventClickAvatar(Activity activity, User user) {
+        if (user.getUid().equals(getUid())) {
+            Intent intent = new Intent(activity, ProfileUserActivity.class);
+            intent.putExtra(Constants.USERS, user);
+            activity.startActivity(intent);
+        } else {
+            Intent intent = new Intent(activity, GuessProfileActivitiy.class);
+            intent.putExtra(Constants.USERS, user);
+            activity.startActivity(intent);
         }
     }
 

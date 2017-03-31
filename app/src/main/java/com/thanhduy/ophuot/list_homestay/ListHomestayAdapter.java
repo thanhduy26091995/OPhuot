@@ -76,33 +76,28 @@ public class ListHomestayAdapter extends RecyclerView.Adapter<ListHomestayViewHo
         } else {
             holder.imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         }
-        mDatabase.child(Constants.USERS).child(homestay.getPostBy()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    User user = dataSnapshot.getValue(User.class);
-                    if (user != null) {
-                        getUser(user);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, ActivityHomestayDetail.class);
+                final Intent intent = new Intent(activity, ActivityHomestayDetail.class);
                 intent.putExtra(Constants.HOMESTAY, homestay);
-                if (user != null) {
-                    intent.putExtra(Constants.IS_LOAD_SUCCESS, isLoadSuccess);
-                    intent.putExtra(Constants.USERS, user);
-                }
-                activity.startActivity(intent);
+                mDatabase.child(Constants.USERS).child(homestay.getPostBy()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot != null) {
+                            User user = dataSnapshot.getValue(User.class);
+                            intent.putExtra(Constants.USERS, user);
+                            activity.startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
 

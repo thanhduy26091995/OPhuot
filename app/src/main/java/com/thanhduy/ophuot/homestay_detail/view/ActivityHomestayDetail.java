@@ -102,7 +102,6 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
     private GetUserInfoCallback getUserInfoCallback;
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,12 +114,8 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         mDatabase = FirebaseDatabase.getInstance().getReference();
         //get intent
         homestay = (Homestay) getIntent().getSerializableExtra(Constants.HOMESTAY);
-        isLoadSuccess = getIntent().getBooleanExtra(Constants.IS_LOAD_SUCCESS, false);
+        user = (User) getIntent().getSerializableExtra(Constants.USERS);
 
-        Log.d("LOAD_SUCCESS_VIEW", "" + isLoadSuccess);
-        if (isLoadSuccess) {
-            user = (User) getIntent().getSerializableExtra(Constants.USERS);
-        }
         //set view pager for image slide
         if (homestay.getImages().size() > 0) {
             imgPoster.setVisibility(View.GONE);
@@ -163,6 +158,8 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         txtNumberBed.setText(homestay.getDetails().get(Constants.BED).toString());
         txtConvenient.setText(homestay.getDetails().get(Constants.CONVENIENT).toString());
         txtAnimal.setText(Boolean.parseBoolean(homestay.getDetails().get(Constants.PET).toString()) ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
+
+
         //load info owner
         if (user == null) {
             mDatabase.child(Constants.USERS).child(homestay.getPostBy()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -261,14 +258,12 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
             Intent intent = new Intent(ActivityHomestayDetail.this, CommentActivity.class);
             intent.putExtra(Constants.HOMESTAY, homestay);
             startActivity(intent);
-        }
-        else if (v == imgAvatar){
-            if (user.getUid().equals(getUid())){
+        } else if (v == imgAvatar) {
+            if (user.getUid().equals(getUid())) {
                 Intent intent = new Intent(ActivityHomestayDetail.this, ProfileUserActivity.class);
                 intent.putExtra(Constants.USERS, user);
                 startActivity(intent);
-            }
-            else{
+            } else {
                 Intent intent = new Intent(ActivityHomestayDetail.this, GuessProfileActivitiy.class);
                 intent.putExtra(Constants.USERS, user);
                 startActivity(intent);

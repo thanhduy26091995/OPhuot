@@ -57,6 +57,7 @@ public class MyHomestayAdapter extends RecyclerView.Adapter<MyHomestayViewHolder
                         holder.txtAddress.setText(homestay.getAddress().get(Constants.ADDRESS).toString());
                         holder.txtType.setText(homestay.getType());
                         holder.txtPrice.setText(homestay.getPrice());
+                        holder.rating.setRating(homestay.getRating());
                         ImageLoader.getInstance().loadImageOther(activity, homestay.getImages().get(0), holder.imgPoster);
                         //event click
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
