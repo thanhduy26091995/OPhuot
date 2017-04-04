@@ -160,13 +160,16 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
     //get provinceId by province_name
     public int getProvinceIdByProvinceName(String provinceName) {
         SQLiteDatabase database = this.getReadableDatabase();
-
+        int provinceId = 0;
         String selectQuery = "select id from provinces where name like '%" + provinceName + "%'";
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
-        int provinceId = cursor.getInt(0);
+        if (cursor != null && cursor.moveToFirst()) {
+            provinceId = cursor.getInt(0);
+            cursor.close();
+        }
         return provinceId;
     }
 

@@ -19,4 +19,5 @@
     <string name="fa_close">&#xf00d;</string>
     <string name="fa_hand_pointer_o">&#xf25a;</string>
     <string name="fa_plus">&#xf067;</string>
+    <string name="fa_location_arrow">&#xf124;</string>
 </resources>

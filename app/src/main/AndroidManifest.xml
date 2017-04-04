@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".base.OPhuotApplication"
@@ -71,6 +73,7 @@
         <activity android:name=".comment.view.CommentActivity"></activity>
         <activity android:name=".favorite.view.ListFavoriteActivity"></activity>
         <activity android:name=".profile.guess_profile.GuessProfileActivitiy"></activity>
+        <activity android:name=".search.view.SearchNearByResultActivity"></activity>
     </application>
 
 </manifest>

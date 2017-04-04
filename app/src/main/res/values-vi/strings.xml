@@ -122,4 +122,21 @@
     <string name="cannotDeleteList">Bạn không thể xóa danh sách mặc định này</string>
     <string name="male">Nam</string>
     <string name="female">Nữ</string>
+    <string name="placesNearBy">Tìm kiếm quanh đây</string>
+    <string name="placesNearByTitle">Tìm Kiếm Quanh Đây</string>
+    <string name="searchNew">Các tìm kiếm gần đây</string>
+    <string name="placesHot">Điểm đến nổi tiếng</string>
+    <string name="daLat">Đà lạt</string>
+    <string name="nhaTrang">Nha Trang</string>
+    <string name="daNang">Đà Nẵng</string>
+    <string name="saiGon">Sài Gòn</string>
+    <string name="haNoi">Hà Nội</string>
+    <string name="hoiAn">Hội An</string>
+    <string name="vinhHaLong">Vịnh Hạ Long</string>
+    <string name="saPa">Sapa</string>
+    <string name="canNotGetData">Không thể lấy dữ liệu, vui lòng thử lại!</string>
+    <string name="reload">Tải lại</string>
+    <string name="GPSTitle">Cài đặt GPS</string>
+    <string name="GPSContent">GPS đang tắt, bạn có muốn đi đến cài đặt GPS?</string>
+    <string name="setting">Cài Đặt</string>
 </resources>

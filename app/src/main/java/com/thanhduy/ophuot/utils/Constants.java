@@ -88,5 +88,6 @@ public class Constants {
     public static final String VINH_HA_LONG = "Vịnh Hạ Long";
     public static final String NHA_TRANG = "Nha Trang";
     public static final String SAPA = "Sapa";
+    public static final String TINH = "tỉnh";
 
 }

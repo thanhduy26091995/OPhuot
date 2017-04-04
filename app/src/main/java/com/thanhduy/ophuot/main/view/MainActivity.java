@@ -35,6 +35,7 @@ import com.thanhduy.ophuot.login_and_register.view.LoginActivity;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.my_homestay.view.MyHomestayFragment;
 import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
+import com.thanhduy.ophuot.search.view.SearchFragment;
 import com.thanhduy.ophuot.utils.Constants;
 
 public class MainActivity extends BaseActivity
@@ -215,6 +216,10 @@ public class MainActivity extends BaseActivity
             case 0: {
                 FeaturedFragment featuredFragment = new FeaturedFragment();
                 return featuredFragment;
+            }
+            case 1: {
+                SearchFragment searchFragment = new SearchFragment();
+                return searchFragment;
             }
             case 2: {
                 FavoriteFragment favoriteFragment = new FavoriteFragment();
