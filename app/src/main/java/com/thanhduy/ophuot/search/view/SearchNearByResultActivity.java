@@ -35,7 +35,7 @@ import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.database.SqlLiteDbHelper;
 import com.thanhduy.ophuot.list_homestay.ListHomestayAdapter;
 import com.thanhduy.ophuot.model.Homestay;
-import com.thanhduy.ophuot.search.presenter.SearchNearbyPresenter;
+import com.thanhduy.ophuot.search.presenter.SearchPresenter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,7 +83,7 @@ public class SearchNearByResultActivity extends BaseActivity implements Location
     private double longitude; // longitude
     private List<String> listDataResponse = new ArrayList<>();
     private SqlLiteDbHelper sqlLiteDbHelper;
-    private SearchNearbyPresenter presenter;
+    private SearchPresenter presenter;
     private List<Homestay> homestayList = new ArrayList<>();
     private ListHomestayAdapter listHomestayAdapter;
 
@@ -99,7 +99,7 @@ public class SearchNearByResultActivity extends BaseActivity implements Location
         getSupportActionBar().setTitle(getResources().getString(R.string.placesNearByTitle));
         //init data
         sqlLiteDbHelper = new SqlLiteDbHelper(this);
-        presenter = new SearchNearbyPresenter(this);
+        presenter = new SearchPresenter(this);
         listHomestayAdapter = new ListHomestayAdapter(this, homestayList);
 
         //get current location

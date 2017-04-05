@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,6 +16,7 @@ import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.favorite.FavoriteAdapter;
 import com.thanhduy.ophuot.favorite.presenter.FavoritePresenter;
+import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,12 @@ public class FavoriteFragment extends android.support.v4.app.Fragment {
         presenter = new FavoritePresenter(getActivity());
         listFavoriteId = new ArrayList<>();
         favoriteAdapter = new FavoriteAdapter(getActivity(), listFavoriteId);
-        loadDataFavorite();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            loadDataFavorite();
+        } else {
+            ShowAlertDialog.showAlert(getActivity().getResources().getString(R.string.loginFirst), getActivity());
+        }
+
         mRecycler.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         mRecycler.setAdapter(favoriteAdapter);
         return rootView;

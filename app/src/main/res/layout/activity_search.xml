@@ -51,6 +51,7 @@
                 android:background="@android:color/darker_gray" />
 
             <LinearLayout
+                android:id="@+id/linear_search_by_province"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -73,7 +74,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3.5"
                     android:ellipsize="end"
-                    android:hint="@string/placesNearBy"
+                    android:text="@string/searchByProvinceAndDistrict"
                     android:maxLines="1"></TextView>
             </LinearLayout>
 

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +26,7 @@ import com.thanhduy.ophuot.model.Comment;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.MyLinearLayoutManager;
+import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -158,9 +160,13 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v == imgSend) {
-            addComment();
-            //hide keyboard
-            hideKeyboardWhenCommented(v);
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                addComment();
+                //hide keyboard
+                hideKeyboardWhenCommented(v);
+            } else {
+                ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), this);
+            }
         }
     }
 

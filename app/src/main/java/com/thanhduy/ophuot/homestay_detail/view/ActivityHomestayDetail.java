@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +19,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -191,8 +191,12 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         }
         //yêu thích hoặc không
         if (homestay.getFavorite() != null) {
-            if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
-                imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
+                    imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+                } else {
+                    imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                }
             } else {
                 imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
             }
@@ -259,14 +263,16 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
             intent.putExtra(Constants.HOMESTAY, homestay);
             startActivity(intent);
         } else if (v == imgAvatar) {
-            if (user.getUid().equals(getUid())) {
-                Intent intent = new Intent(ActivityHomestayDetail.this, ProfileUserActivity.class);
-                intent.putExtra(Constants.USERS, user);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(ActivityHomestayDetail.this, GuessProfileActivitiy.class);
-                intent.putExtra(Constants.USERS, user);
-                startActivity(intent);
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                if (user.getUid().equals(getUid())) {
+                    Intent intent = new Intent(ActivityHomestayDetail.this, ProfileUserActivity.class);
+                    intent.putExtra(Constants.USERS, user);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(ActivityHomestayDetail.this, GuessProfileActivitiy.class);
+                    intent.putExtra(Constants.USERS, user);
+                    startActivity(intent);
+                }
             }
         }
     }

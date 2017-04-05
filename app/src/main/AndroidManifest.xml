@@ -74,6 +74,7 @@
         <activity android:name=".favorite.view.ListFavoriteActivity"></activity>
         <activity android:name=".profile.guess_profile.GuessProfileActivitiy"></activity>
         <activity android:name=".search.view.SearchNearByResultActivity"></activity>
+        <activity android:name=".search.view.SearchByProvinceAndDistrictActivity"></activity>
     </application>
 
 </manifest>

@@ -139,4 +139,9 @@
     <string name="GPSTitle">Cài đặt GPS</string>
     <string name="GPSContent">GPS đang tắt, bạn có muốn đi đến cài đặt GPS?</string>
     <string name="setting">Cài Đặt</string>
+    <string name="searchByProvinceAndDistrict">Tìm kiếm theo tỉnh thành</string>
+    <string name="searchByProvinceAndDistrictTitle">Tìm Kiếm Theo Tỉnh Thành</string>
+    <string name="province">Tỉnh/thành</string>
+    <string name="district">Quận/huyện</string>
+    <string name="search">Tìm kiếm</string>
 </resources>
