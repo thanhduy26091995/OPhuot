@@ -30,12 +30,12 @@
     <string name="authenFail">Xác thực thất bại</string>
     <!--Title-->
     <string-array name="nav_item_activity_titles">
-        <item>Thông Tin Cá Nhân</item>
         <item>Nổi Bật</item>
         <item>Tìm Kiếm</item>
         <item>Yêu Thích</item>
         <item>Chia Sẻ Kinh Nghiệm</item>
-        <item>Đăng Bài</item>
+        <item>Hỗ Trợ</item>
+        <item>Hộp Thư</item>
         <item>Homestay Của Tôi</item>
         <item>Thiết Lập</item>
         <item>Trợ Giúp</item>
@@ -144,4 +144,5 @@
     <string name="province">Tỉnh/thành</string>
     <string name="district">Quận/huyện</string>
     <string name="search">Tìm kiếm</string>
+    <string name="inputMessage">Nhập tin nhắn...</string>
 </resources>

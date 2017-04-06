@@ -1,264 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v4.widget.NestedScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <LinearLayout
+            android:id="@+id/linear_search_near_by"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:weightSum="4">
+
+            <com.thanhduy.ophuot.base.IconTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="left|center"
+                android:text="@string/fa_location_arrow"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/AppNormalText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3.5"
+                android:maxLines="1"
+                android:text="@string/placesNearBy"
+                android:textColor="@color/colorBlack"></TextView>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/darker_gray" />
+
+        <LinearLayout
+            android:id="@+id/linear_search_by_province"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:weightSum="4">
+
+            <com.thanhduy.ophuot.base.IconTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="left|center"
+                android:text="@string/fa_search"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+
+            <TextView
+                style="@style/AppNormalText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3.5"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/searchByProvinceAndDistrict"></TextView>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/darker_gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
-
-            <LinearLayout
-                android:id="@+id/linear_search_near_by"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:weightSum="4">
-
-                <com.thanhduy.ophuot.base.IconTextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:gravity="left|center"
-                    android:text="@string/fa_location_arrow"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    style="@style/AppNormalText"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3.5"
-                    android:text="@string/placesNearBy"
-                    android:maxLines="1"
-                    android:textColor="@color/colorBlack"></TextView>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
-
-            <LinearLayout
-                android:id="@+id/linear_search_by_province"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:weightSum="4">
-
-                <com.thanhduy.ophuot.base.IconTextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:gravity="left|center"
-                    android:text="@string/fa_location_arrow"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="20sp" />
-
-                <TextView
-                    style="@style/AppNormalText"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3.5"
-                    android:ellipsize="end"
-                    android:text="@string/searchByProvinceAndDistrict"
-                    android:maxLines="1"></TextView>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:weightSum="4">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:ellipsize="end"
-                    android:text="@string/searchNew"
-                    android:maxLines="1"
-                    android:textAllCaps="true"
-                    android:textColor="@color/md_grey_600"
-                    android:textSize="@dimen/text_size_normal"></TextView>
-            </LinearLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:weightSum="4">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:ellipsize="end"
-                    android:text="@string/placesHot"
-                    android:maxLines="1"
-                    android:textAllCaps="true"
-                    android:textColor="@color/md_grey_600"
-                    android:textSize="@dimen/text_size_normal"></TextView>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
+            android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:weightSum="4">
 
             <TextView
-                style="@style/AppNormalText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/daLat"
-                android:textColor="@color/colorBlack" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/md_grey_200" />
-
-            <TextView
-                style="@style/AppNormalText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/nhaTrang"
-                android:textColor="@color/colorBlack" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/md_grey_200" />
-
-            <TextView
-                style="@style/AppNormalText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/daNang"
-                android:textColor="@color/colorBlack" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/md_grey_200" />
-
-            <TextView
-                style="@style/AppNormalText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/saiGon"
-                android:textColor="@color/colorBlack" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/md_grey_200" />
-
-            <TextView
-                style="@style/AppNormalText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/haNoi"
-                android:textColor="@color/colorBlack" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/md_grey_200" />
-
-            <TextView
-                style="@style/AppNormalText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/hoiAn"
-                android:textColor="@color/colorBlack" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/md_grey_200" />
-
-            <TextView
-                style="@style/AppNormalText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/vinhHaLong"
-                android:textColor="@color/colorBlack" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/md_grey_200" />
-
-            <TextView
-                style="@style/AppNormalText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/saPa"
-                android:textColor="@color/colorBlack" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/md_grey_200" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/placesHot"
+                android:textAllCaps="true"
+                android:textColor="@color/md_grey_600"
+                android:textSize="@dimen/text_size_normal"></TextView>
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/darker_gray" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_places_featured"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_featured_places_in_search"></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
 </LinearLayout>

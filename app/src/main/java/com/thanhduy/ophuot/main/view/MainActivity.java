@@ -164,7 +164,7 @@ public class MainActivity extends BaseActivity
 
     //set title for toolbar
     private void setToolbarTitle() {
-        // txtTitle.setText(activityTitles[navItemIndex]);
+        getSupportActionBar().setTitle(activityTitles[navItemIndex]);
     }
 
     private void selectNavMenu() {

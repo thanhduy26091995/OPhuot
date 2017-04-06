@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
+import com.thanhduy.ophuot.chat.view.ChatActivity;
 import com.thanhduy.ophuot.comment.view.CommentActivity;
 import com.thanhduy.ophuot.list_homestay.GetUserInfoCallback;
 import com.thanhduy.ophuot.manage_homestay.AdapterViewPager;
@@ -134,6 +135,7 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         btnComment.setOnClickListener(this);
         imgFavorite.setOnClickListener(this);
         imgAvatar.setOnClickListener(this);
+        btnContact.setOnClickListener(this);
         changeTextCommentIfYes();
     }
 
@@ -274,6 +276,11 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
                     startActivity(intent);
                 }
             }
+        }
+        else if (v == btnContact){
+            Intent intent = new Intent(ActivityHomestayDetail.this, ChatActivity.class);
+            intent.putExtra(Constants.USERS, user);
+            startActivity(intent);
         }
     }
 }

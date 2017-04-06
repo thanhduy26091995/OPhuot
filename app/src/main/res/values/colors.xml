@@ -9,5 +9,5 @@
     <color name="colorBlack">#000</color>
 
     <color name="red">#F44336</color>
-
+    <color name="message_my_gray">#DDDDDD</color>
 </resources>

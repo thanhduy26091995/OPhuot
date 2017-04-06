@@ -144,4 +144,5 @@
     <string name="province">Tỉnh/thành</string>
     <string name="district">Quận/huyện</string>
     <string name="search">Tìm kiếm</string>
+    <string name="inputMessage">Nhập tin nhắn...</string>
 </resources>

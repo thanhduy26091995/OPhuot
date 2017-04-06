@@ -20,4 +20,7 @@
     <string name="fa_hand_pointer_o">&#xf25a;</string>
     <string name="fa_plus">&#xf067;</string>
     <string name="fa_location_arrow">&#xf124;</string>
+    <string name="fa_search">&#xf002;</string>
+    <string name="fa_caret_left">&#xf0d9;</string>
+    <string name="fa_caret_right">&#xf0da;</string>
 </resources>
