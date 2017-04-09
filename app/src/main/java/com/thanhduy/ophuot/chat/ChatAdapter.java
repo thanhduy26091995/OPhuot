@@ -25,6 +25,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     private Activity activity;
     private List<Message> messageList;
+    private String avatarPartner;
+
+    public ChatAdapter(Activity activity, List<Message> messageList, String avatarPartner) {
+        this.activity = activity;
+        this.messageList = messageList;
+        this.avatarPartner = avatarPartner;
+    }
 
     public ChatAdapter(Activity activity, List<Message> messageList) {
         this.activity = activity;
@@ -48,6 +55,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     }
 
     private void displayPartnerMessage(ChatViewHolder holder, Message message) {
+        //show avatar
+        ImageLoader.getInstance().loadImageAvatar(activity, avatarPartner, holder.imgPartnerAvatar);
         //hide view
         holder.txtMineContent.setVisibility(View.GONE);
         holder.icRightArrow.setVisibility(View.GONE);

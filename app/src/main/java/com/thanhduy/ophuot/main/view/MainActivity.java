@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
+import com.thanhduy.ophuot.chat_list.view.ChatListFragment;
 import com.thanhduy.ophuot.favorite.view.FavoriteFragment;
 import com.thanhduy.ophuot.featured.view.FeaturedFragment;
 import com.thanhduy.ophuot.login_and_register.view.LoginActivity;
@@ -224,6 +225,10 @@ public class MainActivity extends BaseActivity
             case 2: {
                 FavoriteFragment favoriteFragment = new FavoriteFragment();
                 return favoriteFragment;
+            }
+            case 5: {
+                ChatListFragment chatListFragment = new ChatListFragment();
+                return chatListFragment;
             }
             case 6: {
                 MyHomestayFragment myHomestayFragment = new MyHomestayFragment();

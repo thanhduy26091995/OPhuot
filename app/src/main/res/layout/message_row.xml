@@ -34,7 +34,8 @@
             <RelativeLayout
                 android:id="@+id/rela_partner_chat"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginRight="45dp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -46,10 +47,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
                         android:background="@drawable/partner_chat_layout"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingTop="5dp"
+                        android:padding="5dp"
+                        android:textColor="@color/colorBlack"
                         android:textSize="20dp" />
 
                     <TextView
@@ -71,7 +70,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="5dp"
                     android:text="@string/fa_caret_left"
-                    android:textColor="@color/message_my_gray" />
+                    android:textColor="@color/message_my_gray"
+                    android:textSize="20sp" />
 
                 <ImageView
                     android:id="@+id/img_partner_image"
@@ -97,25 +97,23 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="10dp"
                     android:text="@string/fa_caret_right"
-                    android:textColor="@color/message_my_gray" />
+                    android:textColor="@color/message_my_gray"
+                    android:textSize="20sp" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:textColor="@color/md_grey_50"
                         android:id="@+id/txt_mine_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="3dp"
                         android:background="@drawable/mychat_layout"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingTop="5dp"
+                        android:padding="5dp"
                         android:text=""
+                        android:textColor="@color/md_grey_50"
                         android:textSize="20dp" />
 
                     <TextView

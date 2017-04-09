@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.chat.ChatAdapter;
@@ -45,19 +47,22 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    private String partnerId;
     private ChatPresenter presenter;
     private ChatAdapter chatAdapter;
     private List<Message> messageList = new ArrayList<>();
+    private String partnerId = "";
+    private DatabaseReference mDatabase;
     private User user;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         //get intent
+//        partnerId = getIntent().getStringExtra(Constants.USER_ID);
+//        partnerName = getIntent().getStringExtra(Constants.NAME);
         user = (User) getIntent().getSerializableExtra(Constants.USERS);
         partnerId = user.getUid();
         //set toolbar
@@ -67,7 +72,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         getSupportActionBar().setTitle(user.getName());
         //init
         presenter = new ChatPresenter(this);
-        chatAdapter = new ChatAdapter(this, messageList);
+        chatAdapter = new ChatAdapter(this, messageList, user.getAvatar());
         recyclerChat.setLayoutManager(new LinearLayoutManager(this));
         recyclerChat.setAdapter(chatAdapter);
         //load data chat
@@ -151,7 +156,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);

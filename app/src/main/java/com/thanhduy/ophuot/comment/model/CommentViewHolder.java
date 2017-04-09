@@ -21,7 +21,7 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
     public CommentViewHolder(View itemView) {
         super(itemView);
 
-        imgAvatar = (ImageView) itemView.findViewById(R.id.img_comment_avatar);
+        imgAvatar = (ImageView) itemView.findViewById(R.id.img_mess_avatar);
         txtName = (TextView) itemView.findViewById(R.id.txt_comment_name);
         txtTime = (TextView) itemView.findViewById(R.id.txt_comment_time);
         txtContent = (TextView) itemView.findViewById(R.id.txt_comment_content);
