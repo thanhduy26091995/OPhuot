@@ -80,6 +80,7 @@
                     android:layout_marginBottom="2dp"
                     android:layout_marginTop="2dp"
                     android:adjustViewBounds="true"
+                    android:background="@drawable/imageview_border"
                     android:maxWidth="200dp"
                     android:visibility="gone" />
             </RelativeLayout>
@@ -130,13 +131,15 @@
 
                 <ImageView
                     android:id="@+id/img_mine_image"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="2dp"
                     android:adjustViewBounds="true"
-                    android:maxWidth="200dp"
+                    android:background="@drawable/imageview_border"
+                    android:scaleType="centerCrop"
                     android:visibility="gone" />
             </RelativeLayout>
         </RelativeLayout>

@@ -27,6 +27,7 @@ public class ChatPresenter {
     private void addData(String currentId, String partnerId, Message message, boolean isMine) {
         try {
             message.setIsMine(isMine);
+            message.setReceiveBy(partnerId);
             String key = mDatabase.child(Constants.MESSAGES).child(currentId).child(partnerId).push().getKey();
             Map<String, Object> data = message.toMap();
             mDatabase.child(Constants.MESSAGES).child(currentId).child(partnerId).child(key).setValue(data);

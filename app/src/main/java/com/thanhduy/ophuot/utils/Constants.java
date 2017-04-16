@@ -95,5 +95,7 @@ public class Constants {
     public static final String SEND_BY = "sendBy";
     public static final String TIMESTAMP = "timestamp";
     public static final String MESSAGES = "messages";
+    public static final String RECEIVE_BY = "receiveBy";
+    public static final String CHAT = "chat";
 
 }

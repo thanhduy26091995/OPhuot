@@ -15,6 +15,7 @@ public class Message {
     private boolean isMine;
     private long timestamp;
     private String sendBy;
+    private String receiveBy;
 
     public Message() {
     }
@@ -24,6 +25,14 @@ public class Message {
         this.isImage = isImage;
         this.timestamp = timestamp;
         this.sendBy = sendBy;
+    }
+
+    public String getReceiveBy() {
+        return receiveBy;
+    }
+
+    public void setReceiveBy(String receiveBy) {
+        this.receiveBy = receiveBy;
     }
 
     public String getSendBy() {
@@ -73,6 +82,7 @@ public class Message {
         mapDataMessage.put(Constants.IS_MINE, isMine);
         mapDataMessage.put(Constants.SEND_BY, sendBy);
         mapDataMessage.put(Constants.TIMESTAMP, timestamp);
+        mapDataMessage.put(Constants.RECEIVE_BY, receiveBy);
         return mapDataMessage;
     }
 }

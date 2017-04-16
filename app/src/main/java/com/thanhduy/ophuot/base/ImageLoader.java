@@ -55,7 +55,36 @@ public class ImageLoader {
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());
         }
+    }
 
+    public void loadImageChat(final Activity activity, final String url, final ImageView imageView) {
 
+        try {
+            Glide.with(activity)
+                    .load(url)
+                    .error(R.drawable.no_image)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(false)
+                    .placeholder(R.drawable.no_image)
+                    .centerCrop()
+                    .into(imageView);
+//            Picasso.with(activity)
+//                    .load(url)
+//                    .error(R.drawable.no_image)
+//                    .placeholder(R.drawable.no_image)
+//                   .into(imageView, new Callback() {
+//                       @Override
+//                       public void onSuccess() {
+//
+//                       }
+//
+//                       @Override
+//                       public void onError() {
+//
+//                       }
+//                   });
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+        }
     }
 }

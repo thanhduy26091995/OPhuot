@@ -75,7 +75,10 @@
         <activity android:name=".profile.guess_profile.GuessProfileActivitiy"></activity>
         <activity android:name=".search.view.SearchNearByResultActivity"></activity>
         <activity android:name=".search.view.SearchByProvinceAndDistrictActivity"></activity>
-        <activity android:name=".chat.view.ChatActivity"></activity>
+        <activity
+            android:name=".chat.view.ChatActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".chat.view.DisplayImageActivity" />
     </application>
 
 </manifest>

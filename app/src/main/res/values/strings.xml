@@ -145,4 +145,9 @@
     <string name="district">Quận/huyện</string>
     <string name="search">Tìm kiếm</string>
     <string name="inputMessage">Nhập tin nhắn...</string>
+    <string name="you">Bạn: </string>
+    <string name="receiveImage">vừa nhận 1 ảnh</string>
+    <string name="sendImage">vừa gửi 1 ảnh</string>
+    <string name="errorWhenSaveImage">Có lỗi khi lưu ảnh, vui lòng thử lại!</string>
+    <string name="imageSaved">Ảnh đã được lưu</string>
 </resources>

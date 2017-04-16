@@ -21,6 +21,8 @@ import com.thanhduy.ophuot.model.Message;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.utils.Constants;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +48,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
     }
 
     @Override
-    public void onBindViewHolder(final ChatListViewHolder holder, int position) {
+    public void onBindViewHolder(final ChatListViewHolder holder, final int position) {
         final String partnerId = listUid.get(position);
         //load infor partner
         mDatabase.child(Constants.USERS).child(partnerId).addValueEventListener(new ValueEventListener() {
@@ -84,9 +86,24 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Message message = data.getValue(Message.class);
                         if (message != null) {
-                            //txtTimestamp.setText(PrettyTime.format(new Date(), new Date(message.getTimestamp() * 1000)));
-                            holder.txtContent.setText(message.getContent());
-                            //updateLastMessage(partnerId);
+                            holder.txtTime.setText(caculateTimeAgo(message.getTimestamp()));
+                            if (message.getIsMine()) {
+                                if (message.getIsImage()) {
+                                    holder.txtContent.setText(String.format("%s %s", activity.getResources().getString(R.string.you),
+                                            activity.getResources().getString(R.string.sendImage)));
+                                } else {
+                                    holder.txtContent.setText(String.format("%s %s", activity.getResources().getString(R.string.you),
+                                            message.getContent()));
+                                }
+                            } else {
+                                if (message.getIsImage()) {
+                                    holder.txtContent.setText(String.format("%s %s", activity.getResources().getString(R.string.you),
+                                            activity.getResources().getString(R.string.receiveImage)));
+                                } else {
+                                    holder.txtContent.setText(String.format("%s",
+                                            message.getContent()));
+                                }
+                            }
                         }
                     }
 
@@ -101,17 +118,33 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
 
     }
 
-    private void updateLastMessage(String partnerId) {
-        int pos = getPosition(partnerId);
+    private String caculateTimeAgo(long timestamp) {
+        long currentDate = new Date().getTime();
+        long realTime = (currentDate - timestamp) / 1000;
+        if (realTime < 60) {
+            return "Vừa xong";
+        } else if (realTime < 3600) {
+            long minutes = (long) Math.floor(realTime / 60);
+            return String.format("%d phút", minutes);
+        } else if (realTime < 3600 * 24) {
+            long hours = (long) Math.floor(realTime / 3600);
+            return String.format("%d giờ", hours);
+        } else {
+            return new SimpleDateFormat("dd/MM").format(new Date(timestamp));
+        }
+    }
+
+    private void updateLastMessage(String key) {
+        int pos = getPosition(key);
         if (pos >= 0) {
             listUid.remove(pos);
             notifyItemRemoved(pos);
             notifyItemRangeChanged(pos, listUid.size());
-            notifyDataSetChanged();
-            listUid.add(0, partnerId);
+            listUid.add(0, key);
+            //  notifyDataSetChanged();
 
         } else {
-            listUid.add(0, partnerId);
+            listUid.add(0, key);
         }
     }
 
