@@ -14,22 +14,29 @@ import com.thanhduy.ophuot.R;
  */
 public class ShowAlertDialog {
     public static void showAlert(String mess, Context context) {
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.custom_dialog);
+        try {
+            if (context != null) {
+                final Dialog dialog = new Dialog(context);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.custom_dialog);
 
-        // set the custom dialog components - text, image and button
-        TextView text = (TextView) dialog.findViewById(R.id.tv);
-        text.setText(mess);
-        Button dialogButton = (Button) dialog.findViewById(R.id.btnok);
-        // if button is clicked, close the custom dialog
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
+                // set the custom dialog components - text, image and button
+                TextView text = (TextView) dialog.findViewById(R.id.tv);
+                text.setText(mess);
+                Button dialogButton = (Button) dialog.findViewById(R.id.btnok);
+                // if button is clicked, close the custom dialog
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
             }
-        });
+        } catch (Exception e) {
 
-        dialog.show();
+        }
+
     }
 }

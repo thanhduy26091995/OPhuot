@@ -23,6 +23,7 @@ import com.thanhduy.ophuot.list_homestay.ListHomestayAdapter;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.search.presenter.SearchPresenter;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +128,9 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                if (databaseError.getCode() == -3) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), SearchByProvinceAndDistrictActivity.this);
+                }
             }
         });
     }

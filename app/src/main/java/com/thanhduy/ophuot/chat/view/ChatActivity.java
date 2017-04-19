@@ -146,7 +146,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                     if (message != null) {
                         messageList.add(message);
                         chatAdapter.notifyDataSetChanged();
-                      //  recyclerChat.smoothScrollToPosition(chatAdapter.getItemCount());
+                        //  recyclerChat.smoothScrollToPosition(chatAdapter.getItemCount());
                     }
                 }
             }
@@ -193,13 +193,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         menuBuilder.setCallback(new MenuBuilder.Callback() {
             @Override
             public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-                if (item.getItemId() == R.id.action_show_gallery){
-                    if (verifyStoragePermissions()){
+                if (item.getItemId() == R.id.action_show_gallery) {
+                    if (verifyStoragePermissions()) {
                         showGallery();
                     }
-                }
-                else if (item.getItemId() == R.id.action_open_camera){
-                    if (verifyOpenCamera()){
+                } else if (item.getItemId() == R.id.action_open_camera) {
+                    if (verifyOpenCamera()) {
                         openCamera();
                     }
                 }
@@ -222,7 +221,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         Message message = new Message(content, false, timestamp, getUid());
         //add message
         presenter.addMessage(partnerId, message);
-        recyclerChat.smoothScrollToPosition(chatAdapter.getItemCount());
+        recyclerChat.scrollToPosition(chatAdapter.getItemCount());
         //clear data
         edtContent.setText("");
     }
@@ -297,8 +296,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK){
-            byte[] arrImageBytes =   EncodeImage.encodeImage(getRealPathFromURI(data.getData()));
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK) {
+            byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(data.getData()));
             String fileName = String.format("%d%s", new Date().getTime(), getUid());
             StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
             UploadTask uploadTask = storageForUpFile.putBytes(arrImageBytes);
@@ -308,14 +307,14 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                     Log.d("CHAT_IMAGE", e.getMessage());
                 }
             });
-           uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-               @Override
-               public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                   Message message = new Message(taskSnapshot.getDownloadUrl().toString(), true, new Date().getTime(), getUid());
-                   //add message
-                   presenter.addMessage(partnerId, message);
-               }
-           });
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Message message = new Message(taskSnapshot.getDownloadUrl().toString(), true, new Date().getTime(), getUid());
+                    //add message
+                    presenter.addMessage(partnerId, message);
+                }
+            });
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

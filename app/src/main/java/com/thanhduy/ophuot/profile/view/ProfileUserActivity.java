@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +32,7 @@ import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.profile.edit_profile.view.EditProfileActivity;
 import com.thanhduy.ophuot.profile.presenter.ProfileUserPresenter;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -132,12 +132,13 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.d("ERROR", databaseError.getMessage());
+                if (databaseError.getCode() == -3) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), ProfileUserActivity.this);
+                }
                 hideProgressDialog();
             }
         });
     }
-
 
 
     @Override

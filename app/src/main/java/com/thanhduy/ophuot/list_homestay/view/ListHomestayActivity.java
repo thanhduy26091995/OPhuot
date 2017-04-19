@@ -17,6 +17,7 @@ import com.thanhduy.ophuot.list_homestay.ListHomestayAdapter;
 import com.thanhduy.ophuot.list_homestay.presenter.ListHomestayPresenter;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +107,9 @@ public class ListHomestayActivity extends BaseActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                if (databaseError.getCode() == -3) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), ListHomestayActivity.this);
+                }
             }
         });
     }
@@ -143,7 +146,9 @@ public class ListHomestayActivity extends BaseActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                if (databaseError.getCode() == -3) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), ListHomestayActivity.this);
+                }
             }
         });
     }

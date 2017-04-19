@@ -38,6 +38,7 @@ import com.thanhduy.ophuot.my_homestay.view.MyHomestayFragment;
 import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
 import com.thanhduy.ophuot.search.view.SearchFragment;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -130,6 +131,9 @@ public class MainActivity extends BaseActivity
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                if (databaseError.getCode() == -3) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), MainActivity.this);
+                }
                 hideProgressDialog();
             }
         });

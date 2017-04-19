@@ -150,4 +150,5 @@
     <string name="sendImage">vừa gửi 1 ảnh</string>
     <string name="errorWhenSaveImage">Có lỗi khi lưu ảnh, vui lòng thử lại!</string>
     <string name="imageSaved">Ảnh đã được lưu</string>
+    <string name="accountBlocked">Tài khoản đã bị khóa, hãy liên lạc với BQT trong phần Trợ Giúp để được hỗ trợ</string>
 </resources>
