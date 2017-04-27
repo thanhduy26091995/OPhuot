@@ -20,6 +20,8 @@ import com.thanhduy.ophuot.chat.view.DisplayImageActivity;
 import com.thanhduy.ophuot.model.Message;
 import com.thanhduy.ophuot.utils.Constants;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -34,6 +36,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     private List<Message> messageList;
     private String avatarPartner;
     private com.nostra13.universalimageloader.core.ImageLoader imageLoader;
+    private boolean isClickContentPartner = false;
+    private boolean isClickContentMine = false;
 
     public ChatAdapter(Activity activity, List<Message> messageList, String avatarPartner) {
         this.activity = activity;
@@ -63,12 +67,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         if (message.getIsMine()) {
             displayMineMessage(holder, message);
         } else {
-            displayPartnerMessage(holder, message);
+            displayPartnerMessage(holder, message, position);
         }
 
     }
 
-    private void displayPartnerMessage(ChatViewHolder holder, Message message) {
+    private void displayPartnerMessage(ChatViewHolder holder, Message message, int position) {
         //show avatar
         com.thanhduy.ophuot.base.ImageLoader.getInstance().loadImageAvatar(activity, avatarPartner, holder.imgPartnerAvatar);
         //hide view
@@ -82,6 +86,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         holder.icLeftArrow.setVisibility(View.VISIBLE);
         holder.imgPartnerImage.setVisibility(View.VISIBLE);
         holder.imgPartnerAvatar.setVisibility(View.VISIBLE);
+        //check show status
+        if (message.isDisplayStatus()) {
+            holder.txtPartnerStatus.setVisibility(View.VISIBLE);
+            holder.txtPartnerStatus.setText(caculateTimeAgo(message.getTimestamp()));
+        } else {
+            holder.txtPartnerStatus.setVisibility(View.GONE);
+        }
         //handle data
         if (message.getIsImage()) {
             holder.icLeftArrow.setVisibility(View.GONE);
@@ -97,6 +108,23 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             //set text
             holder.txtPartnerContent.setText(message.getContent());
         }
+        //check is the same send by
+        if (isSameSendBy(position, message)) {
+            holder.icLeftArrow.setVisibility(View.GONE);
+            holder.imgPartnerAvatar.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean isSameSendBy(int position, Message messageCurrent) {
+        if (position > 0) {
+            Message messagePre = messageList.get(position - 1);
+            if (messageCurrent.getSendBy().equals(messagePre.getSendBy())) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 
     private void displayMineMessage(ChatViewHolder holder, Message message) {
@@ -111,6 +139,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         holder.icLeftArrow.setVisibility(View.GONE);
         holder.imgPartnerImage.setVisibility(View.GONE);
         holder.imgPartnerAvatar.setVisibility(View.GONE);
+        //check show status
+        if (message.isDisplayStatus()) {
+            holder.txtMineStatus.setVisibility(View.VISIBLE);
+            holder.txtMineStatus.setText(caculateTimeAgo(message.getTimestamp()));
+        } else {
+            holder.txtMineStatus.setVisibility(View.GONE);
+        }
         //handle data
         if (message.getIsImage()) {
             holder.txtMineContent.setVisibility(View.GONE);
@@ -149,7 +184,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     }
 
     public class ChatViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView txtPartnerContent, txtMineContent;
+        public TextView txtPartnerContent, txtMineContent, txtPartnerStatus, txtMineStatus;
         public IconTextView icLeftArrow, icRightArrow;
         public ImageView imgPartnerImage, imgMineImage;
         public CircleImageView imgPartnerAvatar;
@@ -168,9 +203,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             imgPartnerAvatar = (CircleImageView) itemView.findViewById(R.id.img_avatar_partner);
             relaPartner = (RelativeLayout) itemView.findViewById(R.id.rela_partner_chat);
             relaMine = (RelativeLayout) itemView.findViewById(R.id.rela_mine_chat);
+            txtMineStatus = (TextView) itemView.findViewById(R.id.txt_mine_status);
+            txtPartnerStatus = (TextView) itemView.findViewById(R.id.txt_partner_status);
             //event click
             imgMineImage.setOnClickListener(this);
             imgPartnerImage.setOnClickListener(this);
+            txtPartnerContent.setOnClickListener(this);
+            txtMineContent.setOnClickListener(this);
         }
 
         public void setItem(Message message) {
@@ -183,7 +222,35 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                 Intent intent = new Intent(activity, DisplayImageActivity.class);
                 intent.putExtra(Constants.IMAGES, message.getContent());
                 activity.startActivity(intent);
+            } else if (v == txtPartnerContent) {
+                isClickContentPartner = !isClickContentPartner;
+                if (isClickContentPartner) {
+                    txtPartnerStatus.setVisibility(View.VISIBLE);
+                    txtPartnerStatus.setText(caculateTimeAgo(message.getTimestamp()));
+                } else {
+                    txtPartnerStatus.setVisibility(View.GONE);
+                }
+                message.setDisplayStatus(isClickContentPartner);
+            } else if (v == txtMineContent) {
+                isClickContentMine = !isClickContentMine;
+                if (isClickContentMine) {
+                    txtMineStatus.setVisibility(View.VISIBLE);
+                    txtMineStatus.setText(caculateTimeAgo(message.getTimestamp()));
+                } else {
+                    txtMineStatus.setVisibility(View.GONE);
+                }
+                message.setDisplayStatus(isClickContentMine);
             }
+        }
+    }
+
+    private String caculateTimeAgo(long timestamp) {
+        long currentDate = new Date().getTime();
+        long realTime = (currentDate - timestamp) / 1000;
+        if (realTime < 3600 * 24) {
+            return new SimpleDateFormat("HH:mm").format(new Date(timestamp));
+        } else {
+            return new SimpleDateFormat("dd/MM HH:mm").format(new Date(timestamp));
         }
     }
 }

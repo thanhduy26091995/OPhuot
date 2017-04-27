@@ -21,6 +21,7 @@ public class User implements Serializable{
     private HashMap<String, Object> post;
     private ArrayList<String> images;
     private String uid;
+    private String deviceToken;
 
     public User() {
     }
@@ -38,8 +39,31 @@ public class User implements Serializable{
         this.favorite = favorite;
         this.post = post;
     }
+
+
+    public User(String name, String uid, String deviceToken) {
+        this.name = name;
+        this.uid = uid;
+        this.deviceToken = deviceToken;
+    }
+
+    public User(String avatar, String name, String uid, String deviceToken) {
+        this.avatar = avatar;
+        this.name = name;
+        this.uid = uid;
+        this.deviceToken = deviceToken;
+    }
+
     //getter and setter
 
+
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
+    }
 
     public String getUid() {
         return uid;

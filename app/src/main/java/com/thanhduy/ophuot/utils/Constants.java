@@ -14,6 +14,7 @@ public class Constants {
     public static final int INTENT_REQUEST_GET_IMAGES = 13;
     public static String USER_FILE_PATH = null;
     public static final String USER_AVATAR = "userAvatar";
+    public static final String EMAIL_ADMIN = "buivuthanhduy@gmail.com";
     //User
     public static final String NAME = "name";
     public static final String PHONE = "phone";
@@ -98,4 +99,11 @@ public class Constants {
     public static final String RECEIVE_BY = "receiveBy";
     public static final String CHAT = "chat";
 
+    public static final String SUPPORTERS = "supporters";
+    public static final String PARTNER_ID = "partnerId";
+
+    //push notification
+    public static final String FCM_MESSAGE_URL = "https://fcm.googleapis.com/fcm/send";
+    public static final String SERVER_KEY = "AAAA6JP9zm4:APA91bGuUWMT4BbAWZRRxfXmn8xqZKwGSv2ocZoyA3I7n_4TaiegEE4RCxCY0AnlV-HrVMZQBO8FL28-y6yZaHTIEji8FzsskQhgSLNJwvsl9RPr6bYrgyv-EosWPkMtmJwUPu8F56Bq";
+    public static final String PUSH_NOTIFICATION = "pushNotification";
 }

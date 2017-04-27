@@ -64,6 +64,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         ButterKnife.bind(this, rootView);
         //init
         sqlLiteDbHelper = new SqlLiteDbHelper(getActivity());
+        sqlLiteDbHelper.openDataBase();
         listProvinceName = new ArrayList<>();
         listProvince = new ArrayList<>();
         listDistrict = new ArrayList<>();

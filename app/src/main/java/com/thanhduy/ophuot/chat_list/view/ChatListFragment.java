@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,6 +17,7 @@ import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.chat_list.ChatListAdapter;
 import com.thanhduy.ophuot.chat_list.presenter.ChatListPresenter;
+import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,11 @@ public class ChatListFragment extends Fragment {
         presenter = new ChatListPresenter(this);
         listUid = new ArrayList<>();
         chatListAdapter = new ChatListAdapter(getActivity(), listUid);
-        loadDataChatList();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            loadDataChatList();
+        } else {
+            ShowAlertDialog.showAlert(getActivity().getResources().getString(R.string.loginFirst), getActivity());
+        }
         mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecycler.setAdapter(chatListAdapter);
         return rootView;

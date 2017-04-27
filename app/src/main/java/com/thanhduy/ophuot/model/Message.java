@@ -17,6 +17,8 @@ public class Message {
     private String sendBy;
     private String receiveBy;
 
+    private boolean isDisplayStatus;
+
     public Message() {
     }
 
@@ -25,6 +27,14 @@ public class Message {
         this.isImage = isImage;
         this.timestamp = timestamp;
         this.sendBy = sendBy;
+    }
+
+    public boolean isDisplayStatus() {
+        return isDisplayStatus;
+    }
+
+    public void setDisplayStatus(boolean displayStatus) {
+        isDisplayStatus = displayStatus;
     }
 
     public String getReceiveBy() {

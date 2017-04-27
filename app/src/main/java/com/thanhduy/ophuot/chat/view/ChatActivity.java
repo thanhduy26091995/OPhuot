@@ -40,11 +40,17 @@ import com.thanhduy.ophuot.chat.ChatAdapter;
 import com.thanhduy.ophuot.chat.presenter.ChatPresenter;
 import com.thanhduy.ophuot.model.Message;
 import com.thanhduy.ophuot.model.User;
+import com.thanhduy.ophuot.push_notification.PushMessage;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.EncodeImage;
+import com.thanhduy.ophuot.utils.SessionManagerUser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -72,6 +78,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private ChatAdapter chatAdapter;
     private List<Message> messageList = new ArrayList<>();
     private String partnerId = "";
+    private String deviceToken;
     private DatabaseReference mDatabase;
     private User user;
 
@@ -87,7 +94,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private static int RESULT_LOAD_IMAGE = 1;
     private StorageReference mStorage;
     private LinearLayoutManager linearLayoutManager;
-
+    private SessionManagerUser sessionManagerUser;
+    private HashMap<String, String> hashDataUser = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,12 +106,15 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mStorage = FirebaseStorage.getInstance().getReference();
         user = (User) getIntent().getSerializableExtra(Constants.USERS);
         partnerId = user.getUid();
+        deviceToken = user.getDeviceToken();
         //set toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(user.getName());
         //init
+        sessionManagerUser = new SessionManagerUser(this);
+        hashDataUser = sessionManagerUser.getUserDetails();
         presenter = new ChatPresenter(this);
         chatAdapter = new ChatAdapter(this, messageList, user.getAvatar());
         linearLayoutManager = new LinearLayoutManager(this);
@@ -145,8 +156,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                     Message message = dataSnapshot.getValue(Message.class);
                     if (message != null) {
                         messageList.add(message);
+                        recyclerChat.scrollToPosition(messageList.size() - 1);
                         chatAdapter.notifyDataSetChanged();
-                        //  recyclerChat.smoothScrollToPosition(chatAdapter.getItemCount());
+
                     }
                 }
             }
@@ -219,9 +231,23 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         String content = edtContent.getText().toString();
         long timestamp = new Date().getTime();
         Message message = new Message(content, false, timestamp, getUid());
+        message.setDisplayStatus(false);
         //add message
         presenter.addMessage(partnerId, message);
         recyclerChat.scrollToPosition(chatAdapter.getItemCount());
+        //send push notification
+        //send push notification
+        String[] regIds = {deviceToken};
+
+        JSONArray regArray = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            try {
+                regArray = new JSONArray(regIds);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        PushMessage.sendMessage(regArray, hashDataUser.get(SessionManagerUser.KEY_NAME), edtContent.getText().toString(), "", getUid(), hashDataUser.get(SessionManagerUser.KEY_DEVICE_TOKEN), hashDataUser.get(SessionManagerUser.KEY_AVATAR));
         //clear data
         edtContent.setText("");
     }

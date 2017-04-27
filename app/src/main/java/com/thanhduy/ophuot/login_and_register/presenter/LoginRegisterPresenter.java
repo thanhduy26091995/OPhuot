@@ -58,7 +58,7 @@ public class LoginRegisterPresenter {
     }
 
     //sign in
-    public void signIn(String email, String password) {
+    public void signIn(final String email, String password) {
         view.showProgessDialog();
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override

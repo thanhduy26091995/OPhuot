@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.thanhduy.ophuot.database.model.District;
 import com.thanhduy.ophuot.database.model.Province;
@@ -73,7 +74,7 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
         if (!dbFile.exists()) {
             try {
                 CopyDataBaseFromAsset();
-                System.out.println("Copying sucess from Assets folder");
+                Log.d("ERROR", "Copying sucess from Assets folder");
             } catch (IOException e) {
                 throw new RuntimeException("Error creating source database", e);
             }
@@ -109,6 +110,7 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
             provinces.add(province);
         }
         cursor.close();
+        database.close();
         return provinces;
     }
 
@@ -132,6 +134,7 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
             districts.add(district);
         }
         cursor.close();
+        database.close();
         return districts;
     }
 
@@ -154,6 +157,7 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
             districts.add(district);
         }
         cursor.close();
+        database.close();
         return districts;
     }
 
@@ -169,7 +173,9 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
         if (cursor != null && cursor.moveToFirst()) {
             provinceId = cursor.getInt(0);
             cursor.close();
+
         }
+        database.close();
         return provinceId;
     }
 
@@ -183,6 +189,8 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
         }
         int districtId = cursor.getInt(0);
+        cursor.close();
+        database.close();
         return districtId;
     }
 
@@ -196,19 +204,29 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
         }
         String districtName = cursor.getString(0);
+        cursor.close();
+        database.close();
         return districtName;
     }
 
     //get provinceName by provinceId
     public String getProvinceNameByProvinceId(String provinceId) {
-        SQLiteDatabase database = this.getReadableDatabase();
+        String provinceName = "";
+        try {
+            SQLiteDatabase database = this.getReadableDatabase();
+            String selectQuery = "select name from provinces where id = '" + provinceId + "'";
+            Cursor cursor = database.rawQuery(selectQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+            }
+            if (cursor != null && cursor.moveToFirst()) {
+                provinceName = cursor.getString(0);
+                cursor.close();
+            }
+            database.close();
+        } catch (Exception e) {
 
-        String selectQuery = "select name from provinces where id = '" + provinceId + "'";
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
         }
-        String provinceName = cursor.getString(0);
         return provinceName;
     }
 }

@@ -19,7 +19,11 @@ public class ChatListPresenter {
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
+//    public Query getAllChat(String currentId){
+//        return mDatabase.child(Constants.MESSAGES).child(currentId);
+//    }
+
     public Query getAllChat(String currentId){
-        return mDatabase.child(Constants.MESSAGES).child(currentId);
+        return mDatabase.child(Constants.USERS).child(currentId).child(Constants.CHAT).orderByChild(Constants.TIMESTAMP);
     }
 }

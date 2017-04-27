@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -26,18 +27,24 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.DeviceToken;
 import com.thanhduy.ophuot.base.ImageLoader;
 import com.thanhduy.ophuot.chat_list.view.ChatListFragment;
+import com.thanhduy.ophuot.config.view.ConfigFragment;
 import com.thanhduy.ophuot.favorite.view.FavoriteFragment;
 import com.thanhduy.ophuot.featured.view.FeaturedFragment;
+import com.thanhduy.ophuot.help.HelpFragment;
 import com.thanhduy.ophuot.login_and_register.view.LoginActivity;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.my_homestay.view.MyHomestayFragment;
 import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
 import com.thanhduy.ophuot.search.view.SearchFragment;
+import com.thanhduy.ophuot.support.view.SupportFragment;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.SessionManagerUser;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 public class MainActivity extends BaseActivity
@@ -70,6 +77,10 @@ public class MainActivity extends BaseActivity
     private DatabaseReference mDatabase;
     private boolean isShowIconLogOut = false;
     private boolean isClickLogout = false;
+    private boolean exit = false;
+    // flag to load home fragment when user presses back key
+    private boolean shouldLoadHomeFragOnBackPress = true;
+    private SessionManagerUser sessionManagerUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +88,9 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         mainActivity = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
         mHandler = new Handler();
-
+        sessionManagerUser = new SessionManagerUser(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         //createData();
         initViews();
@@ -93,6 +103,8 @@ public class MainActivity extends BaseActivity
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             hideItemLogOut();
         } else {
+            String token = FirebaseInstanceId.getInstance().getToken();
+            DeviceToken.getInstance().addDeviceToken(mDatabase, getUid(), token);
             showItemLogOut();
             showDataUserIntoHeader();
         }
@@ -123,6 +135,7 @@ public class MainActivity extends BaseActivity
                     ImageLoader.getInstance().loadImageAvatar(MainActivity.this, user.getAvatar(), imgAvatar);
                     txtName.setText(user.getName());
                     txtEmail.setText(user.getEmail());
+                    sessionManagerUser.createLoginSession(user);
                 }
                 //hide progress dialog
                 hideProgressDialog();
@@ -230,6 +243,10 @@ public class MainActivity extends BaseActivity
                 FavoriteFragment favoriteFragment = new FavoriteFragment();
                 return favoriteFragment;
             }
+            case 4: {
+                SupportFragment supportFragment = new SupportFragment();
+                return supportFragment;
+            }
             case 5: {
                 ChatListFragment chatListFragment = new ChatListFragment();
                 return chatListFragment;
@@ -237,6 +254,14 @@ public class MainActivity extends BaseActivity
             case 6: {
                 MyHomestayFragment myHomestayFragment = new MyHomestayFragment();
                 return myHomestayFragment;
+            }
+            case 7: {
+                ConfigFragment configFragment = new ConfigFragment();
+                return configFragment;
+            }
+            case 8: {
+                HelpFragment helpFragment = new HelpFragment();
+                return helpFragment;
             }
             default:
                 return new FeaturedFragment();
@@ -322,6 +347,7 @@ public class MainActivity extends BaseActivity
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         logOut();
+                                        sessionManagerUser.logoutUser();
                                         //initInfo();
                                     }
                                 })
@@ -390,9 +416,28 @@ public class MainActivity extends BaseActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        } else
+            // rather than home
+            if (navItemIndex != 0) {
+                navItemIndex = 0;
+                CURRENT_TAG = TAG_FEATURED;
+                loadFragment();
+                return;
+            } else {
+                if (exit) {
+                    finish();
+                } else {
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.pressBackAgain), Toast.LENGTH_LONG).show();
+                    exit = true;
+                    //sau 3s thì set exit thành false;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            exit = false;
+                        }
+                    }, 3000);
+                }
+            }
     }
 
     @Override
@@ -441,4 +486,5 @@ public class MainActivity extends BaseActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

@@ -151,4 +151,17 @@
     <string name="errorWhenSaveImage">Có lỗi khi lưu ảnh, vui lòng thử lại!</string>
     <string name="imageSaved">Ảnh đã được lưu</string>
     <string name="accountBlocked">Tài khoản đã bị khóa, hãy liên lạc với BQT trong phần Trợ Giúp để được hỗ trợ</string>
+    <string name="pressBackAgain">Nhấn back một lần nữa để thoát</string>
+    <string name="call">Gọi</string>
+    <string name="facebook">Liên kết Facebook</string>
+    <string name="sendFeedback">Gửi phản hồi cho Ban Quản Trị</string>
+    <string name="term">Điều khoản sử dụng</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="defaultLanguage">Mặc định</string>
+    <string name="notificationLower">Thông báo</string>
+
+    <string-array name="arr_language">
+        <item>English</item>
+        <item>Vietnamese</item>
+    </string-array>
 </resources>

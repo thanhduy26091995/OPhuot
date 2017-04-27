@@ -23,4 +23,10 @@
     <string name="fa_search">&#xf002;</string>
     <string name="fa_caret_left">&#xf0d9;</string>
     <string name="fa_caret_right">&#xf0da;</string>
+    <string name="fa_facebook_square">&#xf082;</string>
+    <string name="fa_sticky_note_o">&#xf24a;</string>
+    <string name="fa_envelope_o">&#xf003;</string>
+    <string name="fa_newspaper_o">&#xf1ea;</string>
+    <string name="fa_language">&#xf1ab;</string>
+    <string name="fa_bell_o">&#xf0a2;</string>
 </resources>

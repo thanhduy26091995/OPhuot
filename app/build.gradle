@@ -68,6 +68,12 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     //photo view
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
+    //font-awesome
+    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2' // (v4.5)
+    //notification
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
+    //retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
 
 }
 apply plugin: 'com.google.gms.google-services'

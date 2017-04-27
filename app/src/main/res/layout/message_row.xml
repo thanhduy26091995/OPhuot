@@ -49,10 +49,10 @@
                         android:background="@drawable/partner_chat_layout"
                         android:padding="5dp"
                         android:textColor="@color/colorBlack"
-                        android:textSize="20dp" />
+                        android:textSize="@dimen/text_size_chat" />
 
                     <TextView
-                        android:id="@+id/friendMessage_status"
+                        android:id="@+id/txt_partner_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -96,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="10dp"
+                    android:layout_centerInParent="true"
                     android:text="@string/fa_caret_right"
                     android:textColor="@color/message_my_gray"
                     android:textSize="20sp" />
@@ -115,10 +115,10 @@
                         android:padding="5dp"
                         android:text=""
                         android:textColor="@color/md_grey_50"
-                        android:textSize="20dp" />
+                        android:textSize="@dimen/text_size_chat" />
 
                     <TextView
-                        android:id="@+id/myMessage_status"
+                        android:id="@+id/txt_mine_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
