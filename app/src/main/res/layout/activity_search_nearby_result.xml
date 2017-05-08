@@ -59,9 +59,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            tools:listitem="@layout/item_homestay">
+            tools:listitem="@layout/item_homestay"></android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
 
-        </android.support.v7.widget.RecyclerView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/img_no_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/no_result"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton

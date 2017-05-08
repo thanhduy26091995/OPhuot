@@ -80,6 +80,11 @@
             android:name=".chat.view.ChatActivity"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".chat.view.DisplayImageActivity" />
+        <activity
+            android:name=".report.view.ReportActivity"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity android:name=".forget_password.ForgetPasswordActivity"/>
 
         <service android:name=".service.MyFirebaseInstanceIDService">
             <intent-filter>

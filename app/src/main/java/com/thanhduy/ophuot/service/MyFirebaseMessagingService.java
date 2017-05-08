@@ -90,6 +90,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(data.get("title"))
                 .setContentText(data.get("message"))
                 .setAutoCancel(true)
+                .setLights(0xff00ff00, 300, 100)
                 .setContentIntent(pendingIntent);
 
         builder.setSmallIcon(getNotificationIcon(builder));

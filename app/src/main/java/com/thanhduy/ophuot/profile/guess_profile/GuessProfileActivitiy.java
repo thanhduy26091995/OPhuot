@@ -1,8 +1,10 @@
 package com.thanhduy.ophuot.profile.guess_profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +13,7 @@ import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
 import com.thanhduy.ophuot.model.User;
+import com.thanhduy.ophuot.report.view.ReportActivity;
 import com.thanhduy.ophuot.utils.Constants;
 
 import butterknife.BindView;
@@ -71,9 +74,19 @@ public class GuessProfileActivitiy extends BaseActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_report, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
+        } else if (item.getItemId() == R.id.action_report) {
+            Intent intent = new Intent(GuessProfileActivitiy.this, ReportActivity.class);
+            intent.putExtra(Constants.USERS, user);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

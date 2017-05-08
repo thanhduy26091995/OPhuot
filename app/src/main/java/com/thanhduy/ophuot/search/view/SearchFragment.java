@@ -158,7 +158,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 intent.putExtra(Constants.ID_PROVINCE, provinceId);
                 intent.putExtra(Constants.ID_DISTRICT, districtId);
                 startActivity(intent);
-                //dialog.dismiss();
+                dialog.dismiss();
             }
         });
         dialog.show();

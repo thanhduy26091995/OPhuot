@@ -135,9 +135,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 0) {
-                    imgSend.setEnabled(false);
+                    imgSend.setVisibility(View.GONE);
                 } else {
-                    imgSend.setEnabled(true);
+                    imgSend.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -234,7 +234,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         message.setDisplayStatus(false);
         //add message
         presenter.addMessage(partnerId, message);
-        recyclerChat.scrollToPosition(chatAdapter.getItemCount());
+        recyclerChat.smoothScrollToPosition(chatAdapter.getItemCount());
         //send push notification
         //send push notification
         String[] regIds = {deviceToken};
@@ -323,6 +323,25 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK) {
+            byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(data.getData()));
+            String fileName = String.format("%d%s", new Date().getTime(), getUid());
+            StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
+            UploadTask uploadTask = storageForUpFile.putBytes(arrImageBytes);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("CHAT_IMAGE", e.getMessage());
+                }
+            });
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Message message = new Message(taskSnapshot.getDownloadUrl().toString(), true, new Date().getTime(), getUid());
+                    //add message
+                    presenter.addMessage(partnerId, message);
+                }
+            });
+        } else if (requestCode == Constants.CAMERA_INTENT && resultCode == RESULT_OK) {
             byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(data.getData()));
             String fileName = String.format("%d%s", new Date().getTime(), getUid());
             StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);

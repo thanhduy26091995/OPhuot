@@ -32,6 +32,7 @@ import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.profile.edit_profile.view.EditProfileActivity;
 import com.thanhduy.ophuot.profile.presenter.ProfileUserPresenter;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.SessionManagerUser;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 import butterknife.BindView;
@@ -75,6 +76,8 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
     private String name, address, phone, description;
     private int gender;
     private double lat, lng;
+    private SessionManagerUser sessionManagerUser;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,6 +85,7 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        sessionManagerUser = new SessionManagerUser(this);
         presenter = new ProfileUserPresenter(this);
         //add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -126,6 +130,8 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
                         gender = user.getGender();
                         phone = user.getPhone();
                         description = user.getDescription();
+                        //save data to session
+                        sessionManagerUser.createLoginSession(user);
                     }
                 }
             }

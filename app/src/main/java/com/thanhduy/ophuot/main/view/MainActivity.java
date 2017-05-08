@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +60,7 @@ public class MainActivity extends BaseActivity
     private ImageView imgAvatar;
     private TextView txtName, txtEmail;
     public static Activity mainActivity;
+    private LinearLayout linearContain;
 
     //tag using for fragment
     private static final String TAG_FEATURED = "featured";
@@ -81,6 +84,8 @@ public class MainActivity extends BaseActivity
     // flag to load home fragment when user presses back key
     private boolean shouldLoadHomeFragOnBackPress = true;
     private SessionManagerUser sessionManagerUser;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +131,9 @@ public class MainActivity extends BaseActivity
 
 
     private void showDataUserIntoHeader() {
-        showProgessDialog();
+        progressBar.setVisibility(View.VISIBLE);
+        linearContain.setVisibility(View.GONE);
+        //showProgessDialog();
         mDatabase.child(Constants.USERS).child(getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -138,7 +145,10 @@ public class MainActivity extends BaseActivity
                     sessionManagerUser.createLoginSession(user);
                 }
                 //hide progress dialog
-                hideProgressDialog();
+                //  hideProgressDialog();
+
+                progressBar.setVisibility(View.GONE);
+                linearContain.setVisibility(View.VISIBLE);
 
             }
 
@@ -162,6 +172,8 @@ public class MainActivity extends BaseActivity
         imgAvatar = (ImageView) headerView.findViewById(R.id.img_avatar);
         txtName = (TextView) headerView.findViewById(R.id.txt_header_name);
         txtEmail = (TextView) headerView.findViewById(R.id.txt_header_email);
+        progressBar = (ProgressBar) headerView.findViewById(R.id.progress_bar);
+        linearContain = (LinearLayout) headerView.findViewById(R.id.linear_contain);
         //init title
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
         //event click avatar
@@ -243,23 +255,23 @@ public class MainActivity extends BaseActivity
                 FavoriteFragment favoriteFragment = new FavoriteFragment();
                 return favoriteFragment;
             }
-            case 4: {
+            case 3: {
                 SupportFragment supportFragment = new SupportFragment();
                 return supportFragment;
             }
-            case 5: {
+            case 4: {
                 ChatListFragment chatListFragment = new ChatListFragment();
                 return chatListFragment;
             }
-            case 6: {
+            case 5: {
                 MyHomestayFragment myHomestayFragment = new MyHomestayFragment();
                 return myHomestayFragment;
             }
-            case 7: {
+            case 6: {
                 ConfigFragment configFragment = new ConfigFragment();
                 return configFragment;
             }
-            case 8: {
+            case 7: {
                 HelpFragment helpFragment = new HelpFragment();
                 return helpFragment;
             }
@@ -276,66 +288,43 @@ public class MainActivity extends BaseActivity
                 switch (item.getItemId()) {
                     case R.id.nav_best:
                         isClickLogout = false;
-//                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_FEATURED;
                         navItemIndex = 0;
                         break;
                     case R.id.nav_search:
                         isClickLogout = false;
-//                        linearAddFriend.setVisibility(View.VISIBLE);
                         CURRENT_TAG = TAG_SEARCH;
                         navItemIndex = 1;
                         break;
                     case R.id.nav_favorite:
                         isClickLogout = false;
-//                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_FAVORITE;
                         navItemIndex = 2;
                         break;
-                    case R.id.nav_share:
-                        isClickLogout = false;
-//                        linearAddFriend.setVisibility(View.GONE);
-                        CURRENT_TAG = TAG_SHARE;
-                        navItemIndex = 3;
-                        break;
                     case R.id.nav_support:
                         isClickLogout = false;
-//                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_SUPPORT;
-                        navItemIndex = 4;
+                        navItemIndex = 3;
                         break;
                     case R.id.nav_inbox:
                         isClickLogout = false;
-//                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_INBOX;
-                        navItemIndex = 5;
+                        navItemIndex = 4;
                         break;
-//                    case R.id.nav_discount:
-//                        isClickLogout = false;
-//                        linearAddFriend.setVisibility(View.GONE);
-//                        CURRENT_TAG = TAG_DISCOUNT;
-//                        navItemIndex = 5;
-//                        break;
                     case R.id.nav_my_post:
                         isClickLogout = false;
-//                        linearAddFriend.setVisibility(View.GONE);
-//                        startActivity(new Intent(MainActivity.this, BrowserActivity.class));
-//                        drawer.closeDrawers();
-//                        return true;
                         CURRENT_TAG = TAG_MY_HOMESTAY;
-                        navItemIndex = 6;
+                        navItemIndex = 5;
                         break;
                     case R.id.nav_config:
                         isClickLogout = false;
-//                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_CONFIG;
-                        navItemIndex = 7;
+                        navItemIndex = 6;
                         break;
                     case R.id.nav_help:
                         isClickLogout = false;
-//                        linearAddFriend.setVisibility(View.GONE);
                         CURRENT_TAG = TAG_HELP;
-                        navItemIndex = 8;
+                        navItemIndex = 7;
                         break;
                     case R.id.nav_sign_out:
                         isClickLogout = true;

@@ -30,12 +30,11 @@
 
     <!--Title-->
     <string-array name="nav_item_activity_titles">
-        <item>Profile</item>
-        <item>Highlights</item>
-        <item>Searching</item>
-        <item>Love</item>
-        <item>Share Expirence</item>
-        <item>Post</item>
+        <item>Featured</item>
+        <item>Search</item>
+        <item>Favorite</item>
+        <item>Support</item>
+        <item>My Box</item>
         <item>My Homestay</item>
         <item>Config</item>
         <item>Help</item>
@@ -160,6 +159,26 @@
     <string name="defaultLanguage">Mặc định</string>
     <string name="notificationLower">Thông báo</string>
 
+    <string name="report">Report</string>
+    <string name="all">All</string>
+    <string name="report1">Thông tin đăng không đúng với thực tế</string>
+    <string name="report2">Chủ nhà làm phiền tôi</string>
+    <string name="report3">Tiện nghi kém</string>
+    <string name="report4">Giờ giấc không thoải mái</string>
+    <string name="report5">Nơi ở quá ồn ào</string>
+
+    <string name="reportThisOne">Báo cáo người này</string>
+    <string name="reportUpper">Báo Cáo</string>
+    <string name="savedReportContent">Phản hồi của bạn đã được chúng tôi ghi nhận.</string>
+    <string name="fillAtLeastOne">Hãy điền lựa chọn của bạn</string>
+
+    <string name="inputEmailToResetPassword">Nhập email của bạn, chúng tôi sẽ gửi hướng dẫn để thiết lập lại mật khẩu</string>
+    <string name="resetPasswordTitle">Thiết Lập Lại Mật Khẩu</string>
+
+    <string name="sendEmailResetSuccess">Gửi email thiết lập mật khẩu thành công, hãy kiểm tra Email của bạn</string>
+    <string name="sendEmailResetFail">Gửi email thiết lập mật khẩu thất bại, vui lòng thử lại</string>
+
+    <string name="required">Bắt buộc</string>
     <string-array name="arr_language">
         <item>English</item>
         <item>Vietnamese</item>

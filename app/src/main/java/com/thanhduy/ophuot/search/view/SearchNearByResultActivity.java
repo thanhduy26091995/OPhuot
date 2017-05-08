@@ -25,11 +25,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.database.SqlLiteDbHelper;
@@ -60,6 +63,10 @@ public class SearchNearByResultActivity extends BaseActivity implements Location
     LinearLayout linearReload;
     @BindView(R.id.btn_reload)
     Button btnReload;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+    @BindView(R.id.img_no_result)
+    ImageView imgNoResult;
 
     private LocationManager locationManager;
     public static final int REQUEST_ID_ACCESS_COARSE_FINE_LOCATION = 101;
@@ -264,37 +271,69 @@ public class SearchNearByResultActivity extends BaseActivity implements Location
         }
     }
 
-    private void showDataSearchResult(int provinceId) {
-        presenter.searchHomestayNearby(provinceId).addChildEventListener(new ChildEventListener() {
+    private void showItemData() {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        imgNoResult.setVisibility(View.GONE);
+    }
+
+    private void hideItemData() {
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        imgNoResult.setVisibility(View.GONE);
+    }
+
+    private void showDataSearchResult(final int provinceId) {
+        presenter.searchHomestayNearby(provinceId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot != null) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Homestay homestay = snapshot.getValue(Homestay.class);
-                        if (homestay != null) {
-                            if (!homestayList.contains(homestay)) {
-                                homestayList.add(homestay);
-                                listHomestayAdapter.notifyDataSetChanged();
-                                Log.d("DATA", homestay.getName());
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    hideItemData();
+                    presenter.searchHomestayNearby(provinceId).addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                            if (dataSnapshot != null) {
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    Homestay homestay = snapshot.getValue(Homestay.class);
+                                    if (homestay != null) {
+                                        if (!homestayList.contains(homestay)) {
+                                            homestayList.add(homestay);
+                                            listHomestayAdapter.notifyDataSetChanged();
+                                            Log.d("DATA", homestay.getName());
+                                        }
+                                    }
+                                }
                             }
+                            showItemData();
                         }
-                    }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            showItemData();
+                        }
+                    });
                 }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+                else{
+                    //nếu không có node này
+                    imgNoResult.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -302,6 +341,7 @@ public class SearchNearByResultActivity extends BaseActivity implements Location
 
             }
         });
+
     }
 
     private String removeCharacter(String text) {

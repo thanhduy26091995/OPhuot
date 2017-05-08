@@ -7,13 +7,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +48,11 @@ public class ListFavoriteActivity extends BaseActivity {
     Toolbar toolbar;
     @BindView(R.id.recycler_homestay)
     RecyclerView mRecycler;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+    @BindView(R.id.img_no_result)
+    ImageView imgNoResult;
+
 
     private ArrayList<PostInfo> postInfos;
     private DatabaseReference mDatabase;
@@ -80,7 +86,20 @@ public class ListFavoriteActivity extends BaseActivity {
         }
     }
 
+    private void showItemData() {
+        progressBar.setVisibility(View.GONE);
+        mRecycler.setVisibility(View.VISIBLE);
+        imgNoResult.setVisibility(View.GONE);
+    }
+
+    private void hideItemData() {
+        progressBar.setVisibility(View.VISIBLE);
+        mRecycler.setVisibility(View.GONE);
+        imgNoResult.setVisibility(View.GONE);
+    }
+
     private void getDataHomestay() {
+        hideItemData();
         for (PostInfo postInfo : postInfos) {
             mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
                     .child(postInfo.getHomestayId()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -93,14 +112,15 @@ public class ListFavoriteActivity extends BaseActivity {
                             listHomestayAdapter.notifyDataSetChanged();
                         }
                     }
+                    showItemData();
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
+                    showItemData();
                 }
             });
-            Log.d("POST", "" + postInfo.getProvinceId() + "/" + postInfo.getDistrictId() + "/" + postInfo.getHomestayId());
+            //Log.d("POST", "" + postInfo.getProvinceId() + "/" + postInfo.getDistrictId() + "/" + postInfo.getHomestayId());
         }
     }
 
@@ -123,12 +143,12 @@ public class ListFavoriteActivity extends BaseActivity {
                     .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            if (favoriteId.equals(getUid())){
+                            if (favoriteId.equals(getUid())) {
                                 ShowAlertDialog.showAlert(getResources().getString(R.string.cannotDeleteList), ListFavoriteActivity.this);
-                            }
-                            else{
+                            } else {
                                 deleteHomestayList(getUid(), favoriteId);
-                                finish();}
+                                finish();
+                            }
 
                         }
                     })

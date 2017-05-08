@@ -22,4 +22,8 @@ public class SupportPresenter {
     public Query getAllSupporter(){
         return mDatabase.child(Constants.SUPPORTERS);
     }
+
+    public Query getSupporterByProvinceId(int provinceId){
+        return mDatabase.child(Constants.SUPPORTERS).child(String.valueOf(provinceId));
+    }
 }

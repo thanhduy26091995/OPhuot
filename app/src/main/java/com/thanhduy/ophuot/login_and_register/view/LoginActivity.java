@@ -21,6 +21,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.GoogleAuthController;
+import com.thanhduy.ophuot.forget_password.ForgetPasswordActivity;
 import com.thanhduy.ophuot.login_and_register.presenter.LoginFacebookPresenter;
 import com.thanhduy.ophuot.login_and_register.presenter.LoginGooglePresenter;
 import com.thanhduy.ophuot.login_and_register.presenter.LoginRegisterPresenter;
@@ -100,6 +101,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         btnLogin.setOnClickListener(this);
         btnFacebook.setOnClickListener(this);
         btnGoogle.setOnClickListener(this);
+        linearForget.setOnClickListener(this);
     }
 
     @Override
@@ -124,6 +126,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             loginWithGoogle();
         } else if (view == btnFacebook) {
             loginWithFacebook();
+        } else if (view == linearForget) {
+            Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+            startActivity(intent);
         }
     }
 

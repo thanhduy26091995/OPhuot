@@ -9,7 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -39,12 +40,14 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.linear_no_result)
-    LinearLayout linearNoResult;
     @BindView(R.id.fab_map)
     FloatingActionButton fabMap;
     @BindView(R.id.recycler_homestay)
     RecyclerView recyclerView;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+    @BindView(R.id.img_no_result)
+    ImageView imgNoResult;
 
     private int provinceId, districtId;
     private DatabaseReference mDatabase;
@@ -63,6 +66,7 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getResources().getString(R.string.searchByProvinceAndDistrictTitle));
         //get intent
         provinceId = getIntent().getIntExtra(Constants.ID_PROVINCE, 0);
         districtId = getIntent().getIntExtra(Constants.ID_DISTRICT, 0);
@@ -77,15 +81,16 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    recyclerView.setVisibility(View.VISIBLE);
-                    fabMap.setVisibility(View.VISIBLE);
-                    linearNoResult.setVisibility(View.GONE);
+                    //recyclerView.setVisibility(View.VISIBLE);
+                    //fabMap.setVisibility(View.VISIBLE);
+                   // linearNoResult.setVisibility(View.GONE);
                     //show data
                     loadDataHomestayByProvinceAndDistrict();
                 } else {
                     recyclerView.setVisibility(View.GONE);
                     fabMap.setVisibility(View.GONE);
-                    linearNoResult.setVisibility(View.VISIBLE);
+                    imgNoResult.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
             }
 
@@ -96,7 +101,20 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
         });
     }
 
+    private void showItemData() {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        imgNoResult.setVisibility(View.GONE);
+    }
+
+    private void hideItemData() {
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        imgNoResult.setVisibility(View.GONE);
+    }
+
     private void loadDataHomestayByProvinceAndDistrict() {
+        hideItemData();
         presenter.searchHomestayByProvinceAndDistrict(provinceId, districtId).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -109,6 +127,7 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
                         }
                     }
                 }
+                showItemData();
             }
 
             @Override
@@ -131,6 +150,7 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
                 if (databaseError.getCode() == -3) {
                     ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), SearchByProvinceAndDistrictActivity.this);
                 }
+                showItemData();
             }
         });
     }

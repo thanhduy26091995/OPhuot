@@ -106,4 +106,8 @@ public class Constants {
     public static final String FCM_MESSAGE_URL = "https://fcm.googleapis.com/fcm/send";
     public static final String SERVER_KEY = "AAAA6JP9zm4:APA91bGuUWMT4BbAWZRRxfXmn8xqZKwGSv2ocZoyA3I7n_4TaiegEE4RCxCY0AnlV-HrVMZQBO8FL28-y6yZaHTIEji8FzsskQhgSLNJwvsl9RPr6bYrgyv-EosWPkMtmJwUPu8F56Bq";
     public static final String PUSH_NOTIFICATION = "pushNotification";
+
+    public static final String REPORT = "report";
+    public static final String USER_REPORTED = "userReported";
+    public static final String REPORT_BY = "reportBy";
 }

@@ -22,20 +22,24 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/linear_no_result"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/appbar"
-        android:layout_marginTop="30dp">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:id="@+id/img_no_result"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:src="@drawable/no_result" />
-    </LinearLayout>
+            android:src="@drawable/no_result"
+            android:visibility="gone" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
