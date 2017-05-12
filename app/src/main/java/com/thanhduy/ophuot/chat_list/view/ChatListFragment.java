@@ -50,6 +50,8 @@ public class ChatListFragment extends Fragment {
             loadDataChatList();
         } else {
             ShowAlertDialog.showAlert(getActivity().getResources().getString(R.string.loginFirst), getActivity());
+            progressBar.setVisibility(View.GONE);
+            mRecycler.setVisibility(View.VISIBLE);
         }
         mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecycler.setAdapter(chatListAdapter);

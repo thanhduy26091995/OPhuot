@@ -69,6 +69,8 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
         } else {
             fabCreateHomestay.setVisibility(View.GONE);
             ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), getActivity());
+            progressBar.setVisibility(View.GONE);
+            mRecycler.setVisibility(View.VISIBLE);
         }
         return rootView;
     }

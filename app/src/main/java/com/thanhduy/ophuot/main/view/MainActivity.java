@@ -107,6 +107,8 @@ public class MainActivity extends BaseActivity
         }
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             hideItemLogOut();
+            progressBar.setVisibility(View.GONE);
+            linearContain.setVisibility(View.VISIBLE);
         } else {
             String token = FirebaseInstanceId.getInstance().getToken();
             DeviceToken.getInstance().addDeviceToken(mDatabase, getUid(), token);
