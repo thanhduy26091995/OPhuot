@@ -14,11 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.database.SqlLiteDbHelper;
 import com.thanhduy.ophuot.database.model.Province;
@@ -41,6 +44,8 @@ public class SupportFragment extends Fragment {
     private SupportPresenter presenter;
     private SupportAdapter supportAdapter;
     private Spinner spnProvince;
+    private ProgressBar progressBar;
+    private ImageView imgNoResult;
 
     private static final int REQUEST_CODE_PHONE_CALL = 1001;
     private static final String[] PERMISSIONS_PHONE_CALL = {
@@ -60,6 +65,8 @@ public class SupportFragment extends Fragment {
         //init components
         mRecycler = (RecyclerView) rootView.findViewById(R.id.recycler_support);
         spnProvince = (Spinner) rootView.findViewById(R.id.spn_province);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progress_bar);
+        imgNoResult = (ImageView) rootView.findViewById(R.id.img_no_result);
         //init
         presenter = new SupportPresenter(this);
         databaseAdapter = new SqlLiteDbHelper(getActivity());
@@ -132,34 +139,64 @@ public class SupportFragment extends Fragment {
     }
 
 
-    private void loadData(boolean isLoadAll, int provinceId) {
+    private void showItemData() {
+        progressBar.setVisibility(View.GONE);
+        mRecycler.setVisibility(View.VISIBLE);
+        imgNoResult.setVisibility(View.GONE);
+    }
+
+    private void hideItemData() {
+        progressBar.setVisibility(View.VISIBLE);
+        mRecycler.setVisibility(View.GONE);
+        imgNoResult.setVisibility(View.GONE);
+    }
+
+    private void loadData(boolean isLoadAll, final int provinceId) {
         if (!isLoadAll) {
-            presenter.getAllSupporter().addChildEventListener(new ChildEventListener() {
+            presenter.getAllSupporter().addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    if (dataSnapshot != null) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Supporter supporter = snapshot.getValue(Supporter.class);
-                            if (!listSupporter.contains(supporter)) {
-                                listSupporter.add(supporter);
-                                supportAdapter.notifyDataSetChanged();
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        hideItemData();
+                        presenter.getAllSupporter().addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                if (dataSnapshot != null) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        Supporter supporter = snapshot.getValue(Supporter.class);
+                                        if (!listSupporter.contains(supporter)) {
+                                            listSupporter.add(supporter);
+                                            supportAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                }
+                                showItemData();
                             }
-                        }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                showItemData();
+                            }
+                        });
+                    } else {
+                        mRecycler.setVisibility(View.GONE);
+                        imgNoResult.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     }
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
                 }
 
                 @Override
@@ -168,32 +205,50 @@ public class SupportFragment extends Fragment {
                 }
             });
         } else {
-            presenter.getSupporterByProvinceId(provinceId).addChildEventListener(new ChildEventListener() {
+            presenter.getSupporterByProvinceId(provinceId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    if (dataSnapshot != null) {
-                        Supporter supporter = dataSnapshot.getValue(Supporter.class);
-                        if (!listSupporter.contains(supporter)) {
-                            listSupporter.add(supporter);
-                            supportAdapter.notifyDataSetChanged();
-                        }
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        hideItemData();
+                        presenter.getSupporterByProvinceId(provinceId).addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                if (dataSnapshot != null) {
+                                    Supporter supporter = dataSnapshot.getValue(Supporter.class);
+                                    if (!listSupporter.contains(supporter)) {
+                                        listSupporter.add(supporter);
+                                        supportAdapter.notifyDataSetChanged();
+                                    }
 
+                                }
+                                showItemData();
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                showItemData();
+                            }
+                        });
+                    } else {
+                        mRecycler.setVisibility(View.GONE);
+                        imgNoResult.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     }
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
                 }
 
                 @Override
@@ -201,6 +256,7 @@ public class SupportFragment extends Fragment {
 
                 }
             });
+
         }
     }
 }

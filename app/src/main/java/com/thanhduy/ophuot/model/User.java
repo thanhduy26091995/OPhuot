@@ -22,6 +22,7 @@ public class User implements Serializable{
     private ArrayList<String> images;
     private String uid;
     private String deviceToken;
+    private HashMap<String, Object> notiComment = new HashMap<>();
 
     public User() {
     }
@@ -56,6 +57,14 @@ public class User implements Serializable{
 
     //getter and setter
 
+
+    public HashMap<String, Object> getNotiComment() {
+        return notiComment;
+    }
+
+    public void setNotiComment(HashMap<String, Object> notiComment) {
+        this.notiComment = notiComment;
+    }
 
     public String getDeviceToken() {
         return deviceToken;

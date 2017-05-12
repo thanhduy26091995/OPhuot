@@ -10,8 +10,9 @@ import android.support.v4.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.chat.view.ChatActivity;
+import com.thanhduy.ophuot.comment.view.CommentActivity;
+import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.push_notification.NotificationUtils;
 import com.thanhduy.ophuot.utils.Constants;
@@ -71,20 +72,45 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     private void handleNotification(RemoteMessage remoteMessage) {
+        String type = "";
+        type = remoteMessage.getData().get("type");
         if (NotificationUtils.isAppIsInBackground(getApplicationContext())) {
             pushNotification(remoteMessage);
-        } else if (!isAtChatActivity()) {
-            pushNotification(remoteMessage);
+        } else {
+            if (!isAtActivity("ChatActivity")) {
+                if (type.equals("chat")){
+                    pushNotification(remoteMessage);
+                }
+
+            }
+            if (!isAtActivity("CommentActivity")) {
+                if (type.equals("comment")){
+                    pushNotification(remoteMessage);
+                }
+
+            }
         }
     }
 
     private void pushNotification(RemoteMessage remoteMessage) {
         Map<String, String> data = remoteMessage.getData();
-        Intent intent = new Intent(this, ChatActivity.class);
-        User user = new User(data.get("avatar"), data.get("title"), data.get("uid"), data.get("deviceToken"));
-        intent.putExtra(Constants.USERS, user);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = null;
+        if (data.get("type").equals("chat")) {
+            Intent intent = new Intent(this, ChatActivity.class);
+            User user = new User(data.get("avatar"), data.get("title"), data.get("uid"), data.get("deviceToken"));
+            intent.putExtra(Constants.USERS, user);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        }
+
+        if (data.get("type").equals("comment")) {
+            Intent intent = new Intent(this, CommentActivity.class);
+            Homestay homestay = new Homestay(data.get("homestayId"), Integer.parseInt(data.get("districtId")), Integer.parseInt(data.get("provinceId")));
+            intent.putExtra(Constants.HOMESTAY, homestay);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        }
+
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setContentTitle(data.get("title"))
@@ -107,22 +133,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             int color = 0x008000;
             notificationBuilder.setColor(color);
-            return R.mipmap.ic_launcher;
+            return com.thanhduy.ophuot.R.mipmap.ic_launcher;
 
         } else {
-            return R.mipmap.ic_launcher;
+            return com.thanhduy.ophuot.R.mipmap.ic_launcher;
         }
     }
 
-    private boolean isAtChatActivity() {
-        boolean isAtChatActivity = false;
+    private boolean isAtActivity(String activity) {
+        boolean isAtActivity = false;
         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
         String current = taskInfo.get(0).topActivity.getShortClassName();
-        boolean result = current.contains("ChatActivity");
+        boolean result = current.contains(activity);
         if (result) {
-            isAtChatActivity = true;
+            isAtActivity = true;
         }
-        return isAtChatActivity;
+        return isAtActivity;
     }
+
 }

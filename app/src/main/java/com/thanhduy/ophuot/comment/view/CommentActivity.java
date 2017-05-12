@@ -18,18 +18,22 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.comment.CommentAdapter;
 import com.thanhduy.ophuot.comment.presenter.CommentPresenter;
 import com.thanhduy.ophuot.model.Comment;
 import com.thanhduy.ophuot.model.Homestay;
+import com.thanhduy.ophuot.push_notification.PushMessage;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.MyLinearLayoutManager;
+import com.thanhduy.ophuot.utils.SessionManagerUser;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -57,24 +61,26 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     private MyLinearLayoutManager myLinearLayoutManager;
     private CommentAdapter commentAdapter;
     private List<Comment> commentList = new ArrayList<>();
+    private HashMap<String, String> hashDataUser = new HashMap<>();
+    private SessionManagerUser sessionManagerUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
         ButterKnife.bind(this);
-
+        //init
+        //init
+        sessionManagerUser = new SessionManagerUser(this);
+        hashDataUser = sessionManagerUser.getUserDetails();
         presenter = new CommentPresenter(this);
         //get intent
         homestay = (Homestay) getIntent().getSerializableExtra(Constants.HOMESTAY);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (homestay.getComments() != null) {
-            getSupportActionBar().setTitle(String.format("%s (%d)", getResources().getString(R.string.comment), homestay.getComments().getCommentCount()));
-        } else {
-            getSupportActionBar().setTitle(String.format("%s", getResources().getString(R.string.comment)));
-        }
+        getSupportActionBar().setTitle(String.format("%s", getResources().getString(R.string.comment)));
+
 
         commentAdapter = new CommentAdapter(this, commentList);
         myLinearLayoutManager = new MyLinearLayoutManager(this);
@@ -112,6 +118,9 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    //    private void subscribeTopics(String token) throws IOException {
+//        FirebaseMessaging.getInstance().subscribeToTopic("news");
+//    }
     //load all data comment
     private void loadDataComment() {
         presenter.getAllComments(homestay).addChildEventListener(new ChildEventListener() {
@@ -177,10 +186,17 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         int rating = (int) ratingComment.getRating();
         //call presenter
         presenter.addComment(homestay, getUid(), content, rating, commentTime);
+        //update rating
+        ratingComment.setRating(0);
+        //register topics
+        FirebaseMessaging.getInstance().subscribeToTopic(homestay.getId());
+        //send push
+        PushMessage.sendMessageComment(String.format("%s vừa bình luận", hashDataUser.get(SessionManagerUser.KEY_NAME)), content,
+                BaseActivity.getUid(), homestay.getId(), String.valueOf(homestay.getProvinceId()), String.valueOf(homestay.getDistrictId()), homestay.getId());
         //clear edittext
         edtContent.setText("");
         mRecycler.smoothScrollToPosition(commentAdapter.getItemCount());
-        //update rating
-        ratingComment.setRating(0);
+        //thêm homestayId vào node NotiComment, sử dụng cho register và unregister FCM
+        presenter.addNotiComment(getUid(), homestay.getId());
     }
 }

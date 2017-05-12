@@ -26,18 +26,18 @@ public class PushMessage {
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
 
-    public static void sendMessage(final JSONArray recipients, final String title, final String body, final String icon, final String uid, final String deviceToken, final String avatar) {
+    public static void sendMessageChat(final JSONArray recipients, final String title, final String body, final String icon, final String uid, final String deviceToken, final String avatar) {
         new AsyncTask<String, String, String>() {
             @Override
             protected String doInBackground(String... strings) {
                 try {
                     JSONObject root = new JSONObject();
-                    JSONObject notification = new JSONObject();
-                    notification.put("body", body);
-                    notification.put("title", title);
-                    notification.put("icon", "ic_launcher");
-                    notification.put("sound", "/res/raw/notification");
-                    notification.put("color", "#8BC34A");
+//                    JSONObject notification = new JSONObject();
+//                    notification.put("body", body);
+//                    notification.put("title", title);
+//                    notification.put("icon", "ic_launcher");
+//                    notification.put("sound", "/res/raw/notification");
+//                    notification.put("color", "#8BC34A");
 
                     JSONObject data = new JSONObject();
                     data.put("message", body);
@@ -45,9 +45,63 @@ public class PushMessage {
                     data.put("uid", uid);
                     data.put("deviceToken", deviceToken);
                     data.put("avatar", avatar);
+                    data.put("type", "chat");
                     //root.put("notification", notification);
                     root.put("data", data);
                     root.put("registration_ids", recipients);
+                    Log.d(TAG, root.toString());
+
+                    String result = postToFCM(root.toString());
+                    Log.d(TAG, result);
+                    return result;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                //  super.onPostExecute(result);
+                // showToast(result);
+                try {
+                    JSONObject resultJson = new JSONObject(result);
+                    int success, failure;
+                    success = resultJson.getInt("success");
+                    failure = resultJson.getInt("failure");
+                    Log.d(TAG, "" + success + "/" + failure);
+                    // Toast.makeText(ChatActivity.this, "Message Success: " + success + "Message Failed: " + failure, Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    e.getMessage();
+                    // Toast.makeText(ChatActivity.this, "Message Failed, Unknown error occurred.", Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
+    }
+
+    public static void sendMessageComment(final String title, final String body, final String uid, final String topic, final String provinceId,
+                                          final String districtId, final String homestayId) {
+        new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... strings) {
+                try {
+                    JSONObject root = new JSONObject();
+//
+                    JSONObject data = new JSONObject();
+                    data.put("message", body);
+                    data.put("title", title);
+                    data.put("uid", uid);
+                    // data.put("deviceToken", deviceToken);
+                    data.put("provinceId", provinceId);
+                    data.put("districtId", districtId);
+                    data.put("homestayId", homestayId);
+                    data.put("type", "comment");
+                    //root.put("notification", notification);
+                    root.put("data", data);
+                    root.put("to", "/topics/" + topic);
                     Log.d(TAG, root.toString());
 
                     String result = postToFCM(root.toString());

@@ -247,7 +247,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
         }
-        PushMessage.sendMessage(regArray, hashDataUser.get(SessionManagerUser.KEY_NAME), edtContent.getText().toString(), "", getUid(), hashDataUser.get(SessionManagerUser.KEY_DEVICE_TOKEN), hashDataUser.get(SessionManagerUser.KEY_AVATAR));
+        PushMessage.sendMessageChat(regArray, hashDataUser.get(SessionManagerUser.KEY_NAME), edtContent.getText().toString(), "", getUid(), hashDataUser.get(SessionManagerUser.KEY_DEVICE_TOKEN), hashDataUser.get(SessionManagerUser.KEY_AVATAR));
         //clear data
         edtContent.setText("");
     }

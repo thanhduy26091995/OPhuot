@@ -12,6 +12,9 @@ import com.thanhduy.ophuot.model.Comment;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.utils.Constants;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by buivu on 22/03/2017.
  */
@@ -62,5 +65,11 @@ public class CommentPresenter {
     //get all comment
     public Query getAllComments(Homestay homestay) {
         return submitter.getAllComments(homestay);
+    }
+
+    public void addNotiComment(String uid, String homestayId) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(homestayId, true);
+        mDatabase.child(Constants.USERS).child(uid).child(Constants.NOTI_COMMENT).updateChildren(data);
     }
 }

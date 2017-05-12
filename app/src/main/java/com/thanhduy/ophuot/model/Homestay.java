@@ -28,6 +28,12 @@ public class Homestay implements Serializable {
     public Homestay() {
     }
 
+    public Homestay(String id, int districtId, int provinceId) {
+        this.id = id;
+        this.districtId = districtId;
+        this.provinceId = provinceId;
+    }
+
     public Homestay(Map<String, Object> address, String description, Map<String, Object> details,
                     String id, ArrayList<String> images, String name, String postBy, String price, float rating, String type) {
         this.address = address;

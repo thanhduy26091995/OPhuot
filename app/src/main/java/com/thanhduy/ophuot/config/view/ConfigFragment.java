@@ -19,19 +19,24 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.thanhduy.ophuot.R;
+import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.DeviceToken;
+import com.thanhduy.ophuot.config.presenter.ConfigPresenter;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.SessionManagerForLanguage;
 
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +55,7 @@ public class ConfigFragment extends Fragment {
     private ArrayAdapter<String> adapterForSpinner;
     private boolean isSpinnerTouched = false;
     private Locale locale;
+    private ConfigPresenter presenter;
 
 
     @BindView(R.id.chk_language)
@@ -58,6 +64,8 @@ public class ConfigFragment extends Fragment {
     TextView txtLanguage;
     @BindView(R.id.spnLanguage)
     Spinner spnLanguage;
+    @BindView(R.id.chk_noti_comment)
+    CheckBox chkComment;
 
     @Nullable
     @Override
@@ -67,6 +75,7 @@ public class ConfigFragment extends Fragment {
         sessionManagerForLanguage = new SessionManagerForLanguage(getActivity());
         ButterKnife.bind(this, rootView);
         txtLanguage.setText(sessionManagerForLanguage.getLanguage());
+        presenter = new ConfigPresenter(this);
         prepareDataForSpinner();
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             initData();
@@ -78,6 +87,79 @@ public class ConfigFragment extends Fragment {
                         DeviceToken.getInstance().addDeviceToken(mDatabase, getUid(), token);
                     } else {
                         DeviceToken.getInstance().addDeviceToken(mDatabase, getUid(), "");
+                    }
+                }
+            });
+            //event click chkComment
+            chkComment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        presenter.getAllNoti(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                if (dataSnapshot != null) {
+                                    String homestayId = dataSnapshot.getKey();
+                                    //update state
+                                    presenter.updateNotiComment(BaseActivity.getUid(), homestayId, true);
+                                    //register topic
+                                    FirebaseMessaging.getInstance().subscribeToTopic(homestayId);
+                                }
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    } else {
+                        presenter.getAllNoti(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                if (dataSnapshot != null) {
+                                    String homestayId = dataSnapshot.getKey();
+                                    //update state
+                                    presenter.updateNotiComment(BaseActivity.getUid(), homestayId, false);
+                                    //register topic
+                                    FirebaseMessaging.getInstance().unsubscribeFromTopic(homestayId);
+                                }
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 }
             });
@@ -156,6 +238,18 @@ public class ConfigFragment extends Fragment {
                             chkLanguage.setChecked(true);
                         } else {
                             chkLanguage.setChecked(false);
+                        }
+                        int count = 0;
+                        Map<String, Object> notiComment = user.getNotiComment();
+                        for (Map.Entry<String, Object> entry : notiComment.entrySet()) {
+                            if ((Boolean) entry.getValue()) {
+                                count++;
+                            }
+                        }
+                        if (count > 0) {
+                            chkComment.setChecked(true);
+                        } else {
+                            chkComment.setChecked(false);
                         }
                     }
                 }

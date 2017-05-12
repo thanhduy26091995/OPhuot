@@ -141,7 +141,22 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
 
     private void changeTextCommentIfYes() {
         if (homestay.getComments() != null) {
-            btnComment.setText(String.format("%s (%d)", getResources().getString(R.string.comment), homestay.getComments().getCommentCount()));
+            mDatabase.child(Constants.HOMESTAY).child(String.valueOf(homestay.getProvinceId())).child(String.valueOf(homestay.getDistrictId()))
+                    .child(homestay.getId()).child(Constants.COMMENTS).child(Constants.COMMENT_COUNT).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Long commentCount = dataSnapshot.getValue(Long.class);
+                        btnComment.setText(String.format("%s (%d)", getResources().getString(R.string.comment), commentCount));
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
         }
     }
 
@@ -276,8 +291,7 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
                     startActivity(intent);
                 }
             }
-        }
-        else if (v == btnContact){
+        } else if (v == btnContact) {
             Intent intent = new Intent(ActivityHomestayDetail.this, ChatActivity.class);
             intent.putExtra(Constants.USERS, user);
             startActivity(intent);

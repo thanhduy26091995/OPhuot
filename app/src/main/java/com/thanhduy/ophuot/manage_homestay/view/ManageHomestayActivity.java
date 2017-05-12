@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.comment.view.CommentActivity;
 import com.thanhduy.ophuot.manage_homestay.AdapterViewPager;
 import com.thanhduy.ophuot.manage_homestay.presenter.ManageHomestayPresenter;
 import com.thanhduy.ophuot.model.Homestay;
@@ -40,7 +42,7 @@ import butterknife.ButterKnife;
  * Created by buivu on 13/03/2017.
  */
 
-public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCallback {
+public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener {
 
     @BindView(R.id.txt_manage_type_title)
     TextView txtTitleType;
@@ -72,6 +74,8 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
     TextView txtConvenient;
     @BindView(R.id.txt_manage_animal)
     TextView txtAnimal;
+    @BindView(R.id.btn_comment)
+    Button btnComment;
 
 
     private Homestay homestay;
@@ -109,6 +113,30 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
         loadData();
         loadDataAfterEdited();
         setUpMapIfNeeded();
+        changeTextCommentIfYes();
+        //event click button
+        btnComment.setOnClickListener(this);
+    }
+
+    private void changeTextCommentIfYes() {
+        if (homestay.getComments() != null) {
+            mDatabase.child(Constants.HOMESTAY).child(String.valueOf(homestay.getProvinceId())).child(String.valueOf(homestay.getDistrictId()))
+                    .child(homestay.getId()).child(Constants.COMMENTS).child(Constants.COMMENT_COUNT).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Long commentCount = dataSnapshot.getValue(Long.class);
+                        btnComment.setText(String.format("%s (%d)", getResources().getString(R.string.comment), commentCount));
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
     }
 
     private void loadDataAfterEdited() {
@@ -250,4 +278,12 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if (v == btnComment) {
+            Intent intent = new Intent(ManageHomestayActivity.this, CommentActivity.class);
+            intent.putExtra(Constants.HOMESTAY, homestay);
+            startActivity(intent);
+        }
+    }
 }

@@ -19,13 +19,6 @@
             style="@style/mySpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></Spinner>
-
-        <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0.1dp"-->
-        <!--android:layout_above="@+id/linear_button"-->
-        <!--android:layout_marginTop="5dp"-->
-        <!--android:background="@android:color/darker_gray" />-->
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -35,4 +28,23 @@
         android:layout_below="@+id/linear_filter"
         android:layout_marginTop="10dp"
         tools:listitem="@layout/item_supporter"></android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/img_no_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/no_result"
+            android:visibility="gone" />
+    </RelativeLayout>
 </RelativeLayout>
