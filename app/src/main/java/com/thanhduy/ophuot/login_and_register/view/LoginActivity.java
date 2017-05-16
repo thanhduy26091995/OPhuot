@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.GoogleAuthController;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.forget_password.ForgetPasswordActivity;
 import com.thanhduy.ophuot.login_and_register.presenter.LoginFacebookPresenter;
 import com.thanhduy.ophuot.login_and_register.presenter.LoginGooglePresenter;
@@ -102,6 +104,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         btnFacebook.setOnClickListener(this);
         btnGoogle.setOnClickListener(this);
         linearForget.setOnClickListener(this);
+        initData();
+
+    }
+
+    private void initData() {
+        if (!InternetConnection.getInstance().isOnline(LoginActivity.this)) {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initData();
+                        }
+                    });
+            snackbar.show();
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -34,6 +35,7 @@ import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.DeviceToken;
 import com.thanhduy.ophuot.base.ImageLoader;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.chat_list.view.ChatListFragment;
 import com.thanhduy.ophuot.config.view.ConfigFragment;
 import com.thanhduy.ophuot.favorite.view.FavoriteFragment;
@@ -105,17 +107,33 @@ public class MainActivity extends BaseActivity
             CURRENT_TAG = TAG_FEATURED;
             loadFragment();
         }
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            hideItemLogOut();
-            progressBar.setVisibility(View.GONE);
-            linearContain.setVisibility(View.VISIBLE);
-        } else {
-            String token = FirebaseInstanceId.getInstance().getToken();
-            DeviceToken.getInstance().addDeviceToken(mDatabase, getUid(), token);
-            showItemLogOut();
-            showDataUserIntoHeader();
+        initData();
+    }
+
+    private void initData() {
+        if (InternetConnection.getInstance().isOnline(MainActivity.this)){
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                hideItemLogOut();
+                progressBar.setVisibility(View.GONE);
+                linearContain.setVisibility(View.VISIBLE);
+            } else {
+                String token = FirebaseInstanceId.getInstance().getToken();
+                DeviceToken.getInstance().addDeviceToken(mDatabase, getUid(), token);
+                showItemLogOut();
+                showDataUserIntoHeader();
+            }
+        } else{
+            Snackbar snackbar = Snackbar.make(drawerLayout, getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initData();
+                        }
+                    });
+            snackbar.show();
         }
     }
+
 
     private void hideItemLogOut() {
         //set boolean

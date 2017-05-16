@@ -2,6 +2,7 @@ package com.thanhduy.ophuot.list_homestay.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.list_homestay.ListHomestayAdapter;
 import com.thanhduy.ophuot.list_homestay.presenter.ListHomestayPresenter;
 import com.thanhduy.ophuot.model.Homestay;
@@ -70,14 +72,32 @@ public class ListHomestayActivity extends BaseActivity {
         provinceId = getIntent().getStringExtra(Constants.ID_PROVINCE);
         districtId = getIntent().getStringExtra(Constants.ID_DISTRICT);
         isHasDistrict = getIntent().getBooleanExtra(Constants.IS_HAS_DISTRICT, false);
-        if (isHasDistrict) {
-            loadDataHomestayByProvinceAndDistrict();
-        } else {
-            loadDataHomestayByProvince();
-        }
+
+        initData();
 
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mRecycler.setAdapter(listHomestayAdapter);
+    }
+
+    private void initData() {
+        if (InternetConnection.getInstance().isOnline(ListHomestayActivity.this)) {
+            if (isHasDistrict) {
+                loadDataHomestayByProvinceAndDistrict();
+            } else {
+                loadDataHomestayByProvince();
+            }
+        } else {
+            //hide proress
+            progressBar.setVisibility(View.GONE);
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initData();
+                        }
+                    });
+            snackbar.show();
+        }
     }
 
     private void showItemData() {

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.profile.edit_profile.view.EditProfileActivity;
 import com.thanhduy.ophuot.profile.presenter.ProfileUserPresenter;
@@ -103,47 +105,58 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initInfo() {
-        showProgessDialog();
-        mDatabase.child(Constants.USERS).child(BaseActivity.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    hideProgressDialog();
-                    User user = dataSnapshot.getValue(User.class);
-                    if (user != null) {
-                        txtName.setText(user.getName());
-                        txtAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
-                        txtDescription.setText(user.getDescription());
-                        txtPhone.setText(user.getPhone());
-                        if (user.getGender() == 1) {
-                            txtGender.setText("Nam");
-                        } else {
-                            txtGender.setText("Nữ");
+        if (InternetConnection.getInstance().isOnline(ProfileUserActivity.this)) {
+            showProgessDialog();
+            mDatabase.child(Constants.USERS).child(BaseActivity.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        hideProgressDialog();
+                        User user = dataSnapshot.getValue(User.class);
+                        if (user != null) {
+                            txtName.setText(user.getName());
+                            txtAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
+                            txtDescription.setText(user.getDescription());
+                            txtPhone.setText(user.getPhone());
+                            if (user.getGender() == 1) {
+                                txtGender.setText("Nam");
+                            } else {
+                                txtGender.setText("Nữ");
+                            }
+                            //checkGender(user.getGender());
+                            ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, user.getAvatar(), imgAvatar);
+                            //save to instance
+                            name = user.getName();
+                            address = user.getAddress().get(Constants.ADDRESS).toString();
+                            lat = Double.parseDouble(user.getAddress().get(Constants.LAT).toString());
+                            lng = Double.parseDouble(user.getAddress().get(Constants.LNG).toString());
+                            gender = user.getGender();
+                            phone = user.getPhone();
+                            description = user.getDescription();
+                            //save data to session
+                            sessionManagerUser.createLoginSession(user);
                         }
-                        //checkGender(user.getGender());
-                        ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, user.getAvatar(), imgAvatar);
-                        //save to instance
-                        name = user.getName();
-                        address = user.getAddress().get(Constants.ADDRESS).toString();
-                        lat = Double.parseDouble(user.getAddress().get(Constants.LAT).toString());
-                        lng = Double.parseDouble(user.getAddress().get(Constants.LNG).toString());
-                        gender = user.getGender();
-                        phone = user.getPhone();
-                        description = user.getDescription();
-                        //save data to session
-                        sessionManagerUser.createLoginSession(user);
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                if (databaseError.getCode() == -3) {
-                    ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), ProfileUserActivity.this);
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    if (databaseError.getCode() == -3) {
+                        ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), ProfileUserActivity.this);
+                    }
+                    hideProgressDialog();
                 }
-                hideProgressDialog();
-            }
-        });
+            });
+        } else {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initInfo();
+                        }
+                    });
+            snackbar.show();
+        }
     }
 
 

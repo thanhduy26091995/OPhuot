@@ -179,6 +179,9 @@
     <string name="sendEmailResetFail">Gửi email thiết lập mật khẩu thất bại, vui lòng thử lại</string>
     <string name="required">Bắt buộc</string>
     <string name="notificationComment">Thông báo bình luận</string>
+
+    <string name="noInternet">Không có kết nối Internet</string>
+    <string name="retry">THỬ LẠI</string>
     <string-array name="arr_language">
         <item>Tiếng Anh</item>
         <item>Tiếng Việt</item>

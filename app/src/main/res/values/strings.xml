@@ -180,6 +180,9 @@
 
     <string name="required">Bắt buộc</string>
     <string name="notificationComment">Thông báo bình luận</string>
+
+    <string name="noInternet">Không có kết nối Internet</string>
+    <string name="retry">THỬ LẠI</string>
     <string-array name="arr_language">
         <item>English</item>
         <item>Vietnamese</item>

@@ -3,6 +3,7 @@ package com.thanhduy.ophuot.profile.edit_profile.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.profile.edit_profile.presenter.EditProfilePresenter;
 import com.thanhduy.ophuot.utils.Constants;
 
@@ -54,6 +56,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     private int gender;
     private double lat, lng;
     private EditProfilePresenter presenter;
+    private MenuItem menuConfirm;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,16 +78,39 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         gender = getIntent().getIntExtra(Constants.GENDER, 1);
         lat = getIntent().getDoubleExtra(Constants.LAT, 0);
         lng = getIntent().getDoubleExtra(Constants.LNG, 0);
-        //show data
-        edtName.setText(name);
-        edtPhone.setText(phone);
-        edtDescription.setText(description);
-        txtAddress.setText(address);
-        checkGender(gender);
+        initData();
         //event click
         txtMale.setOnClickListener(this);
         txtFemale.setOnClickListener(this);
         linearAddress.setOnClickListener(this);
+
+    }
+
+    private void initData() {
+        if (InternetConnection.getInstance().isOnline(EditProfileActivity.this)) {
+            if (menuConfirm != null){
+                menuConfirm.setVisible(true);
+            }
+            //show data
+            edtName.setText(name);
+            edtPhone.setText(phone);
+            edtDescription.setText(description);
+            txtAddress.setText(address);
+            checkGender(gender);
+        } else {
+            //hide menu
+            if (menuConfirm != null) {
+                menuConfirm.setVisible(false);
+            }
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initData();
+                        }
+                    });
+            snackbar.show();
+        }
 
     }
 
@@ -105,6 +131,12 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_confirm_edit_profile, menu);
+        menuConfirm = menu.findItem(R.id.action_confirm);
+        if (!InternetConnection.getInstance().isOnline(EditProfileActivity.this)) {
+            menuConfirm.setVisible(false);
+        } else {
+            menuConfirm.setVisible(true);
+        }
         return true;
     }
 
