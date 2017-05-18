@@ -3,6 +3,7 @@ package com.thanhduy.ophuot.homestay_detail.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -28,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.chat.view.ChatActivity;
 import com.thanhduy.ophuot.comment.view.CommentActivity;
 import com.thanhduy.ophuot.list_homestay.GetUserInfoCallback;
@@ -117,26 +119,41 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         homestay = (Homestay) getIntent().getSerializableExtra(Constants.HOMESTAY);
         user = (User) getIntent().getSerializableExtra(Constants.USERS);
 
-        //set view pager for image slide
-        if (homestay.getImages().size() > 0) {
-            imgPoster.setVisibility(View.GONE);
-            mViewPagerAdapter = new AdapterViewPager(this, homestay.getImages());
-            mViewPager.setAdapter(mViewPagerAdapter);
-        } else {
-            mViewPager.setVisibility(View.GONE);
-            imgPoster.setImageResource(R.drawable.no_image);
-        }
-        mViewPagerAdapter = new AdapterViewPager(this, homestay.getImages());
-        mViewPager.setAdapter(mViewPagerAdapter);
-        //show data
-        loadData();
-        setUpMapIfNeeded();
+        initInfo();
         //event click
         btnComment.setOnClickListener(this);
         imgFavorite.setOnClickListener(this);
         imgAvatar.setOnClickListener(this);
         btnContact.setOnClickListener(this);
         changeTextCommentIfYes();
+    }
+
+    private void initInfo() {
+        if (InternetConnection.getInstance().isOnline(ActivityHomestayDetail.this)) {
+            //set view pager for image slide
+            if (homestay.getImages().size() > 0) {
+                imgPoster.setVisibility(View.GONE);
+                mViewPagerAdapter = new AdapterViewPager(this, homestay.getImages());
+                mViewPager.setAdapter(mViewPagerAdapter);
+            } else {
+                mViewPager.setVisibility(View.GONE);
+                imgPoster.setImageResource(R.drawable.no_image);
+            }
+            mViewPagerAdapter = new AdapterViewPager(this, homestay.getImages());
+            mViewPager.setAdapter(mViewPagerAdapter);
+            //show data
+            loadData();
+            setUpMapIfNeeded();
+        } else {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initInfo();
+                        }
+                    });
+            snackbar.show();
+        }
     }
 
     private void changeTextCommentIfYes() {

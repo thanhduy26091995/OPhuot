@@ -3,6 +3,7 @@ package com.thanhduy.ophuot.favorite.view;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.list_homestay.ListHomestayAdapter;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.model.PostInfo;
@@ -81,8 +83,24 @@ public class ListFavoriteActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(favoriteName);
 
-        if (postInfos != null) {
-            getDataHomestay();
+        initInfo();
+    }
+
+    private void initInfo() {
+        if (InternetConnection.getInstance().isOnline(ListFavoriteActivity.this)) {
+            if (postInfos != null) {
+                getDataHomestay();
+            }
+        } else {
+            progressBar.setVisibility(View.GONE);
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initInfo();
+                        }
+                    });
+            snackbar.show();
         }
     }
 

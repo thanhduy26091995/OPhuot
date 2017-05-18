@@ -3,15 +3,18 @@ package com.thanhduy.ophuot.profile.guess_profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.report.view.ReportActivity;
 import com.thanhduy.ophuot.utils.Constants;
@@ -58,18 +61,29 @@ public class GuessProfileActivitiy extends BaseActivity {
     }
 
     private void initInfo() {
-        if (user != null) {
-            txtName.setText(user.getName());
-            txtAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
-            txtDescription.setText(user.getDescription());
-            txtPhone.setText(user.getPhone());
-            if (user.getGender() == 1) {
-                txtGender.setText(getResources().getString(R.string.male));
-            } else {
-                txtGender.setText(getResources().getString(R.string.female));
+        if (InternetConnection.getInstance().isOnline(GuessProfileActivitiy.this)) {
+            if (user != null) {
+                txtName.setText(user.getName());
+                txtAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
+                txtDescription.setText(user.getDescription());
+                txtPhone.setText(user.getPhone());
+                if (user.getGender() == 1) {
+                    txtGender.setText(getResources().getString(R.string.male));
+                } else {
+                    txtGender.setText(getResources().getString(R.string.female));
+                }
+                //checkGender(user.getGender());
+                ImageLoader.getInstance().loadImageAvatar(GuessProfileActivitiy.this, user.getAvatar(), imgAvatar);
             }
-            //checkGender(user.getGender());
-            ImageLoader.getInstance().loadImageAvatar(GuessProfileActivitiy.this, user.getAvatar(), imgAvatar);
+        } else {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initInfo();
+                        }
+                    });
+            snackbar.show();
         }
     }
 

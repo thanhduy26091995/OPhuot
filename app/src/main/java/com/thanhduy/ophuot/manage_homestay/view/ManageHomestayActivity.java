@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -29,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.comment.view.CommentActivity;
 import com.thanhduy.ophuot.manage_homestay.AdapterViewPager;
 import com.thanhduy.ophuot.manage_homestay.presenter.ManageHomestayPresenter;
@@ -84,6 +86,8 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
     private ManageHomestayPresenter presenter;
     private DatabaseReference mDatabase;
 
+    private MenuItem menuEdit, menuDelete;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,24 +102,49 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
 
         //get intent
         homestay = (Homestay) getIntent().getSerializableExtra(Constants.HOMESTAY);
-        //set view pager for image slide
-        if (homestay.getImages().size() > 0) {
-            imgPoster.setVisibility(View.GONE);
-            mViewPagerAdapter = new AdapterViewPager(this, homestay.getImages());
-            mViewPager.setAdapter(mViewPagerAdapter);
-        } else {
-            mViewPager.setVisibility(View.GONE);
-            imgPoster.setImageResource(R.drawable.no_image);
-        }
-        mViewPagerAdapter = new AdapterViewPager(this, homestay.getImages());
-        mViewPager.setAdapter(mViewPagerAdapter);
-        //show data
-        loadData();
-        loadDataAfterEdited();
-        setUpMapIfNeeded();
-        changeTextCommentIfYes();
+        initInfo();
         //event click button
         btnComment.setOnClickListener(this);
+    }
+
+    private void initInfo() {
+        if (InternetConnection.getInstance().isOnline(ManageHomestayActivity.this)) {
+            //show menu
+            if (menuEdit != null && menuDelete != null){
+                menuDelete.setVisible(true);
+                menuEdit.setVisible(true);
+            }
+            //set view pager for image slide
+            if (homestay.getImages().size() > 0) {
+                imgPoster.setVisibility(View.GONE);
+                mViewPagerAdapter = new AdapterViewPager(this, homestay.getImages());
+                mViewPager.setAdapter(mViewPagerAdapter);
+            } else {
+                mViewPager.setVisibility(View.GONE);
+                imgPoster.setImageResource(R.drawable.no_image);
+            }
+            mViewPagerAdapter = new AdapterViewPager(this, homestay.getImages());
+            mViewPager.setAdapter(mViewPagerAdapter);
+            //show data
+            loadData();
+            loadDataAfterEdited();
+            setUpMapIfNeeded();
+            changeTextCommentIfYes();
+        } else {
+            //hide menu
+            if (menuEdit != null && menuDelete != null){
+                menuDelete.setVisible(false);
+                menuEdit.setVisible(false);
+            }
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initInfo();
+                        }
+                    });
+            snackbar.show();
+        }
     }
 
     private void changeTextCommentIfYes() {
@@ -235,6 +264,15 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_manage_homestay, menu);
+        menuEdit = menu.findItem(R.id.action_edit);
+        menuDelete = menu.findItem(R.id.action_delete);
+        if (!InternetConnection.getInstance().isOnline(ManageHomestayActivity.this)) {
+            menuEdit.setVisible(false);
+            menuDelete.setVisible(false);
+        } else {
+            menuEdit.setVisible(false);
+            menuDelete.setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

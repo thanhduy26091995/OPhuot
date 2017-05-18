@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.fragment.BottomDialogFragment;
 import com.thanhduy.ophuot.fragment.FavoriteListAdapterForBottomDialog;
 import com.thanhduy.ophuot.fragment.PositionCallback;
@@ -86,23 +87,25 @@ public class ListHomestayAdapter extends RecyclerView.Adapter<ListHomestayViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent(activity, ActivityHomestayDetail.class);
-                intent.putExtra(Constants.HOMESTAY, homestay);
-                mDatabase.child(Constants.USERS).child(homestay.getPostBy()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot != null) {
-                            User user = dataSnapshot.getValue(User.class);
-                            intent.putExtra(Constants.USERS, user);
-                            activity.startActivity(intent);
+                if (InternetConnection.getInstance().isOnline(activity)) {
+                    final Intent intent = new Intent(activity, ActivityHomestayDetail.class);
+                    intent.putExtra(Constants.HOMESTAY, homestay);
+                    mDatabase.child(Constants.USERS).child(homestay.getPostBy()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot != null) {
+                                User user = dataSnapshot.getValue(User.class);
+                                intent.putExtra(Constants.USERS, user);
+                                activity.startActivity(intent);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }
 
             }
         });
