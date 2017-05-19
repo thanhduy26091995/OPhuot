@@ -3,6 +3,7 @@ package com.thanhduy.ophuot.search.view;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.list_homestay.ListHomestayAdapter;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.search.presenter.SearchPresenter;
@@ -70,10 +72,25 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
         //get intent
         provinceId = getIntent().getIntExtra(Constants.ID_PROVINCE, 0);
         districtId = getIntent().getIntExtra(Constants.ID_DISTRICT, 0);
-        handleData();
-        listHomestayAdapter = new ListHomestayAdapter(this, homestayList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(listHomestayAdapter);
+        initInfo();
+    }
+
+    private void initInfo() {
+        if (InternetConnection.getInstance().isOnline(SearchByProvinceAndDistrictActivity.this)) {
+            handleData();
+            listHomestayAdapter = new ListHomestayAdapter(this, homestayList);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(listHomestayAdapter);
+        } else {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initInfo();
+                        }
+                    });
+            snackbar.show();
+        }
     }
 
     private void handleData() {
@@ -83,7 +100,7 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
                 if (dataSnapshot.exists()) {
                     //recyclerView.setVisibility(View.VISIBLE);
                     //fabMap.setVisibility(View.VISIBLE);
-                   // linearNoResult.setVisibility(View.GONE);
+                    // linearNoResult.setVisibility(View.GONE);
                     //show data
                     loadDataHomestayByProvinceAndDistrict();
                 } else {

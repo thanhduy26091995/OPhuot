@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +36,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.database.SqlLiteDbHelper;
 import com.thanhduy.ophuot.list_homestay.ListHomestayAdapter;
 import com.thanhduy.ophuot.model.Homestay;
@@ -108,27 +110,41 @@ public class SearchNearByResultActivity extends BaseActivity implements Location
         sqlLiteDbHelper = new SqlLiteDbHelper(this);
         presenter = new SearchPresenter(this);
         listHomestayAdapter = new ListHomestayAdapter(this, homestayList);
-
         //get current location
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkLocationPermission()) {
-                getLocation();
-            }
-        } else {
-            getLocation();
-        }
-
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             showSettingLocationAlert();
         } else {
             recyclerView.setVisibility(View.VISIBLE);
             linearReload.setVisibility(View.GONE);
         }
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(listHomestayAdapter);
+        initInfo();
         //event click
         btnReload.setOnClickListener(this);
+    }
+
+    private void initInfo() {
+        if (InternetConnection.getInstance().isOnline(SearchNearByResultActivity.this)) {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkLocationPermission()) {
+                    getLocation();
+                }
+            } else {
+                getLocation();
+            }
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(listHomestayAdapter);
+        } else {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initInfo();
+                        }
+                    });
+            snackbar.show();
+        }
     }
 
     @Override
@@ -327,8 +343,7 @@ public class SearchNearByResultActivity extends BaseActivity implements Location
                             showItemData();
                         }
                     });
-                }
-                else{
+                } else {
                     //nếu không có node này
                     imgNoResult.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
