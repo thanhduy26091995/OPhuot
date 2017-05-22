@@ -11,9 +11,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,14 +36,18 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.DeviceToken;
+import com.thanhduy.ophuot.base.GoogleAuthController;
 import com.thanhduy.ophuot.base.ImageLoader;
 import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.chat_list.view.ChatListFragment;
 import com.thanhduy.ophuot.config.view.ConfigFragment;
+import com.thanhduy.ophuot.database.SqlLiteDbHelper;
+import com.thanhduy.ophuot.database.model.Province;
 import com.thanhduy.ophuot.favorite.view.FavoriteFragment;
 import com.thanhduy.ophuot.featured.view.FeaturedFragment;
 import com.thanhduy.ophuot.help.HelpFragment;
 import com.thanhduy.ophuot.login_and_register.view.LoginActivity;
+import com.thanhduy.ophuot.main.presenter.MainPresenter;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.my_homestay.view.MyHomestayFragment;
 import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
@@ -50,6 +56,9 @@ import com.thanhduy.ophuot.support.view.SupportFragment;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.SessionManagerUser;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -88,17 +97,23 @@ public class MainActivity extends BaseActivity
     private SessionManagerUser sessionManagerUser;
 
     private ProgressBar progressBar;
+    private MainPresenter presenter;
+    private SqlLiteDbHelper sqlLiteDbHelper;
+    private List<Province> provinces = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //init
+        sqlLiteDbHelper = new SqlLiteDbHelper(this);
         mainActivity = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mHandler = new Handler();
         sessionManagerUser = new SessionManagerUser(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        presenter = new MainPresenter(this);
         //createData();
         initViews();
         setUpNavigationView();
@@ -111,7 +126,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void initData() {
-        if (InternetConnection.getInstance().isOnline(MainActivity.this)){
+        if (InternetConnection.getInstance().isOnline(MainActivity.this)) {
             if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                 hideItemLogOut();
                 progressBar.setVisibility(View.GONE);
@@ -122,7 +137,9 @@ public class MainActivity extends BaseActivity
                 showItemLogOut();
                 showDataUserIntoHeader();
             }
-        } else{
+        } else {
+            progressBar.setVisibility(View.GONE);
+            linearContain.setVisibility(View.VISIBLE);
             Snackbar snackbar = Snackbar.make(drawerLayout, getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
                     .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
                         @Override
@@ -413,11 +430,15 @@ public class MainActivity extends BaseActivity
 
     private void logOut() {
         FirebaseAuth.getInstance().signOut();
+        if (GoogleAuthController.getInstance().getGoogleApiClient() != null) {
+            presenter.logOut(GoogleAuthController.getInstance().getGoogleApiClient());
+        }
+    }
 
+    public void moveToMainActivity() {
         Intent refresh = new Intent(MainActivity.this, MainActivity.class);
         startActivity(refresh);
         finish();
-
     }
 
     @Override
@@ -452,8 +473,37 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        getMenuInflater().inflate(R.menu.menu_search_view_item, menu);
+        MenuItem menuItemSearch = menu.findItem(R.id.action_search);
+
+        final SearchView searchViewActionBar = (SearchView) MenuItemCompat.getActionView(menuItemSearch);
+
+        searchViewActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchViewActionBar.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length() == 0) {
+                    if (SearchFragment.searchFragment != null) {
+                        provinces.clear();
+                        SearchFragment.searchFragment.handleSearch(true, provinces);
+                    }
+
+                } else {
+                    if (SearchFragment.searchFragment != null) {
+                        provinces = sqlLiteDbHelper.searchProvinceOrDistrict(newText);
+                        SearchFragment.searchFragment.handleSearch(false, provinces);
+
+                    }
+                }
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -464,9 +514,10 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_search) {
+//            Intent intent = new Intent(MainActivity.this, SearchFillTextActivity.class);
+//            startActivity(intent);
+//        }
 
         return super.onOptionsItemSelected(item);
     }

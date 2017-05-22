@@ -229,4 +229,27 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
         }
         return provinceName;
     }
+
+    //search
+    public List<Province> searchProvinceOrDistrict(String name) {
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        List<Province> provinces = new ArrayList<>();
+        String selectQuery = "SELECT * FROM provinces where name like '%" + name + "%'";
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        while (cursor.moveToNext()) {
+            Province province = new Province();
+            int provinceId = cursor.getInt(0);
+            String provinceName = cursor.getString(1);
+            //save data
+            province.setProvinceId(provinceId);
+            province.setProvinceName(provinceName);
+            //save data to list
+            provinces.add(province);
+        }
+        cursor.close();
+
+        database.close();
+        return provinces;
+    }
 }

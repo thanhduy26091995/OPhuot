@@ -270,8 +270,8 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
             menuEdit.setVisible(false);
             menuDelete.setVisible(false);
         } else {
-            menuEdit.setVisible(false);
-            menuDelete.setVisible(false);
+            menuEdit.setVisible(true);
+            menuDelete.setVisible(true);
         }
         return super.onCreateOptionsMenu(menu);
     }

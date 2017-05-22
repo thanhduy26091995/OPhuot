@@ -76,6 +76,7 @@
         <activity android:name=".profile.guess_profile.GuessProfileActivitiy"></activity>
         <activity android:name=".search.view.SearchNearByResultActivity"></activity>
         <activity android:name=".search.view.SearchByProvinceAndDistrictActivity"></activity>
+        <activity android:name=".search.view.SearchFillTextActivity" />
         <activity
             android:name=".chat.view.ChatActivity"
             android:windowSoftInputMode="adjustPan"></activity>
@@ -84,7 +85,7 @@
             android:name=".report.view.ReportActivity"
             android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".forget_password.ForgetPasswordActivity"/>
+        <activity android:name=".forget_password.ForgetPasswordActivity" />
 
         <service android:name=".service.MyFirebaseInstanceIDService">
             <intent-filter>

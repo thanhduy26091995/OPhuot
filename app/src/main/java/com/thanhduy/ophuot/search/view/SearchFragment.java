@@ -25,6 +25,7 @@ import com.thanhduy.ophuot.database.model.District;
 import com.thanhduy.ophuot.database.model.Province;
 import com.thanhduy.ophuot.featured.model.Featured;
 import com.thanhduy.ophuot.search.PlacesFeaturedAdapter;
+import com.thanhduy.ophuot.search.SearchFillTextAdapter;
 import com.thanhduy.ophuot.utils.Constants;
 
 import java.util.ArrayList;
@@ -56,12 +57,23 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     LinearLayout linearSearchByProvince;
     @BindView(R.id.recycler_places_featured)
     RecyclerView recyclerView;
+    @BindView(R.id.linear_first)
+    LinearLayout linearFirst;
+    @BindView(R.id.linear_second)
+    LinearLayout linearSecond;
+    @BindView(R.id.recycler_search)
+    RecyclerView mRecyclerSearch;
+
+    public static SearchFragment searchFragment = null;
+    private SearchFillTextAdapter searchFillTextAdapter;
+    private List<Province> provinces = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.activity_search, container, false);
         ButterKnife.bind(this, rootView);
+        searchFragment = this;
         //init
         sqlLiteDbHelper = new SqlLiteDbHelper(getActivity());
         sqlLiteDbHelper.openDataBase();
@@ -84,6 +96,23 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         linearSearchNearBy.setOnClickListener(this);
         linearSearchByProvince.setOnClickListener(this);
         return rootView;
+    }
+
+    public void handleSearch(boolean isShowFirst, List<Province> provinces) {
+        if (isShowFirst) {
+            //show first, hide search result
+            linearFirst.setVisibility(View.VISIBLE);
+            linearSecond.setVisibility(View.GONE);
+        } else {
+            //show search result
+            linearFirst.setVisibility(View.GONE);
+            linearSecond.setVisibility(View.VISIBLE);
+
+            searchFillTextAdapter = new SearchFillTextAdapter(getActivity(), provinces);
+            mRecyclerSearch.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mRecyclerSearch.setAdapter(searchFillTextAdapter);
+            searchFillTextAdapter.notifyDataSetChanged();
+        }
     }
 
     private void prepareData() {

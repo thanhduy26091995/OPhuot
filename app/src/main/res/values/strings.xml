@@ -182,6 +182,7 @@
     <string name="notificationComment">Thông báo bình luận</string>
 
     <string name="noInternet">Không có kết nối Internet</string>
+    <string name="errorWhenSendImage">Có lỗi khi lưu ảnh, vui lòng thử lại!</string>
     <string name="retry">THỬ LẠI</string>
     <string-array name="arr_language">
         <item>English</item>

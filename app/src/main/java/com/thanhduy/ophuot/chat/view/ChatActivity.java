@@ -365,9 +365,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private String getRealPathFromURI(Uri uri) {
+
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
+
     }
 }

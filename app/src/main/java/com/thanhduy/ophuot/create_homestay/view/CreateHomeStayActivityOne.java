@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -191,7 +192,9 @@ public class CreateHomeStayActivityOne extends BaseActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v == btnNext) {
-            moveToActivityTwo();
+            if (checkFillDataComplete()) {
+                moveToActivityTwo();
+            }
         } else if (v == linearAddress) {
             //block linear address
             linearAddress.setEnabled(false);
@@ -199,25 +202,33 @@ public class CreateHomeStayActivityOne extends BaseActivity implements View.OnCl
         }
     }
 
+    private boolean checkFillDataComplete() {
+        boolean result = true;
+        if (TextUtils.isEmpty(txtAddress.getText().toString()) || TextUtils.isEmpty(edtName.getText()) || TextUtils.isEmpty(edtDescription.getText()) ||
+                TextUtils.isEmpty(edtPrice.getText())) {
+            result = false;
+            ShowAlertDialog.showAlert(getResources().getString(R.string.fillAllData), this);
+        }
+        return result;
+    }
+
     private void moveToActivityTwo() {
         strHomestayName = edtName.getText().toString();
         strHomestayDes = edtDescription.getText().toString();
         strHomestayPrice = edtPrice.getText().toString();
-        if (strHomestayPrice.length() == 0 || strHomestayDes.length() == 0 || strHomestayName.length() == 0) {
-            ShowAlertDialog.showAlert(getResources().getString(R.string.fillAllData), this);
-        } else {
-            Intent intent = new Intent(CreateHomeStayActivityOne.this, CreateHomeStayActivityTwo.class);
-            intent.putExtra(Constants.ID_PROVINCE, provinceId);
-            intent.putExtra(Constants.ID_DISTRICT, districtId);
-            intent.putExtra(Constants.ADDRESS, strAddress);
-            intent.putExtra(Constants.LAT, lat);
-            intent.putExtra(Constants.LNG, lng);
-            intent.putExtra(Constants.HOMESTAY_NAME, strHomestayName);
-            intent.putExtra(Constants.HOMESTAY_DESCRIPTION, strHomestayDes);
-            intent.putExtra(Constants.HOMESTAY_TYPE, strHomestayType);
-            intent.putExtra(Constants.HOMESTAY_PRICE, strHomestayPrice);
-            startActivity(intent);
-        }
+
+        Intent intent = new Intent(CreateHomeStayActivityOne.this, CreateHomeStayActivityTwo.class);
+        intent.putExtra(Constants.ID_PROVINCE, provinceId);
+        intent.putExtra(Constants.ID_DISTRICT, districtId);
+        intent.putExtra(Constants.ADDRESS, strAddress);
+        intent.putExtra(Constants.LAT, lat);
+        intent.putExtra(Constants.LNG, lng);
+        intent.putExtra(Constants.HOMESTAY_NAME, strHomestayName);
+        intent.putExtra(Constants.HOMESTAY_DESCRIPTION, strHomestayDes);
+        intent.putExtra(Constants.HOMESTAY_TYPE, strHomestayType);
+        intent.putExtra(Constants.HOMESTAY_PRICE, strHomestayPrice);
+        startActivity(intent);
+
     }
 
     private void showGooglePlaces() {

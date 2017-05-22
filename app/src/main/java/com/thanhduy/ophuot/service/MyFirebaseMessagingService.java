@@ -12,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.thanhduy.ophuot.chat.view.ChatActivity;
 import com.thanhduy.ophuot.comment.view.CommentActivity;
+import com.thanhduy.ophuot.main.view.MainActivity;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.push_notification.NotificationUtils;
@@ -78,13 +79,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             pushNotification(remoteMessage);
         } else {
             if (!isAtActivity("ChatActivity")) {
-                if (type.equals("chat")){
+                if (type.equals("chat")) {
                     pushNotification(remoteMessage);
                 }
 
             }
             if (!isAtActivity("CommentActivity")) {
-                if (type.equals("comment")){
+                if (type.equals("comment")) {
                     pushNotification(remoteMessage);
                 }
 
@@ -108,6 +109,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Homestay homestay = new Homestay(data.get("homestayId"), Integer.parseInt(data.get("districtId")), Integer.parseInt(data.get("provinceId")));
             intent.putExtra(Constants.HOMESTAY, homestay);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        }
+
+        if (data.get("type").equals("other")) {
+            Intent intent = new Intent(this, MainActivity.class);
             pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         }
 
