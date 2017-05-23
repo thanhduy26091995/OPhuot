@@ -90,13 +90,14 @@ public class ListHomestayAdapter extends RecyclerView.Adapter<ListHomestayViewHo
                 if (InternetConnection.getInstance().isOnline(activity)) {
                     final Intent intent = new Intent(activity, ActivityHomestayDetail.class);
                     intent.putExtra(Constants.HOMESTAY, homestay);
+                    intent.putExtra(Constants.POSITION, position);
                     mDatabase.child(Constants.USERS).child(homestay.getPostBy()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot != null) {
                                 User user = dataSnapshot.getValue(User.class);
                                 intent.putExtra(Constants.USERS, user);
-                                activity.startActivity(intent);
+                                activity.startActivityForResult(intent, 100);
                             }
                         }
 

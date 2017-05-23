@@ -26,6 +26,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -61,7 +63,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     //private DatabaseAdapter databaseAdapter;
     private NavigationView navigationView;
@@ -100,6 +102,7 @@ public class MainActivity extends BaseActivity
     private MainPresenter presenter;
     private SqlLiteDbHelper sqlLiteDbHelper;
     private List<Province> provinces = new ArrayList<>();
+    private Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +160,20 @@ public class MainActivity extends BaseActivity
         isShowIconLogOut = false;
         Menu nav_menu = navigationView.getMenu();
         nav_menu.findItem(R.id.nav_sign_out).setVisible(false);
+    }
+
+    //
+    private void showItemSearch() {
+        if (mMenu != null) {
+            mMenu.findItem(R.id.action_search).setVisible(true);
+        }
+    }
+
+
+    private void hideItemSearch() {
+        if (mMenu != null) {
+            mMenu.findItem(R.id.action_search).setVisible(false);
+        }
     }
 
     //
@@ -239,6 +256,11 @@ public class MainActivity extends BaseActivity
     }
 
     private void loadFragment() {
+        if (CURRENT_TAG.equals(TAG_SEARCH)) {
+            showItemSearch();
+        } else {
+            hideItemSearch();
+        }
         selectNavMenu();
         //set toolbar title
         setToolbarTitle();
@@ -274,7 +296,7 @@ public class MainActivity extends BaseActivity
         drawerLayout.closeDrawers();
 
         // refresh toolbar menu
-        invalidateOptionsMenu();
+        //  invalidateOptionsMenu();
 
     }
 
@@ -435,6 +457,12 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleAuthController.install(this, this);
+    }
+
     public void moveToMainActivity() {
         Intent refresh = new Intent(MainActivity.this, MainActivity.class);
         startActivity(refresh);
@@ -503,6 +531,7 @@ public class MainActivity extends BaseActivity
                 return true;
             }
         });
+        mMenu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -547,4 +576,8 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

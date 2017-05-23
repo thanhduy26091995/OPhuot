@@ -1,5 +1,6 @@
 package com.thanhduy.ophuot.list_homestay.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -26,7 +27,9 @@ import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -241,5 +244,43 @@ public class ListHomestayActivity extends BaseActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            int position = data.getIntExtra(Constants.POSITION, 0);
+            Homestay homestayIntent = (Homestay) data.getSerializableExtra(Constants.HOMESTAY);
+            if (Constants.IS_CHANGE_LIST_FAVORITE) {
+                Homestay homestay = homestayList.get(position);
+                homestay.getFavorite().clear();
+                homestay.setFavorite(homestayIntent.getFavorite());
+                if (homestay.getFavorite() != null) {
+//                    if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
+//                        homestay.getFavorite().remove(BaseActivity.getUid());
+//                        //set icon
+//                        listHomestayAdapter.notifyDataSetChanged();
+//                    } else {
+//                        homestay.getFavorite().put(BaseActivity.getUid(), true);
+//                        listHomestayAdapter.notifyDataSetChanged();
+//                    }
+                    listHomestayAdapter.notifyDataSetChanged();
+                } else {
+                    Map<String, Boolean> dataFavorite = new HashMap<>();
+                    dataFavorite.put(BaseActivity.getUid(), true);
+                    homestay.setFavorite(dataFavorite);
+                    homestay.getFavorite().put(BaseActivity.getUid(), true);
+                    listHomestayAdapter.notifyDataSetChanged();
+                }
+                Constants.IS_CHANGE_LIST_FAVORITE = false;
+            }
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

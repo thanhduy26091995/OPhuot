@@ -1,6 +1,7 @@
 package com.thanhduy.ophuot.favorite.view;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -261,5 +262,30 @@ public class ListFavoriteActivity extends BaseActivity {
         });
         //delete homestay from node users
         mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).child(favoriteId).removeValue();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            int position = data.getIntExtra(Constants.POSITION, 0);
+            Homestay homestayIntent = (Homestay) data.getSerializableExtra(Constants.HOMESTAY);
+            if (Constants.IS_CHANGE_LIST_FAVORITE) {
+                Homestay homestay = listHomestay.get(position);
+                homestay.getFavorite().clear();
+                homestay.setFavorite(homestayIntent.getFavorite());
+                if (homestay.getFavorite() != null) {
+                    listHomestayAdapter.notifyDataSetChanged();
+                } else {
+                    Map<String, Boolean> dataFavorite = new HashMap<>();
+                    dataFavorite.put(BaseActivity.getUid(), true);
+                    homestay.setFavorite(dataFavorite);
+                    homestay.getFavorite().put(BaseActivity.getUid(), true);
+                    listHomestayAdapter.notifyDataSetChanged();
+                }
+                Constants.IS_CHANGE_LIST_FAVORITE = false;
+            }
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

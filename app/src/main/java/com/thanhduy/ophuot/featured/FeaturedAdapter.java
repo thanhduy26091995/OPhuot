@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.featured.model.Featured;
 import com.thanhduy.ophuot.featured.model.FeaturedViewHolder;
@@ -41,6 +42,7 @@ public class FeaturedAdapter extends RecyclerView.Adapter<FeaturedViewHolder> {
         Glide.with(activity)
                 .load(featured.getImageId())
                 .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.no_image)
                 .into(holder.imgPoster);
         holder.txtPoster.setText(featured.getTitle());

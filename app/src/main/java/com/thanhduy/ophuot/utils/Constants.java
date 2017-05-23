@@ -111,4 +111,6 @@ public class Constants {
     public static final String USER_REPORTED = "userReported";
     public static final String REPORT_BY = "reportBy";
     public static final String NOTI_COMMENT = "notiComment";
+
+    public static boolean IS_CHANGE_LIST_FAVORITE = false;
 }

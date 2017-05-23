@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,18 +33,28 @@ import com.thanhduy.ophuot.base.ImageLoader;
 import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.chat.view.ChatActivity;
 import com.thanhduy.ophuot.comment.view.CommentActivity;
+import com.thanhduy.ophuot.fragment.BottomDialogFragment;
+import com.thanhduy.ophuot.fragment.PositionCallback;
 import com.thanhduy.ophuot.list_homestay.GetUserInfoCallback;
 import com.thanhduy.ophuot.manage_homestay.AdapterViewPager;
 import com.thanhduy.ophuot.manage_homestay.view.FullScreenGoogleMapActivity;
 import com.thanhduy.ophuot.model.Homestay;
+import com.thanhduy.ophuot.model.PostInfo;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.profile.guess_profile.GuessProfileActivitiy;
 import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.DateFormatter;
+import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.thanhduy.ophuot.R.id.activity;
 
 /**
  * Created by buivu on 21/03/2017.
@@ -103,7 +114,7 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
     private User user;
     private boolean isLoadSuccess = false;
     private GetUserInfoCallback getUserInfoCallback;
-
+    private int position = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,7 +129,7 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         //get intent
         homestay = (Homestay) getIntent().getSerializableExtra(Constants.HOMESTAY);
         user = (User) getIntent().getSerializableExtra(Constants.USERS);
-
+        position = getIntent().getIntExtra(Constants.POSITION, 0);
         initInfo();
         //event click
         btnComment.setOnClickListener(this);
@@ -145,7 +156,7 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
             loadData();
             setUpMapIfNeeded();
         } else {
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+            Snackbar snackbar = Snackbar.make(findViewById(activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
                     .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -285,6 +296,10 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra(Constants.POSITION, position);
+            returnIntent.putExtra(Constants.HOMESTAY, homestay);
+            setResult(RESULT_OK, returnIntent);
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -309,9 +324,117 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
                 }
             }
         } else if (v == btnContact) {
-            Intent intent = new Intent(ActivityHomestayDetail.this, ChatActivity.class);
-            intent.putExtra(Constants.USERS, user);
-            startActivity(intent);
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                Intent intent = new Intent(ActivityHomestayDetail.this, ChatActivity.class);
+                intent.putExtra(Constants.USERS, user);
+                startActivity(intent);
+            } else {
+                ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), this);
+            }
+        } else if (v == imgFavorite) {
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                PostInfo postInfo = new PostInfo(homestay.getDistrictId(), homestay.getProvinceId(), homestay.getId());
+                if (homestay.getFavorite() != null) {
+                    if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
+                        deleteFavoriteHomstay(postInfo, BaseActivity.getUid());
+                        homestay.getFavorite().remove(BaseActivity.getUid());
+                        Log.d("SIZE", ""+homestay.getFavorite().size());
+                        //set icon
+                        imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                        //show snackbar
+                        ShowSnackbar.showSnack(ActivityHomestayDetail.this, String.format("%s %s %s", getResources().getString(R.string.deleteFavorite),
+                                homestay.getName(), getResources().getString(R.string.outOfFavorite)));
+                        Constants.IS_CHANGE_LIST_FAVORITE = true;
+                    } else {
+                        BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();
+                        bottomDialogFragment.setPositionCallback(new PositionCallback() {
+                            @Override
+                            public void positionCallBack(int position) {
+                                homestay.getFavorite().put(BaseActivity.getUid(), true);
+                                Log.d("SIZE", ""+homestay.getFavorite().size());
+                                //set icon
+                                imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+                                //show snackbar
+                                ShowSnackbar.showSnack(ActivityHomestayDetail.this, String.format("%s %s %s", getResources().getString(R.string.addFavorite),
+                                        homestay.getName(), getResources().getString(R.string.into)));
+                                Constants.IS_CHANGE_LIST_FAVORITE = true;
+                            }
+                        });
+//                        //change icon heart from FavoriteListAdapterBottom
+//                        favoriteListAdapterForBottomDialog.setPositionCallback(new PositionCallback() {
+//                            @Override
+//                            public void positionCallBack(int position) {
+//                                homestay.getFavorite().put(BaseActivity.getUid(), true);
+//                            }
+//                        });
+                        Bundle dataMove = new Bundle();
+                        dataMove.putSerializable(Constants.POST_INFO, postInfo);
+                       // dataMove.putSerializable(Constants.POSITION, position);
+                        bottomDialogFragment.setArguments(dataMove);
+                        bottomDialogFragment.show(getSupportFragmentManager(), bottomDialogFragment.getTag());
+
+                    }
+                } else {
+                    BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();
+                    bottomDialogFragment.setPositionCallback(new PositionCallback() {
+                        @Override
+                        public void positionCallBack(int position) {
+                            Map<String, Boolean> data = new HashMap<>();
+                            data.put(BaseActivity.getUid(), true);
+                            homestay.setFavorite(data);
+                            homestay.getFavorite().put(BaseActivity.getUid(), true);
+                            //set icon
+                            imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+                            //show snackbar
+                            ShowSnackbar.showSnack(ActivityHomestayDetail.this, String.format("%s %s %s", getResources().getString(R.string.addFavorite),
+                                    homestay.getName(), getResources().getString(R.string.into)));
+                            Constants.IS_CHANGE_LIST_FAVORITE = true;
+                        }
+                    });
+                    Bundle dataMove = new Bundle();
+                    dataMove.putSerializable(Constants.POST_INFO, postInfo);
+                    //dataMove.putSerializable(Constants.POSITION, position);
+                    bottomDialogFragment.setArguments(dataMove);
+                    bottomDialogFragment.show(getSupportFragmentManager(), bottomDialogFragment.getTag());
+                }
+            } else {
+                ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), ActivityHomestayDetail.this);
+            }
         }
+    }
+
+    private void deleteFavoriteHomstay(final PostInfo postInfo, final String uid) {
+        // mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).child(postInfo.getHomestayId()).removeValue();
+        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
+                .child(postInfo.getHomestayId()).child(Constants.FAVORITE).child(uid).removeValue();
+        mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    for (DataSnapshot snapshotListFavorite : dataSnapshot.getChildren()) {
+                        for (DataSnapshot snapshotListHomestay : snapshotListFavorite.child(Constants.LIST_HOMESTAY).getChildren()) {
+                            if (snapshotListHomestay.getKey().equals(postInfo.getHomestayId())) {
+                                mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).child(snapshotListFavorite.getKey())
+                                        .child(Constants.LIST_HOMESTAY).child(snapshotListHomestay.getKey()).removeValue();
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(Constants.POSITION, position);
+        returnIntent.putExtra(Constants.HOMESTAY, homestay);
+        setResult(RESULT_OK, returnIntent);
+        super.onBackPressed();
     }
 }
