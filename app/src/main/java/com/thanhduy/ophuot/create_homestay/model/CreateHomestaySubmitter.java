@@ -1,6 +1,7 @@
 package com.thanhduy.ophuot.create_homestay.model;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.utils.Constants;
 
@@ -48,5 +49,11 @@ public class CreateHomestaySubmitter {
         myMap.put(Constants.ID_PROVINCE, provinceId);
         //add database
         mDatabase.child(Constants.USERS).child(uid).child(Constants.POST).child(homeStayId).setValue(myMap);
+        //add noti comment
+        Map<String, Object> dataUpdateNoti = new HashMap<>();
+        dataUpdateNoti.put(homeStayId, true);
+        mDatabase.child(Constants.USERS).child(uid).child(Constants.NOTI_COMMENT).updateChildren(dataUpdateNoti);
+        //register topics
+        FirebaseMessaging.getInstance().subscribeToTopic(homeStayId);
     }
 }

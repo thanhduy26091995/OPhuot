@@ -88,6 +88,7 @@
                         android:textStyle="bold" />
 
                     <RatingBar
+                        android:theme="@style/myRatingBar"
                         android:id="@+id/homestay_rating"
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"

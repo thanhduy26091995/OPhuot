@@ -1,13 +1,16 @@
 package com.thanhduy.ophuot.search;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.thanhduy.ophuot.R;
-import com.thanhduy.ophuot.database.model.Province;
+import com.thanhduy.ophuot.database.model.SearchResult;
+import com.thanhduy.ophuot.search.view.SearchByProvinceAndDistrictActivity;
+import com.thanhduy.ophuot.utils.Constants;
 
 import java.util.List;
 
@@ -18,11 +21,11 @@ import java.util.List;
 public class SearchFillTextAdapter extends RecyclerView.Adapter<SearchFillTextAdapter.SearchFillTextViewHolder> {
 
     public Activity activity;
-    public List<Province> provinceList;
+    public List<SearchResult> searchResults;
 
-    public SearchFillTextAdapter(Activity activity, List<Province> provinceList) {
+    public SearchFillTextAdapter(Activity activity, List<SearchResult> searchResults) {
         this.activity = activity;
-        this.provinceList = provinceList;
+        this.searchResults = searchResults;
     }
 
     @Override
@@ -33,13 +36,23 @@ public class SearchFillTextAdapter extends RecyclerView.Adapter<SearchFillTextAd
 
     @Override
     public void onBindViewHolder(SearchFillTextViewHolder holder, int position) {
-        Province province = provinceList.get(position);
-        holder.txtName.setText(province.getProvinceName());
+        final SearchResult searchResult = searchResults.get(position);
+        holder.txtName.setText(searchResult.getName());
+        //event click item
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, SearchByProvinceAndDistrictActivity.class);
+                intent.putExtra(Constants.ID_PROVINCE, searchResult.getProvinceId());
+                intent.putExtra(Constants.ID_DISTRICT, searchResult.getDistrictId());
+                activity.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return provinceList.size();
+        return searchResults.size();
     }
 
     public class SearchFillTextViewHolder extends RecyclerView.ViewHolder {

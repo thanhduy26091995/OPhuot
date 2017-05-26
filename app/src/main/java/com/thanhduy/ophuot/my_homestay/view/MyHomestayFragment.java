@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.create_homestay.view.CreateHomeStayActivityOne;
 import com.thanhduy.ophuot.model.PostInfo;
 import com.thanhduy.ophuot.my_homestay.MyHomestayAdapter;
@@ -64,8 +65,15 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
         //event click
         fabCreateHomestay.setOnClickListener(this);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            fabCreateHomestay.setVisibility(View.VISIBLE);
-            loadData();
+
+            if (InternetConnection.getInstance().isOnline(getActivity())) {
+                loadData();
+                fabCreateHomestay.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+                fabCreateHomestay.setVisibility(View.GONE);
+            }
+
         } else {
             fabCreateHomestay.setVisibility(View.GONE);
             ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), getActivity());

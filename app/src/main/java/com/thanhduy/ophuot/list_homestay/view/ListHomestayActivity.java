@@ -80,6 +80,8 @@ public class ListHomestayActivity extends BaseActivity {
 
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mRecycler.setAdapter(listHomestayAdapter);
+
+
     }
 
     private void initData() {

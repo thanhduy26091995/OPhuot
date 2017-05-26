@@ -1,6 +1,13 @@
 package com.thanhduy.ophuot.homestay_detail.view;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -13,6 +20,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,9 +38,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
-import com.thanhduy.ophuot.base.ImageLoader;
 import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.chat.view.ChatActivity;
 import com.thanhduy.ophuot.comment.view.CommentActivity;
@@ -45,6 +56,7 @@ import com.thanhduy.ophuot.profile.guess_profile.GuessProfileActivitiy;
 import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.DateFormatter;
+import com.thanhduy.ophuot.utils.OldRoundedBitmapDisplayer;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
 import com.thanhduy.ophuot.utils.ShowSnackbar;
 
@@ -142,16 +154,19 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
     private void initInfo() {
         if (InternetConnection.getInstance().isOnline(ActivityHomestayDetail.this)) {
             //set view pager for image slide
-            if (homestay.getImages().size() > 0) {
-                imgPoster.setVisibility(View.GONE);
+            if (homestay.getImages() != null) {
+                if (homestay.getImages().size() > 0) {
+                    imgPoster.setVisibility(View.GONE);
+                    mViewPagerAdapter = new AdapterViewPager(this, homestay.getImages());
+                    mViewPager.setAdapter(mViewPagerAdapter);
+                } else {
+                    mViewPager.setVisibility(View.GONE);
+                    imgPoster.setImageResource(R.drawable.no_image);
+                }
                 mViewPagerAdapter = new AdapterViewPager(this, homestay.getImages());
                 mViewPager.setAdapter(mViewPagerAdapter);
-            } else {
-                mViewPager.setVisibility(View.GONE);
-                imgPoster.setImageResource(R.drawable.no_image);
             }
-            mViewPagerAdapter = new AdapterViewPager(this, homestay.getImages());
-            mViewPager.setAdapter(mViewPagerAdapter);
+
             //show data
             loadData();
             setUpMapIfNeeded();
@@ -216,8 +231,23 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
                             txtOwnerName.setText(user.getName());
                             txtOwnerAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
                             txtTime.setText(String.format("%s %s", getResources().getString(R.string.joinAt), DateFormatter.formatDate(user.getCreateAt())));
-                            ImageLoader.getInstance().loadImageAvatar(ActivityHomestayDetail.this,
-                                    user.getAvatar(), imgAvatar);
+//                            ImageLoader.getInstance().loadImageAvatar(ActivityHomestayDetail.this,
+//                                    user.getAvatar(), imgAvatar);
+
+                            final ImageViewAware imageViewAware = new ImageViewAware(imgAvatar);
+                            Glide.with(ActivityHomestayDetail.this)
+                                    .load(user.getAvatar())
+                                    .asBitmap()
+                                    .centerCrop()
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(new SimpleTarget<Bitmap>() {
+                                        @Override
+                                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                            OldRoundedBitmapDisplayer oldRoundedBitmapDisplayer = new OldRoundedBitmapDisplayer(20);
+                                            oldRoundedBitmapDisplayer.display(resource, imageViewAware, null);
+                                        }
+                                    });
+
                         }
                     }
                 }
@@ -231,8 +261,22 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
             txtOwnerName.setText(user.getName());
             txtOwnerAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
             txtTime.setText(String.format("%s %s", getResources().getString(R.string.joinAt), DateFormatter.formatDate(user.getCreateAt())));
-            ImageLoader.getInstance().loadImageAvatar(ActivityHomestayDetail.this,
-                    user.getAvatar(), imgAvatar);
+//            ImageLoader.getInstance().loadImageAvatar(ActivityHomestayDetail.this,
+//                    user.getAvatar(), imgAvatar);
+
+            final ImageViewAware imageViewAware = new ImageViewAware(imgAvatar);
+            Glide.with(ActivityHomestayDetail.this)
+                    .load(user.getAvatar())
+                    .asBitmap()
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            OldRoundedBitmapDisplayer oldRoundedBitmapDisplayer = new OldRoundedBitmapDisplayer(20);
+                            oldRoundedBitmapDisplayer.display(resource, imageViewAware, null);
+                        }
+                    });
         }
         //yêu thích hoặc không
         if (homestay.getFavorite() != null) {
@@ -248,6 +292,27 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         } else {
             imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         }
+    }
+
+    public Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = pixels;
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
     }
 
     private void setUpMapIfNeeded() {
@@ -338,7 +403,7 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
                     if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
                         deleteFavoriteHomstay(postInfo, BaseActivity.getUid());
                         homestay.getFavorite().remove(BaseActivity.getUid());
-                        Log.d("SIZE", ""+homestay.getFavorite().size());
+                        Log.d("SIZE", "" + homestay.getFavorite().size());
                         //set icon
                         imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                         //show snackbar
@@ -351,7 +416,7 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
                             @Override
                             public void positionCallBack(int position) {
                                 homestay.getFavorite().put(BaseActivity.getUid(), true);
-                                Log.d("SIZE", ""+homestay.getFavorite().size());
+                                Log.d("SIZE", "" + homestay.getFavorite().size());
                                 //set icon
                                 imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
                                 //show snackbar
@@ -369,7 +434,7 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
 //                        });
                         Bundle dataMove = new Bundle();
                         dataMove.putSerializable(Constants.POST_INFO, postInfo);
-                       // dataMove.putSerializable(Constants.POSITION, position);
+                        // dataMove.putSerializable(Constants.POSITION, position);
                         bottomDialogFragment.setArguments(dataMove);
                         bottomDialogFragment.show(getSupportFragmentManager(), bottomDialogFragment.getTag());
 

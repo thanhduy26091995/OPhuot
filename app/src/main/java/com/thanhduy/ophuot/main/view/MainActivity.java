@@ -44,7 +44,7 @@ import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.chat_list.view.ChatListFragment;
 import com.thanhduy.ophuot.config.view.ConfigFragment;
 import com.thanhduy.ophuot.database.SqlLiteDbHelper;
-import com.thanhduy.ophuot.database.model.Province;
+import com.thanhduy.ophuot.database.model.SearchResult;
 import com.thanhduy.ophuot.favorite.view.FavoriteFragment;
 import com.thanhduy.ophuot.featured.view.FeaturedFragment;
 import com.thanhduy.ophuot.help.HelpFragment;
@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity
     private ProgressBar progressBar;
     private MainPresenter presenter;
     private SqlLiteDbHelper sqlLiteDbHelper;
-    private List<Province> provinces = new ArrayList<>();
+    private List<SearchResult> searchResults = new ArrayList<>();
     private Menu mMenu;
 
     @Override
@@ -517,14 +517,14 @@ public class MainActivity extends BaseActivity
             public boolean onQueryTextChange(String newText) {
                 if (newText.length() == 0) {
                     if (SearchFragment.searchFragment != null) {
-                        provinces.clear();
-                        SearchFragment.searchFragment.handleSearch(true, provinces);
+                        searchResults.clear();
+                        SearchFragment.searchFragment.handleSearch(true, searchResults);
                     }
 
                 } else {
                     if (SearchFragment.searchFragment != null) {
-                        provinces = sqlLiteDbHelper.searchProvinceOrDistrict(newText);
-                        SearchFragment.searchFragment.handleSearch(false, provinces);
+                        searchResults = sqlLiteDbHelper.searchProvinceOrDistrict(newText);
+                        SearchFragment.searchFragment.handleSearch(false, searchResults);
 
                     }
                 }

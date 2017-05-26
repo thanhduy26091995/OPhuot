@@ -1,6 +1,7 @@
 package com.thanhduy.ophuot.chat.view;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -81,6 +82,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private String deviceToken;
     private DatabaseReference mDatabase;
     private User user;
+    private Uri mUri;
 
     private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 1001;
     private static final String[] PERMISSIONS_STORAGE = {
@@ -299,7 +301,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void openCamera() {
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.Images.Media.TITLE, "Image File Name");
+        mUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
         startActivityForResult(cameraIntent, Constants.CAMERA_INTENT);
     }
 
@@ -342,7 +348,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 }
             });
         } else if (requestCode == Constants.CAMERA_INTENT && resultCode == RESULT_OK) {
-            byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(data.getData()));
+            byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(mUri));
             String fileName = String.format("%d%s", new Date().getTime(), getUid());
             StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
             UploadTask uploadTask = storageForUpFile.putBytes(arrImageBytes);
@@ -370,6 +376,5 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         cursor.moveToFirst();
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
-
     }
 }

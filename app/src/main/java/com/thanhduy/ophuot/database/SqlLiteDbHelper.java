@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.thanhduy.ophuot.database.model.District;
 import com.thanhduy.ophuot.database.model.Province;
+import com.thanhduy.ophuot.database.model.SearchResult;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,6 +18,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.thanhduy.ophuot.R.string.province;
 
 public class SqlLiteDbHelper extends SQLiteOpenHelper {
 
@@ -231,25 +234,26 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
     }
 
     //search
-    public List<Province> searchProvinceOrDistrict(String name) {
+    public List<SearchResult> searchProvinceOrDistrict(String name) {
         SQLiteDatabase database = this.getReadableDatabase();
 
-        List<Province> provinces = new ArrayList<>();
-        String selectQuery = "SELECT * FROM provinces where name like '%" + name + "%'";
+        List<SearchResult> searchResults = new ArrayList<>();
+        String selectQuery = "SELECT * FROM (select D.name || ', ' || P.name 'name', P.id 'provinceId', D.id 'districtId'\n" +
+                "from districts as D, provinces as P\n" +
+                "where D.province_id = P.id)\n" +
+                "where name like '%"+name+"%'";
         Cursor cursor = database.rawQuery(selectQuery, null);
         while (cursor.moveToNext()) {
-            Province province = new Province();
-            int provinceId = cursor.getInt(0);
-            String provinceName = cursor.getString(1);
-            //save data
-            province.setProvinceId(provinceId);
-            province.setProvinceName(provinceName);
+            String searchResultName = cursor.getString(0);
+            Integer provinceId = cursor.getInt(1);
+            Integer districtId = cursor.getInt(2);
+            SearchResult searchResult = new SearchResult(searchResultName, provinceId, districtId);
             //save data to list
-            provinces.add(province);
+            searchResults.add(searchResult);
         }
         cursor.close();
 
         database.close();
-        return provinces;
+        return searchResults;
     }
 }

@@ -49,39 +49,39 @@
             android:layout_marginTop="5dp"
             android:background="@android:color/darker_gray" />
 
-        <LinearLayout
-            android:id="@+id/linear_search_by_province"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:weightSum="4">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/linear_search_by_province"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:weightSum="4">-->
 
-            <com.thanhduy.ophuot.base.IconTextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:gravity="left|center"
-                android:text="@string/fa_search"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp" />
+            <!--<com.thanhduy.ophuot.base.IconTextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="0.5"-->
+                <!--android:gravity="left|center"-->
+                <!--android:text="@string/fa_search"-->
+                <!--android:textColor="@color/colorPrimary"-->
+                <!--android:textSize="20sp" />-->
 
-            <TextView
-                style="@style/AppNormalText"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3.5"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@string/searchByProvinceAndDistrict"></TextView>
-        </LinearLayout>
+            <!--<TextView-->
+                <!--style="@style/AppNormalText"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="3.5"-->
+                <!--android:ellipsize="end"-->
+                <!--android:maxLines="1"-->
+                <!--android:text="@string/searchByProvinceAndDistrict"></TextView>-->
+        <!--</LinearLayout>-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginTop="5dp"
-            android:background="@android:color/darker_gray" />
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0.1dp"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:background="@android:color/darker_gray" />-->
 
         <LinearLayout
             android:layout_width="match_parent"

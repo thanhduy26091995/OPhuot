@@ -30,7 +30,6 @@ public class AdapterViewPager extends PagerAdapter {
 
     @Override
     public int getCount() {
-
         return list.size();
     }
 

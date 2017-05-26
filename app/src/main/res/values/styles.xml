@@ -42,4 +42,9 @@
     <style name="mySpinner" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
         <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="myRatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
 </resources>

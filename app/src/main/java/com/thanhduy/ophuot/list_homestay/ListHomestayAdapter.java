@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -63,121 +64,129 @@ public class ListHomestayAdapter extends RecyclerView.Adapter<ListHomestayViewHo
     @Override
     public void onBindViewHolder(final ListHomestayViewHolder holder, final int position) {
         final Homestay homestay = homestayList.get(position);
-        holder.txtName.setText(homestay.getName());
-        holder.txtAddress.setText(homestay.getAddress().get(Constants.ADDRESS).toString());
-        holder.txtType.setText(homestay.getType());
-        holder.txtPrice.setText(homestay.getPrice());
-        ImageLoader.getInstance().loadImageOther(activity, homestay.getImages().get(0), holder.imgPoster);
-        holder.rating.setRating(homestay.getRating());
-        //check if current user favorite this homestay, if it has, use heart with red color
-        if (homestay.getFavorite() != null) {
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
-                    holder.imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+        if (homestay != null) {
+            try {
+                holder.txtName.setText(homestay.getName());
+                holder.txtAddress.setText(homestay.getAddress().get(Constants.ADDRESS).toString());
+                holder.txtType.setText(homestay.getType());
+                holder.txtPrice.setText(homestay.getPrice());
+                if (homestay.getImages() != null) {
+                    ImageLoader.getInstance().loadImageOther(activity, homestay.getImages().get(0), holder.imgPoster);
+                }
+                holder.rating.setRating(homestay.getRating());
+                //check if current user favorite this homestay, if it has, use heart with red color
+                if (homestay.getFavorite() != null) {
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                        if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
+                            holder.imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+                        } else {
+                            holder.imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                        }
+                    } else {
+                        holder.imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                    }
                 } else {
                     holder.imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                 }
-            } else {
-                holder.imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-            }
-        } else {
-            holder.imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-        }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (InternetConnection.getInstance().isOnline(activity)) {
-                    final Intent intent = new Intent(activity, ActivityHomestayDetail.class);
-                    intent.putExtra(Constants.HOMESTAY, homestay);
-                    intent.putExtra(Constants.POSITION, position);
-                    mDatabase.child(Constants.USERS).child(homestay.getPostBy()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot != null) {
-                                User user = dataSnapshot.getValue(User.class);
-                                intent.putExtra(Constants.USERS, user);
-                                activity.startActivityForResult(intent, 100);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-
-            }
-        });
-
-        //event click icon favorite
-        holder.imgFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    PostInfo postInfo = new PostInfo(homestay.getDistrictId(), homestay.getProvinceId(), homestay.getId());
-                    if (homestay.getFavorite() != null) {
-                        if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
-                            deleteFavoriteHomstay(postInfo, BaseActivity.getUid());
-                            homestay.getFavorite().remove(BaseActivity.getUid());
-                            //set icon
-                            holder.imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                            //show snackbar
-                            ShowSnackbar.showSnack(activity, String.format("%s %s %s", activity.getResources().getString(R.string.deleteFavorite),
-                                    homestay.getName(), activity.getResources().getString(R.string.outOfFavorite)));
-                        } else {
-                            BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();
-                            bottomDialogFragment.setPositionCallback(new PositionCallback() {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (InternetConnection.getInstance().isOnline(activity)) {
+                            final Intent intent = new Intent(activity, ActivityHomestayDetail.class);
+                            intent.putExtra(Constants.HOMESTAY, homestay);
+                            intent.putExtra(Constants.POSITION, position);
+                            mDatabase.child(Constants.USERS).child(homestay.getPostBy()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
-                                public void positionCallBack(int position) {
-                                    Homestay homestay = homestayList.get(position);
-                                    homestay.getFavorite().put(BaseActivity.getUid(), true);
-                                    notifyDataSetChanged();
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot != null) {
+                                        User user = dataSnapshot.getValue(User.class);
+                                        intent.putExtra(Constants.USERS, user);
+                                        activity.startActivityForResult(intent, 100);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
                                 }
                             });
-                            //change icon heart from FavoriteListAdapterBottom
-                            favoriteListAdapterForBottomDialog.setPositionCallback(new PositionCallback() {
-                                @Override
-                                public void positionCallBack(int position) {
-                                    Homestay homestay = homestayList.get(position);
-                                    homestay.getFavorite().put(BaseActivity.getUid(), true);
-                                    notifyDataSetChanged();
-                                }
-                            });
-                            Bundle dataMove = new Bundle();
-                            dataMove.putSerializable(Constants.POST_INFO, postInfo);
-                            dataMove.putSerializable(Constants.POSITION, position);
-                            bottomDialogFragment.setArguments(dataMove);
-                            bottomDialogFragment.show(((AppCompatActivity) activity).getSupportFragmentManager(), bottomDialogFragment.getTag());
-
                         }
-                    } else {
-                        BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();
-                        bottomDialogFragment.setPositionCallback(new PositionCallback() {
-                            @Override
-                            public void positionCallBack(int position) {
-                                Homestay homestay = homestayList.get(position);
-                                Map<String, Boolean> data = new HashMap<>();
-                                data.put(BaseActivity.getUid(), true);
-                                homestay.setFavorite(data);
-                                homestay.getFavorite().put(BaseActivity.getUid(), true);
-                                notifyDataSetChanged();
-                            }
-                        });
-                        Bundle dataMove = new Bundle();
-                        dataMove.putSerializable(Constants.POST_INFO, postInfo);
-                        dataMove.putSerializable(Constants.POSITION, position);
-                        bottomDialogFragment.setArguments(dataMove);
-                        bottomDialogFragment.show(((AppCompatActivity) activity).getSupportFragmentManager(), bottomDialogFragment.getTag());
+
                     }
-                    //refresh data
-                    notifyDataSetChanged();
-                } else {
-                    ShowAlertDialog.showAlert(activity.getResources().getString(R.string.loginFirst), activity);
-                }
+                });
+
+                //event click icon favorite
+                holder.imgFavorite.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                            PostInfo postInfo = new PostInfo(homestay.getDistrictId(), homestay.getProvinceId(), homestay.getId());
+                            if (homestay.getFavorite() != null) {
+                                if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
+                                    deleteFavoriteHomstay(postInfo, BaseActivity.getUid());
+                                    homestay.getFavorite().remove(BaseActivity.getUid());
+                                    //set icon
+                                    holder.imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                                    //show snackbar
+                                    ShowSnackbar.showSnack(activity, String.format("%s %s %s", activity.getResources().getString(R.string.deleteFavorite),
+                                            homestay.getName(), activity.getResources().getString(R.string.outOfFavorite)));
+                                } else {
+                                    BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();
+                                    bottomDialogFragment.setPositionCallback(new PositionCallback() {
+                                        @Override
+                                        public void positionCallBack(int position) {
+                                            Homestay homestay = homestayList.get(position);
+                                            homestay.getFavorite().put(BaseActivity.getUid(), true);
+                                            notifyDataSetChanged();
+                                        }
+                                    });
+                                    //change icon heart from FavoriteListAdapterBottom
+                                    favoriteListAdapterForBottomDialog.setPositionCallback(new PositionCallback() {
+                                        @Override
+                                        public void positionCallBack(int position) {
+                                            Homestay homestay = homestayList.get(position);
+                                            homestay.getFavorite().put(BaseActivity.getUid(), true);
+                                            notifyDataSetChanged();
+                                        }
+                                    });
+                                    Bundle dataMove = new Bundle();
+                                    dataMove.putSerializable(Constants.POST_INFO, postInfo);
+                                    dataMove.putSerializable(Constants.POSITION, position);
+                                    bottomDialogFragment.setArguments(dataMove);
+                                    bottomDialogFragment.show(((AppCompatActivity) activity).getSupportFragmentManager(), bottomDialogFragment.getTag());
+
+                                }
+                            } else {
+                                BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();
+                                bottomDialogFragment.setPositionCallback(new PositionCallback() {
+                                    @Override
+                                    public void positionCallBack(int position) {
+                                        Homestay homestay = homestayList.get(position);
+                                        Map<String, Boolean> data = new HashMap<>();
+                                        data.put(BaseActivity.getUid(), true);
+                                        homestay.setFavorite(data);
+                                        homestay.getFavorite().put(BaseActivity.getUid(), true);
+                                        notifyDataSetChanged();
+                                    }
+                                });
+                                Bundle dataMove = new Bundle();
+                                dataMove.putSerializable(Constants.POST_INFO, postInfo);
+                                dataMove.putSerializable(Constants.POSITION, position);
+                                bottomDialogFragment.setArguments(dataMove);
+                                bottomDialogFragment.show(((AppCompatActivity) activity).getSupportFragmentManager(), bottomDialogFragment.getTag());
+                            }
+                            //refresh data
+                            notifyDataSetChanged();
+                        } else {
+                            ShowAlertDialog.showAlert(activity.getResources().getString(R.string.loginFirst), activity);
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                Log.d("LISTHomeStayAdapter", e.getMessage());
             }
-        });
+        }
     }
 
 

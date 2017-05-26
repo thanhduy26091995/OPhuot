@@ -119,27 +119,31 @@ public class ListFavoriteActivity extends BaseActivity {
 
     private void getDataHomestay() {
         hideItemData();
-        for (PostInfo postInfo : postInfos) {
-            mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
-                    .child(postInfo.getHomestayId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot != null) {
-                        Homestay homestay = dataSnapshot.getValue(Homestay.class);
-                        if (homestay != null) {
-                            listHomestay.add(homestay);
-                            listHomestayAdapter.notifyDataSetChanged();
+        if (postInfos.size() > 0) {
+            for (PostInfo postInfo : postInfos) {
+                mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
+                        .child(postInfo.getHomestayId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot != null) {
+                            Homestay homestay = dataSnapshot.getValue(Homestay.class);
+                            if (homestay != null) {
+                                listHomestay.add(homestay);
+                                listHomestayAdapter.notifyDataSetChanged();
+                            }
                         }
+                        showItemData();
                     }
-                    showItemData();
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    showItemData();
-                }
-            });
-            //Log.d("POST", "" + postInfo.getProvinceId() + "/" + postInfo.getDistrictId() + "/" + postInfo.getHomestayId());
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        showItemData();
+                    }
+                });
+                //Log.d("POST", "" + postInfo.getProvinceId() + "/" + postInfo.getDistrictId() + "/" + postInfo.getHomestayId());
+            }
+        } else {
+            showItemData();
         }
     }
 

@@ -20,6 +20,8 @@ public class ManageHomestaySubmitter {
     public void deleteHomestay(String provinceId, String districtId, String homestayId, String uid) {
         mDatabase.child(Constants.USERS).child(uid).child(Constants.POST).child(homestayId).removeValue();
         mDatabase.child(Constants.HOMESTAY).child(provinceId).child(districtId).child(homestayId).removeValue();
+        //remove from noti Comment
+        mDatabase.child(Constants.USERS).child(uid).child(Constants.NOTI_COMMENT).child(homestayId).removeValue();
     }
 
     public void editHomestay(String provinceId, String districtId, String homestayId, String name, String description,

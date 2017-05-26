@@ -23,6 +23,7 @@ import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.database.SqlLiteDbHelper;
 import com.thanhduy.ophuot.database.model.District;
 import com.thanhduy.ophuot.database.model.Province;
+import com.thanhduy.ophuot.database.model.SearchResult;
 import com.thanhduy.ophuot.featured.model.Featured;
 import com.thanhduy.ophuot.search.PlacesFeaturedAdapter;
 import com.thanhduy.ophuot.search.SearchFillTextAdapter;
@@ -53,8 +54,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     @BindView(R.id.linear_search_near_by)
     LinearLayout linearSearchNearBy;
-    @BindView(R.id.linear_search_by_province)
-    LinearLayout linearSearchByProvince;
+    //    @BindView(R.id.linear_search_by_province)
+//    LinearLayout linearSearchByProvince;
     @BindView(R.id.recycler_places_featured)
     RecyclerView recyclerView;
     @BindView(R.id.linear_first)
@@ -66,7 +67,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     public static SearchFragment searchFragment = null;
     private SearchFillTextAdapter searchFillTextAdapter;
-    private List<Province> provinces = new ArrayList<>();
+    private List<SearchResult> searchResults = new ArrayList<>();
 
     @Nullable
     @Override
@@ -94,11 +95,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         recyclerView.smoothScrollToPosition(0);
         //event click
         linearSearchNearBy.setOnClickListener(this);
-        linearSearchByProvince.setOnClickListener(this);
+        // linearSearchByProvince.setOnClickListener(this);
         return rootView;
     }
 
-    public void handleSearch(boolean isShowFirst, List<Province> provinces) {
+    public void handleSearch(boolean isShowFirst, List<SearchResult> searchResults) {
         if (isShowFirst) {
             //show first, hide search result
             linearFirst.setVisibility(View.VISIBLE);
@@ -108,7 +109,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             linearFirst.setVisibility(View.GONE);
             linearSecond.setVisibility(View.VISIBLE);
 
-            searchFillTextAdapter = new SearchFillTextAdapter(getActivity(), provinces);
+            searchFillTextAdapter = new SearchFillTextAdapter(getActivity(), searchResults);
             mRecyclerSearch.setLayoutManager(new LinearLayoutManager(getActivity()));
             mRecyclerSearch.setAdapter(searchFillTextAdapter);
             searchFillTextAdapter.notifyDataSetChanged();
@@ -143,8 +144,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         if (v == linearSearchNearBy) {
             Intent intent = new Intent(getActivity(), SearchNearByResultActivity.class);
             startActivity(intent);
-        } else if (v == linearSearchByProvince) {
-            showDialogFilter();
         }
     }
 

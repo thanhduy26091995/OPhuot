@@ -66,7 +66,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteViewHolder> {
                         if (dataSnapshot != null) {
                             FavoriteInfo favoriteInfo = dataSnapshot.child(Constants.INFO).getValue(FavoriteInfo.class);
                             if (favoriteInfo != null) {
-                                favoriteName = favoriteInfo.getFavoriteName();
                                 holder.txtFavoriteName.setText(favoriteInfo.getFavoriteName());
                                 holder.txtFavoriteNumber.setText(String.format("%d %s", dataSnapshot.child(Constants.LIST_HOMESTAY).getChildrenCount(), activity.getResources().getString(R.string.post)));
                             }
@@ -104,6 +103,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteViewHolder> {
                                 @Override
                                 public void onClick(View v) {
                                     postInfos = new ArrayList<>();
+                                    favoriteName = dataSnapshot.child(Constants.INFO).child(Constants.FAVORITE_NAME).getValue(String.class);
                                     //get list post info
                                     for (DataSnapshot listHomestay : dataSnapshot.child(Constants.LIST_HOMESTAY).getChildren()) {
                                         PostInfo postInfo = listHomestay.getValue(PostInfo.class);

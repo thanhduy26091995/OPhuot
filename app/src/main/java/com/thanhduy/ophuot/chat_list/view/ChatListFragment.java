@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.chat_list.ChatListAdapter;
 import com.thanhduy.ophuot.chat_list.presenter.ChatListPresenter;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
@@ -47,7 +48,11 @@ public class ChatListFragment extends Fragment {
         listUid = new ArrayList<>();
         chatListAdapter = new ChatListAdapter(getActivity(), listUid);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            loadDataChatList();
+            if (InternetConnection.getInstance().isOnline(getActivity())) {
+                loadDataChatList();
+            } else {
+                progressBar.setVisibility(View.GONE);
+            }
         } else {
             ShowAlertDialog.showAlert(getActivity().getResources().getString(R.string.loginFirst), getActivity());
             progressBar.setVisibility(View.GONE);
