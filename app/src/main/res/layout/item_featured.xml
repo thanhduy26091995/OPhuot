@@ -10,18 +10,19 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardElevation="1sp"
-        card_view:cardUseCompatPadding="true">
+        card_view:cardElevation="3sp"
+        card_view:contentPaddingLeft="3dp"
+        card_view:contentPaddingTop="3dp">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="200dp">
 
             <ImageView
-                android:background="@android:color/transparent"
                 android:id="@+id/img_poster_featured"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:scaleType="fitXY"
                 android:src="@drawable/da_lat" />
 

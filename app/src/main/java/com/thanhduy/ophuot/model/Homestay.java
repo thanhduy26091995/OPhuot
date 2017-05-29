@@ -24,6 +24,7 @@ public class Homestay implements Serializable {
     private int provinceId;
     private Comments comments;
     private Map<String, Boolean> favorite;
+    private Map<String, Object> ratingBy;
 
     public Homestay() {
     }
@@ -63,6 +64,14 @@ public class Homestay implements Serializable {
 
     //getter and setter
 
+
+    public Map<String, Object> getRatingBy() {
+        return ratingBy;
+    }
+
+    public void setRatingBy(Map<String, Object> ratingBy) {
+        this.ratingBy = ratingBy;
+    }
 
     public Map<String, Boolean> getFavorite() {
         return favorite;

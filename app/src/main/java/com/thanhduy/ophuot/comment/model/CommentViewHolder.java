@@ -25,6 +25,6 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
         txtName = (TextView) itemView.findViewById(R.id.txt_comment_name);
         txtTime = (TextView) itemView.findViewById(R.id.txt_comment_time);
         txtContent = (TextView) itemView.findViewById(R.id.txt_comment_content);
-        ratingBar = (RatingBar) itemView.findViewById(R.id.rating_comment);
+       // ratingBar = (RatingBar) itemView.findViewById(R.id.rating_comment);
     }
 }

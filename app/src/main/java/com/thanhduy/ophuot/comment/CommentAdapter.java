@@ -56,7 +56,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
         //load data
         holder.txtContent.setText(comment.getContent());
         holder.txtTime.setText(DateFormatter.formatDateByYMD(comment.getCommentTime()));
-        holder.ratingBar.setRating((int) comment.getRating());
+       // holder.ratingBar.setRating((int) comment.getRating());
         //load name and avatar
         if (listUserCommented.get(comment.getCommentBy()) != null) {
             final User user = listUserCommented.get(comment.getCommentBy());

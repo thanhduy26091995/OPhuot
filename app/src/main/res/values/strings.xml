@@ -184,6 +184,12 @@
     <string name="noInternet">Không có kết nối Internet</string>
     <string name="errorWhenSendImage">Có lỗi khi lưu ảnh, vui lòng thử lại!</string>
     <string name="retry">THỬ LẠI</string>
+    <string name="ratingSave">Đánh giá của bạn đã được lưu lại</string>
+    <string name="excellent">Excellent</string>
+    <string name="veryGood">Very good</string>
+    <string name="good">Good</string>
+    <string name="notBad">Not bad</string>
+    <string name="veryBad">Very bad</string>
     <string-array name="arr_language">
         <item>English</item>
         <item>Vietnamese</item>

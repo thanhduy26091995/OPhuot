@@ -113,4 +113,5 @@ public class Constants {
     public static final String NOTI_COMMENT = "notiComment";
 
     public static boolean IS_CHANGE_LIST_FAVORITE = false;
+    public static final String RATING_BY = "ratingBy";
 }

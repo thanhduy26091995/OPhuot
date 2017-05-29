@@ -36,16 +36,20 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
-        <RatingBar
-            android:layout_marginLeft="10dp"
-            android:id="@+id/rating_comment"
-            style="?android:attr/ratingBarStyleIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:isIndicator="false"
-            android:numStars="5"
-            android:stepSize="1" />
+        <!--<RatingBar-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:id="@+id/rating_comment"-->
+        <!--style="?android:attr/ratingBarStyleIndicator"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="left"-->
+        <!--android:isIndicator="false"-->
+        <!--android:numStars="5"-->
+        <!--android:stepSize="1" />-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/md_grey_300" />
 
         <RelativeLayout
             android:layout_width="match_parent"

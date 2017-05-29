@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -53,8 +52,8 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     ImageView imgSend;
     @BindView(R.id.edt_content)
     EditText edtContent;
-    @BindView(R.id.rating_comment)
-    RatingBar ratingComment;
+//    @BindView(R.id.rating_comment)
+//    RatingBar ratingComment;
 
     private Homestay homestay;
     private CommentPresenter presenter;
@@ -183,11 +182,11 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     private void addComment() {
         long commentTime = new Date().getTime();
         String content = edtContent.getText().toString();
-        int rating = (int) ratingComment.getRating();
+       // int rating = (int) ratingComment.getRating();
         //call presenter
-        presenter.addComment(homestay, getUid(), content, rating, commentTime);
+        presenter.addComment(homestay, getUid(), content, 0, commentTime);
         //update rating
-        ratingComment.setRating(0);
+        //ratingComment.setRating(0);
         //register topics
         FirebaseMessaging.getInstance().subscribeToTopic(homestay.getId());
         //send push
