@@ -78,7 +78,8 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
     TextView txtAnimal;
     @BindView(R.id.btn_comment)
     Button btnComment;
-
+    @BindView(R.id.btn_see_rating)
+    Button btnSeeRating;
 
     private Homestay homestay;
     private AdapterViewPager mViewPagerAdapter;
@@ -105,12 +106,13 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
         initInfo();
         //event click button
         btnComment.setOnClickListener(this);
+        btnSeeRating.setOnClickListener(this);
     }
 
     private void initInfo() {
         if (InternetConnection.getInstance().isOnline(ManageHomestayActivity.this)) {
             //show menu
-            if (menuEdit != null && menuDelete != null){
+            if (menuEdit != null && menuDelete != null) {
                 menuDelete.setVisible(true);
                 menuEdit.setVisible(true);
             }
@@ -132,7 +134,7 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
             changeTextCommentIfYes();
         } else {
             //hide menu
-            if (menuEdit != null && menuDelete != null){
+            if (menuEdit != null && menuDelete != null) {
                 menuDelete.setVisible(false);
                 menuEdit.setVisible(false);
             }
@@ -320,6 +322,10 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
     public void onClick(View v) {
         if (v == btnComment) {
             Intent intent = new Intent(ManageHomestayActivity.this, CommentActivity.class);
+            intent.putExtra(Constants.HOMESTAY, homestay);
+            startActivity(intent);
+        } else if (v == btnSeeRating) {
+            Intent intent = new Intent(ManageHomestayActivity.this, ListRatingActivity.class);
             intent.putExtra(Constants.HOMESTAY, homestay);
             startActivity(intent);
         }

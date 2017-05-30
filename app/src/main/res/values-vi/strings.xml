@@ -7,7 +7,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-
     <string name="loginWithEmail">Hoặc Đăng nhập với Email </string>
     <string name="registerWithEmail">Đăng ký với Email</string>
     <string name="notification">Thông Báo</string>
@@ -39,7 +38,6 @@
         <item>Thiết Lập</item>
         <item>Trợ Giúp</item>
     </string-array>
-
     <string name="profile">Thông Tin Cá Nhân</string>
     <string name="chooseImageOrTakePicture">Chọn ảnh từ thư viện hoặc chụp ảnh</string>
     <string name="chooseImage">Chọn Ảnh</string>
@@ -106,7 +104,6 @@
         <item>Nhà riêng</item>
         <item>Ký túc xá</item>
     </string-array>
-
     <string name="editFavoriteName">Chỉnh sửa tên danh sách</string>
     <string name="deleteFavoriteList">Xóa danh sách</string>
     <string name="saveInto">Lưu vào</string>
@@ -160,26 +157,21 @@
     <string name="notificationLower">Thông báo</string>
     <string name="report">Báo cáo</string>
     <string name="all">Tất Cả</string>
-
     <string name="report1">Thông tin đăng không đúng với thực tế</string>
     <string name="report2">Chủ nhà làm phiền tôi</string>
     <string name="report3">Tiện nghi kém</string>
     <string name="report4">Giờ giấc không thoải mái</string>
     <string name="report5">Nơi ở quá ồn ào</string>
-
     <string name="reportThisOne">Báo cáo người này</string>
     <string name="reportUpper">Báo Cáo</string>
     <string name="savedReportContent">Phản hồi của bạn đã được chúng tôi ghi nhận.</string>
     <string name="fillAtLeastOne">Hãy điền lựa chọn của bạn</string>
-
     <string name="inputEmailToResetPassword">Nhập email của bạn, chúng tôi sẽ gửi hướng dẫn để thiết lập lại mật khẩu</string>
     <string name="resetPasswordTitle">Thiết Lập Lại Mật Khẩu</string>
-
     <string name="sendEmailResetSuccess">Gửi email thiết lập mật khẩu thành công, hãy kiểm tra Email của bạn</string>
     <string name="sendEmailResetFail">Gửi email thiết lập mật khẩu thất bại, vui lòng thử lại</string>
     <string name="required">Bắt buộc</string>
     <string name="notificationComment">Thông báo bình luận</string>
-
     <string name="noInternet">Không có kết nối Internet</string>
     <string name="errorWhenSendImage">Có lỗi khi lưu ảnh, vui lòng thử lại!</string>
     <string name="retry">THỬ LẠI</string>
@@ -189,6 +181,8 @@
     <string name="good">Tốt</string>
     <string name="notBad">Tạm được</string>
     <string name="veryBad">Rất tệ</string>
+    <string name="seeRating">Xem đánh giá</string>
+    <string name="listRating">Danh sách đánh giá</string>
     <string-array name="arr_language">
         <item>Tiếng Anh</item>
         <item>Tiếng Việt</item>

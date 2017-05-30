@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <uses-permission android:name="android.permission.GET_TASKS" />
+
     <application
         android:name=".base.OPhuotApplication"
         android:allowBackup="true"
@@ -78,6 +79,7 @@
         <activity android:name=".search.view.SearchNearByResultActivity"></activity>
         <activity android:name=".search.view.SearchByProvinceAndDistrictActivity"></activity>
         <activity android:name=".search.view.SearchFillTextActivity" />
+        <activity android:name=".manage_homestay.view.ListRatingActivity" />
         <activity
             android:name=".chat.view.ChatActivity"
             android:windowSoftInputMode="adjustPan"></activity>

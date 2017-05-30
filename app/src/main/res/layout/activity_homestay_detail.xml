@@ -205,7 +205,8 @@
                     android:paddingLeft="5dp"
                     android:paddingTop="10dp"
                     android:text="Đánh giá của bạn"
-                    android:textColor="@color/colorPrimary" />
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="match_parent"
