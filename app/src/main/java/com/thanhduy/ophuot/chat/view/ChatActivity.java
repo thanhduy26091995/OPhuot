@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -167,7 +168,20 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot != null) {
+                    Message messageUpdate = dataSnapshot.getValue(Message.class);
+                    if (messageUpdate != null) {
+                        for (int i = messageList.size() - 1; i >= 0; i--) {
+                            if (messageUpdate.getTimestamp() == messageList.get(i).getTimestamp() && messageUpdate.getSendBy().equals(messageList.get(i).getSendBy()) &&
+                                    messageUpdate.getReceiveBy().equals(messageList.get(i).getReceiveBy())) {
+                                messageList.set(i, messageUpdate);
+                                chatAdapter.notifyDataSetChanged();
+                                break;
+                            }
+                        }
+                    }
 
+                }
             }
 
             @Override
@@ -326,9 +340,33 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+    private void addData(String key, String currentId, String partnerId, Message message, boolean isMine) {
+        try {
+            message.setIsMine(isMine);
+            message.setReceiveBy(partnerId);
+            Map<String, Object> data = message.toMap();
+            mDatabase.child(Constants.MESSAGES).child(currentId).child(partnerId).child(key).setValue(data);
+        } catch (Exception e) {
+            Log.d("CHAT", e.getMessage());
+        }
+    }
+
+    private void updateMessage(String data, String key, String currentId, String partnerId) {
+        Map<String, Object> dataUpdate = new HashMap<>();
+        dataUpdate.put(Constants.CONTENT, data);
+        mDatabase.child(Constants.MESSAGES).child(currentId).child(partnerId).child(key).updateChildren(dataUpdate);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK) {
+            //save data first
+            final Message message = new Message("https://firebasestorage.googleapis.com/v0/b/ophuot-62634.appspot.com/o/no_img.png?alt=media&token=dbf25756-34cc-47ca-877e-92a0cd84e231", true, new Date().getTime(), getUid());
+           // final String key = String.format("%s%d", getUid(), new Date().getTime());
+            final String key =  mDatabase.child(Constants.MESSAGES).child(getUid()).child(partnerId).push().getKey();
+            addData(key, getUid(), partnerId, message, true);
+            addData(key, partnerId, getUid(), message, false);
+
             byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(data.getData()));
             String fileName = String.format("%d%s", new Date().getTime(), getUid());
             StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
@@ -342,12 +380,23 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Message message = new Message(taskSnapshot.getDownloadUrl().toString(), true, new Date().getTime(), getUid());
+                    //Message message = new Message(taskSnapshot.getDownloadUrl().toString(), true, new Date().getTime(), getUid());
                     //add message
-                    presenter.addMessage(partnerId, message);
+                    //presenter.addMessage(partnerId, message);
+
+                    //update message
+                    updateMessage(taskSnapshot.getDownloadUrl().toString(), key, getUid(), partnerId);
+                    updateMessage(taskSnapshot.getDownloadUrl().toString(), key, partnerId, getUid());
                 }
             });
         } else if (requestCode == Constants.CAMERA_INTENT && resultCode == RESULT_OK) {
+            //save data first
+            final Message message = new Message("https://firebasestorage.googleapis.com/v0/b/ophuot-62634.appspot.com/o/no_img.png?alt=media&token=dbf25756-34cc-47ca-877e-92a0cd84e231", true, new Date().getTime(), getUid());
+           // final String key = String.format("%s%d", getUid(), new Date().getTime());
+            final String key =  mDatabase.child(Constants.MESSAGES).child(getUid()).child(partnerId).push().getKey();
+            addData(key, getUid(), partnerId, message, true);
+            addData(key, partnerId, getUid(), message, false);
+
             byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(mUri));
             String fileName = String.format("%d%s", new Date().getTime(), getUid());
             StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
@@ -361,9 +410,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Message message = new Message(taskSnapshot.getDownloadUrl().toString(), true, new Date().getTime(), getUid());
-                    //add message
-                    presenter.addMessage(partnerId, message);
+//                    Message message = new Message(taskSnapshot.getDownloadUrl().toString(), true, new Date().getTime(), getUid());
+//                    //add message
+//                    presenter.addMessage(partnerId, message);
+
+                    //update message
+                    updateMessage(taskSnapshot.getDownloadUrl().toString(), key, getUid(), partnerId);
+                    updateMessage(taskSnapshot.getDownloadUrl().toString(), key, partnerId, getUid());
                 }
             });
         }

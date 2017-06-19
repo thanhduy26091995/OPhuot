@@ -56,6 +56,7 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
     private SearchPresenter presenter;
     private List<Homestay> homestayList = new ArrayList<>();
     private ListHomestayAdapter listHomestayAdapter;
+    private String name;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,10 +69,12 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getResources().getString(R.string.searchByProvinceAndDistrictTitle));
+        name = getIntent().getStringExtra(Constants.NAME);
+        getSupportActionBar().setTitle(name);
         //get intent
         provinceId = getIntent().getIntExtra(Constants.ID_PROVINCE, 0);
         districtId = getIntent().getIntExtra(Constants.ID_DISTRICT, 0);
+
         initInfo();
     }
 
@@ -94,6 +97,7 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
     }
 
     private void handleData() {
+        hideItemData();
         mDatabase.child(Constants.HOMESTAY).child(String.valueOf(provinceId)).child(String.valueOf(districtId)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

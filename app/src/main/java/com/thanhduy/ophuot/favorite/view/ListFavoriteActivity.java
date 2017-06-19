@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -201,9 +202,14 @@ public class ListFavoriteActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 favoriteName = edtFavoriteName.getText().toString();
-                //update data
-                changeFavoriteName(favoriteName, favoriteId);
-                builder.create().dismiss();
+                if (TextUtils.isEmpty(favoriteName)) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.favoriteNameRequired), ListFavoriteActivity.this);
+                } else {
+                    //update data
+                    changeFavoriteName(favoriteName, favoriteId);
+                    builder.create().dismiss();
+                }
+
             }
         });
         builder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {

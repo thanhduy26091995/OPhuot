@@ -30,6 +30,7 @@ public class ChatPresenter {
             message.setIsMine(isMine);
             message.setReceiveBy(partnerId);
             String key = mDatabase.child(Constants.MESSAGES).child(currentId).child(partnerId).push().getKey();
+          //  message.setMessageId(key);
             Map<String, Object> data = message.toMap();
             mDatabase.child(Constants.MESSAGES).child(currentId).child(partnerId).child(key).setValue(data);
         } catch (Exception e) {

@@ -45,6 +45,7 @@ public class SearchFillTextAdapter extends RecyclerView.Adapter<SearchFillTextAd
                 Intent intent = new Intent(activity, SearchByProvinceAndDistrictActivity.class);
                 intent.putExtra(Constants.ID_PROVINCE, searchResult.getProvinceId());
                 intent.putExtra(Constants.ID_DISTRICT, searchResult.getDistrictId());
+                intent.putExtra(Constants.NAME, searchResult.getName());
                 activity.startActivity(intent);
             }
         });

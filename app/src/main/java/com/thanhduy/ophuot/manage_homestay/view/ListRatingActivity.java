@@ -41,6 +41,7 @@ public class ListRatingActivity extends BaseActivity {
         //get intent
         homestay = (Homestay) getIntent().getSerializableExtra(Constants.HOMESTAY);
         mRecycler = (RecyclerView) findViewById(R.id.recycler_rating);
+        listRatingAdapter = new ListRatingAdapter(ListRatingActivity.this, ratingList);
         loadData();
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mRecycler.setAdapter(listRatingAdapter);
@@ -58,7 +59,6 @@ public class ListRatingActivity extends BaseActivity {
                 rating.setRating(rate);
                 ratingList.add(rating);
             }
-            listRatingAdapter = new ListRatingAdapter(ListRatingActivity.this, ratingList);
         }
 
     }

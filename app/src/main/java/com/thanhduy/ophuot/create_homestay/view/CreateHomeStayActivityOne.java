@@ -232,10 +232,9 @@ public class CreateHomeStayActivityOne extends BaseActivity implements View.OnCl
     }
 
     private void showGooglePlaces() {
-
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        Intent myIntent;
         try {
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            Intent myIntent;
             myIntent = builder.build(CreateHomeStayActivityOne.this);
             startActivityForResult(myIntent, Constants.PLACE_PICKER_REQUEST);
         } catch (GooglePlayServicesRepairableException e) {

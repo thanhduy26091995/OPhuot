@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.profile.edit_profile.presenter.EditProfilePresenter;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowAlertDialog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -88,7 +90,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
     private void initData() {
         if (InternetConnection.getInstance().isOnline(EditProfileActivity.this)) {
-            if (menuConfirm != null){
+            if (menuConfirm != null) {
                 menuConfirm.setVisible(true);
             }
             //show data
@@ -147,7 +149,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             finish();
         } else if (item.getItemId() == R.id.action_confirm) {
             updateDataUser();
-            finish();
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -160,8 +162,14 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         address.put(Constants.ADDRESS, txtAddress.getText().toString());
         address.put(Constants.LAT, lat);
         address.put(Constants.LNG, lng);
-        //update data
-        presenter.updateUserInfo(getUid(), address, description, name, phone, gender);
+        if (TextUtils.isEmpty(name)) {
+            ShowAlertDialog.showAlert(getResources().getString(R.string.nameRequired), EditProfileActivity.this);
+        } else {
+            //update data
+            presenter.updateUserInfo(getUid(), address, description, name, phone, gender);
+            finish();
+        }
+
     }
 
     private void showGooglePlaces() {

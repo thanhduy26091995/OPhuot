@@ -16,6 +16,7 @@ public class Message {
     private long timestamp;
     private String sendBy;
     private String receiveBy;
+    private String messageId;
 
     private boolean isDisplayStatus;
 
@@ -27,6 +28,14 @@ public class Message {
         this.isImage = isImage;
         this.timestamp = timestamp;
         this.sendBy = sendBy;
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 
     public boolean isDisplayStatus() {
@@ -93,6 +102,7 @@ public class Message {
         mapDataMessage.put(Constants.SEND_BY, sendBy);
         mapDataMessage.put(Constants.TIMESTAMP, timestamp);
         mapDataMessage.put(Constants.RECEIVE_BY, receiveBy);
+       // mapDataMessage.put(Constants.ID, messageId);
         return mapDataMessage;
     }
 }
