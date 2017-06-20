@@ -73,7 +73,7 @@ import static com.thanhduy.ophuot.R.id.activity;
  * Created by buivu on 21/03/2017.
  */
 
-public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCallback, View.OnClickListener {
+public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCallback, View.OnClickListener, HomestayDetailView {
 
     @BindView(R.id.txt_manage_type_title)
     TextView txtTitleType;
@@ -132,6 +132,8 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
     private GetUserInfoCallback getUserInfoCallback;
     private int position = 0;
     private HomestayDetailPresenter presenter;
+    private Dialog dialog;
+    private RatingBar ratingBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -461,13 +463,13 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
     }
 
     private void showDialogRating() {
-        final Dialog dialog = new Dialog(ActivityHomestayDetail.this);
+        dialog = new Dialog(ActivityHomestayDetail.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.custom_dialog_rating);
        /*
        Init components
         */
-        final RatingBar ratingBar = (RatingBar) dialog.findViewById(R.id.rating_bar);
+        ratingBar = (RatingBar) dialog.findViewById(R.id.rating_bar);
         final TextView txtRatingContent = (TextView) dialog.findViewById(R.id.txt_content_rating);
         Button btnCancel = (Button) dialog.findViewById(R.id.btn_cancel);
         Button btnSend = (Button) dialog.findViewById(R.id.btn_send);
@@ -553,20 +555,7 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
             @Override
             public void onClick(View v) {
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    presenter.addToRatingBy(getUid(), (int) ratingBar.getRating(), homestay);
-                    //update homestay
-                    if (homestay.getRatingBy() == null) {
-                        Map<String, Object> data = new HashMap<>();
-                        data.put(BaseActivity.getUid(), (long) ratingBar.getRating());
-                        homestay.setRatingBy(data);
-                        homestay.getRatingBy().put(BaseActivity.getUid(), (long) ratingBar.getRating());
-                    } else {
-                        homestay.getRatingBy().put(getUid(), (long) ratingBar.getRating());
-                    }
-                    //dismiss
-                    dialog.dismiss();
-                    Snackbar snackbar = Snackbar.make(findViewById(activity), getResources().getString(R.string.ratingSave), Snackbar.LENGTH_LONG);
-                    snackbar.show();
+                    presenter.homestayIsExists(homestay);
                 } else {
                     ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), ActivityHomestayDetail.this);
                 }
@@ -609,5 +598,28 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         returnIntent.putExtra(Constants.HOMESTAY, homestay);
         setResult(RESULT_OK, returnIntent);
         super.onBackPressed();
+    }
+
+    @Override
+    public void homestayIsExists(boolean result) {
+        if (result) {
+            presenter.addToRatingBy(getUid(), (int) ratingBar.getRating(), homestay);
+            //update homestay
+            if (homestay.getRatingBy() == null) {
+                Map<String, Object> data = new HashMap<>();
+                data.put(BaseActivity.getUid(), (long) ratingBar.getRating());
+                homestay.setRatingBy(data);
+                homestay.getRatingBy().put(BaseActivity.getUid(), (long) ratingBar.getRating());
+            } else {
+                homestay.getRatingBy().put(getUid(), (long) ratingBar.getRating());
+            }
+            //dismiss
+            dialog.dismiss();
+            Snackbar snackbar = Snackbar.make(findViewById(activity), getResources().getString(R.string.ratingSave), Snackbar.LENGTH_LONG);
+            snackbar.show();
+        } else {
+            imgFavorite.setEnabled(false);
+            ShowAlertDialog.showAlert(getResources().getString(R.string.homestayDeleted), ActivityHomestayDetail.this);
+        }
     }
 }

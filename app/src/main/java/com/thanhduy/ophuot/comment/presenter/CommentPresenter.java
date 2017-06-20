@@ -1,10 +1,13 @@
 package com.thanhduy.ophuot.comment.presenter;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.comment.model.CommentSubmitter;
-import com.thanhduy.ophuot.comment.view.CommentActivity;
+import com.thanhduy.ophuot.comment.view.CommentView;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.utils.Constants;
 
@@ -18,12 +21,32 @@ import java.util.Map;
 public class CommentPresenter {
     private DatabaseReference mDatabase;
     private CommentSubmitter submitter;
-    private CommentActivity view;
+    private CommentView view;
 
-    public CommentPresenter(CommentActivity view) {
+    public CommentPresenter(CommentView view) {
         this.view = view;
         mDatabase = FirebaseDatabase.getInstance().getReference();
         submitter = new CommentSubmitter(mDatabase);
+    }
+
+    public void homestayIsExists(Homestay homestay){
+        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(homestay.getProvinceId())).child(String.valueOf(homestay.getDistrictId()))
+                .child(homestay.getId()).child(Constants.ID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    view.homestayIsExists(true);
+                }
+                else{
+                    view.homestayIsExists(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void addComment(final Homestay homestay, String commentBy, String content, int rating, long commentTime) {

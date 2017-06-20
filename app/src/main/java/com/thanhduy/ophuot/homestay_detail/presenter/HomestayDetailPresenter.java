@@ -5,7 +5,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.thanhduy.ophuot.homestay_detail.view.ActivityHomestayDetail;
+import com.thanhduy.ophuot.homestay_detail.view.HomestayDetailView;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.utils.Constants;
 
@@ -18,9 +18,9 @@ import java.util.Map;
 
 public class HomestayDetailPresenter {
     private DatabaseReference mDatabase;
-    private ActivityHomestayDetail view;
+    private HomestayDetailView view;
 
-    public HomestayDetailPresenter(ActivityHomestayDetail view) {
+    public HomestayDetailPresenter(HomestayDetailView view) {
         this.view = view;
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
@@ -64,5 +64,25 @@ public class HomestayDetailPresenter {
         dataRating.put(Constants.RATING, rating);
         mDatabase.child(Constants.HOMESTAY).child(String.valueOf(homestay.getProvinceId())).child(String.valueOf(homestay.getDistrictId()))
                 .child(homestay.getId()).updateChildren(dataRating);
+    }
+
+    public void homestayIsExists(Homestay homestay){
+        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(homestay.getProvinceId())).child(String.valueOf(homestay.getDistrictId()))
+                .child(homestay.getId()).child(Constants.ID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    view.homestayIsExists(true);
+                }
+                else{
+                    view.homestayIsExists(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

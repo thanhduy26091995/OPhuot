@@ -6,8 +6,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="loginWithEmail">Hoặc Đăng nhập với Email </string>
+    <string name="action_settings">Cài đặt</string>
+    <string name="loginWithEmail">Hoặc Đăng nhập bằng Email</string>
     <string name="registerWithEmail">Đăng ký với Email</string>
     <string name="notification">Thông Báo</string>
     <string name="fillAllData">Hãy điền đầy đủ thông tin</string>
@@ -26,7 +26,7 @@
     <string name="confirmPassword">Nhập lại mật khẩu</string>
     <string name="register">Đăng ký</string>
     <string name="haveAccount">Đã có tài khoản?</string>
-    <string name="authenFail">Xác thực thất bại</string>
+    <string name="authenFail">Xác thực không thành công</string>
     <!--Title-->
     <string-array name="nav_item_activity_titles">
         <item>Nổi Bật</item>
@@ -40,23 +40,23 @@
     </string-array>
     <string name="profile">Thông Tin Cá Nhân</string>
     <string name="chooseImageOrTakePicture">Chọn ảnh từ thư viện hoặc chụp ảnh</string>
-    <string name="chooseImage">Chọn Ảnh</string>
+    <string name="chooseImage">Thư Viện Ảnh</string>
     <string name="takePicture">Chụp Ảnh</string>
     <string name="postImage">Tải ảnh lên</string>
     <string name="editProfile">Chỉnh sửa thông tin</string>
-    <string name="createHomestay">Tạo Homestay</string>
+    <string name="createHomestay">Thêm Homestay</string>
     <string name="maxPassenger">Số khách tối đa</string>
     <string name="numberBedrrom">Số phòng ngủ</string>
     <string name="numberBed">Số giường</string>
     <string name="numberBathroom">Số phòng tắm</string>
     <string name="yes">Có</string>
     <string name="no">Không</string>
-    <string name="timeOpen">Mở cửa</string>
-    <string name="timeClose">Đóng cửa</string>
+    <string name="timeOpen">Giờ mở cửa</string>
+    <string name="timeClose">Giờ đóng cửa</string>
     <string name="airCondition">Máy lạnh</string>
     <string name="smoke">Cho phép hút thuốc</string>
     <string name="tivi">Tivi truyền hình cáp</string>
-    <string name="wifi">Có wifi</string>
+    <string name="wifi">Wifi</string>
     <string name="heater">Lò sưởi</string>
     <string name="animal">Cho phép thú cưng</string>
     <string name="waterHeater">Máy nóng lạnh</string>
@@ -89,8 +89,8 @@
     <string name="comment">Nhận xét</string>
     <string name="joinAt">Là thành viên từ </string>
     <string name="loginOrRegister">Đăng Ký Hoặc Đăng Nhập</string>
-    <string name="emailDuplicate">Email đã được sử dụng, vui lòng thử lại với email khác</string>
-    <string name="loginFail">Đăng nhập thất bại, vui lòng kiểm tra lại email hoặc mật khẩu</string>
+    <string name="emailDuplicate">Email đã được sử dụng, vui lòng thử lại</string>
+    <string name="loginFail">Email hoặc mật khẩu không đúng, vui lòng thử lại</string>
     <string name="aboutMe">Mô tả về bản thân</string>
     <string name="enterComment">Nhập nhận xét</string>
     <string name="addFavorite">Bạn đã thêm</string>
@@ -107,7 +107,7 @@
     <string name="editFavoriteName">Chỉnh sửa tên danh sách</string>
     <string name="deleteFavoriteList">Xóa danh sách</string>
     <string name="saveInto">Lưu vào</string>
-    <string name="createNewList">Tạo một danh sách mới</string>
+    <string name="createNewList">Tạo danh sách mới</string>
     <string name="post">bài đăng</string>
     <string name="myFavoriteTitle">Danh Sách Yêu Thích</string>
     <string name="editFavoriteNameTitle">Thay Đổi Tên Danh Sách</string>
@@ -133,7 +133,7 @@
     <string name="canNotGetData">Không thể lấy dữ liệu, vui lòng thử lại!</string>
     <string name="reload">Tải lại</string>
     <string name="GPSTitle">Cài đặt GPS</string>
-    <string name="GPSContent">GPS đang tắt, bạn có muốn đi đến cài đặt GPS?</string>
+    <string name="GPSContent">GPS đang tắt, bạn có muốn đi đến cài đặt?</string>
     <string name="setting">Cài Đặt</string>
     <string name="searchByProvinceAndDistrict">Tìm kiếm theo tỉnh thành</string>
     <string name="searchByProvinceAndDistrictTitle">Tìm Kiếm Theo Tỉnh Thành</string>
@@ -147,7 +147,7 @@
     <string name="errorWhenSaveImage">Có lỗi khi lưu ảnh, vui lòng thử lại!</string>
     <string name="imageSaved">Ảnh đã được lưu</string>
     <string name="accountBlocked">Tài khoản đã bị khóa, hãy liên lạc với BQT trong phần Trợ Giúp để được hỗ trợ</string>
-    <string name="pressBackAgain">Nhấn back một lần nữa để thoát</string>
+    <string name="pressBackAgain">Nhấn một lần nữa để thoát</string>
     <string name="call">Gọi</string>
     <string name="facebook">Liên kết Facebook</string>
     <string name="sendFeedback">Gửi phản hồi cho Ban Quản Trị</string>
@@ -166,7 +166,7 @@
     <string name="reportUpper">Báo Cáo</string>
     <string name="savedReportContent">Phản hồi của bạn đã được chúng tôi ghi nhận.</string>
     <string name="fillAtLeastOne">Hãy điền lựa chọn của bạn</string>
-    <string name="inputEmailToResetPassword">Nhập email của bạn, chúng tôi sẽ gửi hướng dẫn để thiết lập lại mật khẩu</string>
+    <string name="inputEmailToResetPassword">Hãy nhập email, chúng tôi sẽ gửi bạn hướng dẫn để thiết lập lại mật khẩu</string>
     <string name="resetPasswordTitle">Thiết Lập Lại Mật Khẩu</string>
     <string name="sendEmailResetSuccess">Gửi email thiết lập mật khẩu thành công, hãy kiểm tra Email của bạn</string>
     <string name="sendEmailResetFail">Gửi email thiết lập mật khẩu thất bại, vui lòng thử lại</string>
@@ -179,12 +179,13 @@
     <string name="excellent">Tuyệt vời</string>
     <string name="veryGood">Rất tốt</string>
     <string name="good">Tốt</string>
-    <string name="notBad">Tạm được</string>
+    <string name="notBad">ổn</string>
     <string name="veryBad">Rất tệ</string>
     <string name="seeRating">Xem đánh giá</string>
     <string name="listRating">Danh sách đánh giá</string>
     <string name="nameRequired">Bạn phải điền tên trước khi tiếp tục</string>
     <string name="favoriteNameRequired">Bạn phải điền tên danh sách trước khi tiếp tục</string>
+    <string name="homestayDeleted">Homestay này đã bị xóa bởi chủ sở hữu</string>
     <string-array name="arr_language">
         <item>Tiếng Anh</item>
         <item>Tiếng Việt</item>

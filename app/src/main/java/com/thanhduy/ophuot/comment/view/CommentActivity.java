@@ -42,7 +42,7 @@ import butterknife.ButterKnife;
  * Created by buivu on 22/03/2017.
  */
 
-public class CommentActivity extends BaseActivity implements View.OnClickListener {
+public class CommentActivity extends BaseActivity implements View.OnClickListener, CommentView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -79,7 +79,6 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(String.format("%s", getResources().getString(R.string.comment)));
-
 
         commentAdapter = new CommentAdapter(this, commentList);
         myLinearLayoutManager = new MyLinearLayoutManager(this);
@@ -169,9 +168,8 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         if (v == imgSend) {
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                addComment();
-                //hide keyboard
-                hideKeyboardWhenCommented(v);
+                //check data exists
+                presenter.homestayIsExists(homestay);
             } else {
                 ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), this);
             }
@@ -182,7 +180,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     private void addComment() {
         long commentTime = new Date().getTime();
         String content = edtContent.getText().toString();
-       // int rating = (int) ratingComment.getRating();
+        // int rating = (int) ratingComment.getRating();
         //call presenter
         presenter.addComment(homestay, getUid(), content, 0, commentTime);
         //update rating
@@ -197,5 +195,18 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         mRecycler.smoothScrollToPosition(commentAdapter.getItemCount());
         //thêm homestayId vào node NotiComment, sử dụng cho register và unregister FCM
         presenter.addNotiComment(getUid(), homestay.getId());
+    }
+
+    @Override
+    public void homestayIsExists(boolean result) {
+        //enable icon send
+        if (result) {
+            addComment();
+            //hide keyboard
+            hideKeyboardWhenCommented(imgSend);
+
+        } else {
+            ShowAlertDialog.showAlert(getResources().getString(R.string.homestayDeleted), CommentActivity.this);
+        }
     }
 }
