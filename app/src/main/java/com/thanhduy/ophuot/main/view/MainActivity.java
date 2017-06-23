@@ -280,11 +280,14 @@ public class MainActivity extends BaseActivity
             @Override
             public void run() {
                 // update the main content by replacing fragments
-                Fragment fragment = getFragment();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
-                //overridePendingTransition(R.anim.comming_in_right, R.anim.comming_out_right);
-                fragmentTransaction.commitAllowingStateLoss();
+                if (!isFinishing()){
+                    Fragment fragment = getFragment();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
+                    //overridePendingTransition(R.anim.comming_in_right, R.anim.comming_out_right);
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+
             }
         };
         // If mPendingRunnable is not null, then add to the message queue

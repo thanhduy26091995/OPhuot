@@ -192,6 +192,7 @@
     <string name="nameRequired">You must enter your name before proceeding</string>
     <string name="favoriteNameRequired">You must enter the list name before proceeding</string>
     <string name="homestayDeleted">This homestay has been deleted by the owner</string>
+    <string name="termOfUse">Điều Khoản Sử Dụng</string>
     <string-array name="arr_language">
         <item>English</item>
         <item>Vietnamese</item>

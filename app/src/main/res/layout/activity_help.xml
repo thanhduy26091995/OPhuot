@@ -48,7 +48,7 @@
             android:background="@android:color/darker_gray" />
 
         <LinearLayout
-            android:id="@+id/linear_search_by_province"
+            android:id="@+id/linear_term"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
