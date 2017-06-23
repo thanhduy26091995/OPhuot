@@ -32,11 +32,19 @@
         <item>Search</item>
         <item>Favorite</item>
         <item>Support</item>
-        <item>My Box</item>
+        <item>Message</item>
         <item>My Homestay</item>
         <item>Config</item>
         <item>Help</item>
     </string-array>
+    <string name="featured">Featured</string>
+    <string name="searchMenuTitle">Search</string>
+    <string name="favoriteMenuTitle">Favorite</string>
+    <string name="supportMenuTitle">Support</string>
+    <string name="messageMenuTitle">Message</string>
+    <string name="myHomestayMenuTitle">My Homestay</string>
+    <string name="configMenuTitle">Config</string>
+    <string name="helpMenuTitle">Help</string>
     <string name="chooseImageOrTakePicture">Choose a photo from the gallery or take a photo</string>
     <string name="chooseImage">Select photo</string>
     <string name="takePicture">Take a photo</string>

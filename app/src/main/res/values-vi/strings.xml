@@ -38,6 +38,14 @@
         <item>Thiết Lập</item>
         <item>Trợ Giúp</item>
     </string-array>
+    <string name="featured">Nổi Bật</string>
+    <string name="searchMenuTitle">Tìm Kiếm</string>
+    <string name="favoriteMenuTitle">Yêu Thích</string>
+    <string name="supportMenuTitle">Hỗ Trợ</string>
+    <string name="messageMenuTitle">Hộp Thư</string>
+    <string name="myHomestayMenuTitle">Homestay Của Tôi</string>
+    <string name="configMenuTitle">Thiết Lập</string>
+    <string name="helpMenuTitle">Trợ Giúp</string>
     <string name="profile">Thông Tin Cá Nhân</string>
     <string name="chooseImageOrTakePicture">Chọn ảnh từ thư viện hoặc chụp ảnh</string>
     <string name="chooseImage">Thư Viện Ảnh</string>

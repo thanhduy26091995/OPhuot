@@ -7,19 +7,19 @@
         <item
             android:id="@+id/nav_best"
             android:icon="@drawable/ic_star"
-            android:title="Nổi Bật" />
+            android:title="@string/featured" />
         <item
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_search"
-            android:title="Tìm Kiếm" />
+            android:title="@string/searchMenuTitle" />
         <item
             android:id="@+id/nav_favorite"
             android:icon="@drawable/ic_hobby"
-            android:title="Yêu Thích" />
+            android:title="@string/favoriteMenuTitle" />
         <item
             android:id="@+id/nav_support"
             android:icon="@drawable/ic_menu_support"
-            android:title="Hỗ Trợ" />
+            android:title="@string/supportMenuTitle" />
     </group>
 
     <group
@@ -30,11 +30,11 @@
         <item
             android:id="@+id/nav_inbox"
             android:icon="@drawable/ic_message_black_24dp"
-            android:title="Hộp thư" />
+            android:title="@string/messageMenuTitle" />
         <item
             android:id="@+id/nav_my_post"
             android:icon="@drawable/ic_my_post"
-            android:title="Homestay Của Tôi" />
+            android:title="@string/myHomestayMenuTitle" />
         <!--</menu>-->
         <!--</item>-->
     </group>
@@ -45,11 +45,11 @@
         <item
             android:id="@+id/nav_config"
             android:icon="@drawable/ic_config"
-            android:title="Thiết Lập" />
+            android:title="@string/configMenuTitle" />
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_help"
-            android:title="Trợ Giúp" />
+            android:title="@string/helpMenuTitle" />
         <item
             android:id="@+id/nav_sign_out"
             android:icon="@drawable/ic_settings_power_black_24dp"
