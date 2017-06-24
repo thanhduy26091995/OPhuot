@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -37,6 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.chat.ChatAdapter;
 import com.thanhduy.ophuot.chat.presenter.ChatPresenter;
 import com.thanhduy.ophuot.model.Message;
@@ -45,6 +47,7 @@ import com.thanhduy.ophuot.push_notification.PushMessage;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.EncodeImage;
 import com.thanhduy.ophuot.utils.SessionManagerUser;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -204,7 +207,14 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == imgSend) {
-            addDataMessage();
+            if (InternetConnection.getInstance().isOnline(ChatActivity.this)) {
+                addDataMessage();
+            } else {
+                ShowSnackbar.showSnack(ChatActivity.this, getResources().getString(R.string.noInternet));
+                //hide keyboard
+                InputMethodManager methodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                methodManager.hideSoftInputFromWindow(edtContent.getWindowToken(), 0);
+            }
         } else if (v == imgMore) {
             showMore(v);
         }
@@ -360,65 +370,73 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK) {
-            //save data first
-            final Message message = new Message("https://firebasestorage.googleapis.com/v0/b/ophuot-62634.appspot.com/o/no_img.png?alt=media&token=dbf25756-34cc-47ca-877e-92a0cd84e231", true, new Date().getTime(), getUid());
-           // final String key = String.format("%s%d", getUid(), new Date().getTime());
-            final String key =  mDatabase.child(Constants.MESSAGES).child(getUid()).child(partnerId).push().getKey();
-            addData(key, getUid(), partnerId, message, true);
-            addData(key, partnerId, getUid(), message, false);
+            if (InternetConnection.getInstance().isOnline(ChatActivity.this)) {
+                //save data first
+                final Message message = new Message("https://firebasestorage.googleapis.com/v0/b/ophuot-62634.appspot.com/o/no_img.png?alt=media&token=dbf25756-34cc-47ca-877e-92a0cd84e231", true, new Date().getTime(), getUid());
+                // final String key = String.format("%s%d", getUid(), new Date().getTime());
+                final String key = mDatabase.child(Constants.MESSAGES).child(getUid()).child(partnerId).push().getKey();
+                addData(key, getUid(), partnerId, message, true);
+                addData(key, partnerId, getUid(), message, false);
 
-            byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(data.getData()));
-            String fileName = String.format("%d%s", new Date().getTime(), getUid());
-            StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
-            UploadTask uploadTask = storageForUpFile.putBytes(arrImageBytes);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("CHAT_IMAGE", e.getMessage());
-                }
-            });
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    //Message message = new Message(taskSnapshot.getDownloadUrl().toString(), true, new Date().getTime(), getUid());
-                    //add message
-                    //presenter.addMessage(partnerId, message);
+                byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(data.getData()));
+                String fileName = String.format("%d%s", new Date().getTime(), getUid());
+                StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
+                UploadTask uploadTask = storageForUpFile.putBytes(arrImageBytes);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("CHAT_IMAGE", e.getMessage());
+                    }
+                });
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        //Message message = new Message(taskSnapshot.getDownloadUrl().toString(), true, new Date().getTime(), getUid());
+                        //add message
+                        //presenter.addMessage(partnerId, message);
 
-                    //update message
-                    updateMessage(taskSnapshot.getDownloadUrl().toString(), key, getUid(), partnerId);
-                    updateMessage(taskSnapshot.getDownloadUrl().toString(), key, partnerId, getUid());
-                }
-            });
+                        //update message
+                        updateMessage(taskSnapshot.getDownloadUrl().toString(), key, getUid(), partnerId);
+                        updateMessage(taskSnapshot.getDownloadUrl().toString(), key, partnerId, getUid());
+                    }
+                });
+            } else {
+                ShowSnackbar.showSnack(ChatActivity.this, getResources().getString(R.string.noInternet));
+            }
         } else if (requestCode == Constants.CAMERA_INTENT && resultCode == RESULT_OK) {
-            //save data first
-            final Message message = new Message("https://firebasestorage.googleapis.com/v0/b/ophuot-62634.appspot.com/o/no_img.png?alt=media&token=dbf25756-34cc-47ca-877e-92a0cd84e231", true, new Date().getTime(), getUid());
-           // final String key = String.format("%s%d", getUid(), new Date().getTime());
-            final String key =  mDatabase.child(Constants.MESSAGES).child(getUid()).child(partnerId).push().getKey();
-            addData(key, getUid(), partnerId, message, true);
-            addData(key, partnerId, getUid(), message, false);
+            if (InternetConnection.getInstance().isOnline(ChatActivity.this)) {
+                //save data first
+                final Message message = new Message("https://firebasestorage.googleapis.com/v0/b/ophuot-62634.appspot.com/o/no_img.png?alt=media&token=dbf25756-34cc-47ca-877e-92a0cd84e231", true, new Date().getTime(), getUid());
+                // final String key = String.format("%s%d", getUid(), new Date().getTime());
+                final String key = mDatabase.child(Constants.MESSAGES).child(getUid()).child(partnerId).push().getKey();
+                addData(key, getUid(), partnerId, message, true);
+                addData(key, partnerId, getUid(), message, false);
 
-            byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(mUri));
-            String fileName = String.format("%d%s", new Date().getTime(), getUid());
-            StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
-            UploadTask uploadTask = storageForUpFile.putBytes(arrImageBytes);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("CHAT_IMAGE", e.getMessage());
-                }
-            });
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(mUri));
+                String fileName = String.format("%d%s", new Date().getTime(), getUid());
+                StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
+                UploadTask uploadTask = storageForUpFile.putBytes(arrImageBytes);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("CHAT_IMAGE", e.getMessage());
+                    }
+                });
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 //                    Message message = new Message(taskSnapshot.getDownloadUrl().toString(), true, new Date().getTime(), getUid());
 //                    //add message
 //                    presenter.addMessage(partnerId, message);
 
-                    //update message
-                    updateMessage(taskSnapshot.getDownloadUrl().toString(), key, getUid(), partnerId);
-                    updateMessage(taskSnapshot.getDownloadUrl().toString(), key, partnerId, getUid());
-                }
-            });
+                        //update message
+                        updateMessage(taskSnapshot.getDownloadUrl().toString(), key, getUid(), partnerId);
+                        updateMessage(taskSnapshot.getDownloadUrl().toString(), key, partnerId, getUid());
+                    }
+                });
+            } else {
+                ShowSnackbar.showSnack(ChatActivity.this, getResources().getString(R.string.noInternet));
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

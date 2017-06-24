@@ -385,26 +385,52 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
                 ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), this);
             }
         } else if (v == imgFavorite) {
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                PostInfo postInfo = new PostInfo(homestay.getDistrictId(), homestay.getProvinceId(), homestay.getId());
-                if (homestay.getFavorite() != null) {
-                    if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
-                        deleteFavoriteHomstay(postInfo, BaseActivity.getUid());
-                        homestay.getFavorite().remove(BaseActivity.getUid());
-                        Log.d("SIZE", "" + homestay.getFavorite().size());
-                        //set icon
-                        imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                        //show snackbar
-                        ShowSnackbar.showSnack(ActivityHomestayDetail.this, String.format("%s %s %s", getResources().getString(R.string.deleteFavorite),
-                                homestay.getName(), getResources().getString(R.string.outOfFavorite)));
-                        Constants.IS_CHANGE_LIST_FAVORITE = true;
+            if (InternetConnection.getInstance().isOnline(ActivityHomestayDetail.this)) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    PostInfo postInfo = new PostInfo(homestay.getDistrictId(), homestay.getProvinceId(), homestay.getId());
+                    if (homestay.getFavorite() != null) {
+                        if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
+                            deleteFavoriteHomstay(postInfo, BaseActivity.getUid());
+                            homestay.getFavorite().remove(BaseActivity.getUid());
+                            Log.d("SIZE", "" + homestay.getFavorite().size());
+                            //set icon
+                            imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                            //show snackbar
+                            ShowSnackbar.showSnack(ActivityHomestayDetail.this, String.format("%s %s %s", getResources().getString(R.string.deleteFavorite),
+                                    homestay.getName(), getResources().getString(R.string.outOfFavorite)));
+                            Constants.IS_CHANGE_LIST_FAVORITE = true;
+                        } else {
+                            BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();
+                            bottomDialogFragment.setPositionCallback(new PositionCallback() {
+                                @Override
+                                public void positionCallBack(int position) {
+                                    homestay.getFavorite().put(BaseActivity.getUid(), true);
+                                    Log.d("SIZE", "" + homestay.getFavorite().size());
+                                    //set icon
+                                    imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+                                    //show snackbar
+                                    ShowSnackbar.showSnack(ActivityHomestayDetail.this, String.format("%s %s %s", getResources().getString(R.string.addFavorite),
+                                            homestay.getName(), getResources().getString(R.string.into)));
+                                    Constants.IS_CHANGE_LIST_FAVORITE = true;
+                                }
+                            });
+//                        //change icon heart from FavoriteListAdapterBottom
+                            Bundle dataMove = new Bundle();
+                            dataMove.putSerializable(Constants.POST_INFO, postInfo);
+                            // dataMove.putSerializable(Constants.POSITION, position);
+                            bottomDialogFragment.setArguments(dataMove);
+                            bottomDialogFragment.show(getSupportFragmentManager(), bottomDialogFragment.getTag());
+
+                        }
                     } else {
                         BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();
                         bottomDialogFragment.setPositionCallback(new PositionCallback() {
                             @Override
                             public void positionCallBack(int position) {
+                                Map<String, Boolean> data = new HashMap<>();
+                                data.put(BaseActivity.getUid(), true);
+                                homestay.setFavorite(data);
                                 homestay.getFavorite().put(BaseActivity.getUid(), true);
-                                Log.d("SIZE", "" + homestay.getFavorite().size());
                                 //set icon
                                 imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
                                 //show snackbar
@@ -413,45 +439,17 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
                                 Constants.IS_CHANGE_LIST_FAVORITE = true;
                             }
                         });
-//                        //change icon heart from FavoriteListAdapterBottom
-//                        favoriteListAdapterForBottomDialog.setPositionCallback(new PositionCallback() {
-//                            @Override
-//                            public void positionCallBack(int position) {
-//                                homestay.getFavorite().put(BaseActivity.getUid(), true);
-//                            }
-//                        });
                         Bundle dataMove = new Bundle();
                         dataMove.putSerializable(Constants.POST_INFO, postInfo);
-                        // dataMove.putSerializable(Constants.POSITION, position);
+                        //dataMove.putSerializable(Constants.POSITION, position);
                         bottomDialogFragment.setArguments(dataMove);
                         bottomDialogFragment.show(getSupportFragmentManager(), bottomDialogFragment.getTag());
-
                     }
                 } else {
-                    BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();
-                    bottomDialogFragment.setPositionCallback(new PositionCallback() {
-                        @Override
-                        public void positionCallBack(int position) {
-                            Map<String, Boolean> data = new HashMap<>();
-                            data.put(BaseActivity.getUid(), true);
-                            homestay.setFavorite(data);
-                            homestay.getFavorite().put(BaseActivity.getUid(), true);
-                            //set icon
-                            imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
-                            //show snackbar
-                            ShowSnackbar.showSnack(ActivityHomestayDetail.this, String.format("%s %s %s", getResources().getString(R.string.addFavorite),
-                                    homestay.getName(), getResources().getString(R.string.into)));
-                            Constants.IS_CHANGE_LIST_FAVORITE = true;
-                        }
-                    });
-                    Bundle dataMove = new Bundle();
-                    dataMove.putSerializable(Constants.POST_INFO, postInfo);
-                    //dataMove.putSerializable(Constants.POSITION, position);
-                    bottomDialogFragment.setArguments(dataMove);
-                    bottomDialogFragment.show(getSupportFragmentManager(), bottomDialogFragment.getTag());
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), ActivityHomestayDetail.this);
                 }
             } else {
-                ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), ActivityHomestayDetail.this);
+                ShowSnackbar.showSnack(ActivityHomestayDetail.this, getResources().getString(R.string.noInternet));
             }
         } else if (v == txtMyRating) {
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -554,10 +552,14 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    presenter.homestayIsExists(homestay);
+                if (InternetConnection.getInstance().isOnline(ActivityHomestayDetail.this)) {
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                        presenter.homestayIsExists(homestay);
+                    } else {
+                        ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), ActivityHomestayDetail.this);
+                    }
                 } else {
-                    ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), ActivityHomestayDetail.this);
+                    ShowSnackbar.showSnack(ActivityHomestayDetail.this, getResources().getString(R.string.noInternet));
                 }
 
             }

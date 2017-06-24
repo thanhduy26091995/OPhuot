@@ -30,10 +30,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.model.FavoriteInfo;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.model.PostInfo;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,9 +130,14 @@ public class BottomDialogFragment extends BottomSheetDialogFragment implements V
     @Override
     public void onClick(View v) {
         if (v == linearMyFavorite) {
-            if (postInfo != null) {
-                addDataToFavoriteHomestay(postInfo, BaseActivity.getUid());
-                positionCallback.positionCallBack(position);
+            if (InternetConnection.getInstance().isOnline(getActivity())) {
+                if (postInfo != null) {
+                    addDataToFavoriteHomestay(postInfo, BaseActivity.getUid());
+                    positionCallback.positionCallBack(position);
+                }
+            } else {
+                dismiss();
+                ShowSnackbar.showSnack(getActivity(), getActivity().getResources().getString(R.string.noInternet));
             }
         } else if (v == linearCreateNewList) {
             showAlertDialogForCreateNewList();
@@ -290,9 +297,15 @@ public class BottomDialogFragment extends BottomSheetDialogFragment implements V
         builder.setPositiveButton(getResources().getString(R.string.createNew), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                createNewList();
-                positionCallback.positionCallBack(position);
-                builder.create().dismiss();
+                if (InternetConnection.getInstance().isOnline(getActivity())) {
+                    createNewList();
+                    positionCallback.positionCallBack(position);
+                    builder.create().dismiss();
+                } else {
+                    dismiss();
+                    builder.create().dismiss();
+                    ShowSnackbar.showSnack(getActivity(), getActivity().getResources().getString(R.string.noInternet));
+                }
             }
         });
         builder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {

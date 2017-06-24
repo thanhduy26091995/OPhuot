@@ -14,10 +14,12 @@ import com.thanhduy.ophuot.R;
 
 public class ShowSnackbar {
     public static void showSnack(Activity activity, String mess) {
-        Snackbar snackbar = Snackbar.make(activity.findViewById(R.id.activity), mess, Snackbar.LENGTH_LONG);
-        View sbView = snackbar.getView();
-        TextView txtMess = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        txtMess.setTextColor(Color.WHITE);
-        snackbar.show();
+        if (activity != null) {
+            Snackbar snackbar = Snackbar.make(activity.findViewById(R.id.activity), mess, Snackbar.LENGTH_SHORT);
+            View sbView = snackbar.getView();
+            TextView txtMess = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            txtMess.setTextColor(Color.WHITE);
+            snackbar.show();
+        }
     }
 }

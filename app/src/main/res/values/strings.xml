@@ -6,7 +6,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="loginWithEmail">Or Login with Email</string>
+    <string name="loginWithEmail">Login with Email</string>
     <string name="registerWithEmail">Register with Email</string>
     <string name="notification">Notification</string>
     <string name="fillAllData">Please fill out the form</string>

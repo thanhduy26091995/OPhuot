@@ -7,7 +7,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Cài đặt</string>
-    <string name="loginWithEmail">Hoặc Đăng nhập bằng Email</string>
+    <string name="loginWithEmail">Đăng nhập bằng Email</string>
     <string name="registerWithEmail">Đăng ký với Email</string>
     <string name="notification">Thông Báo</string>
     <string name="fillAllData">Hãy điền đầy đủ thông tin</string>

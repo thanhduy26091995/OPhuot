@@ -24,6 +24,7 @@ import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.profile.edit_profile.presenter.EditProfilePresenter;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -148,8 +149,11 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.action_confirm) {
-            updateDataUser();
-
+            if (InternetConnection.getInstance().isOnline(EditProfileActivity.this)) {
+                updateDataUser();
+            } else {
+                ShowSnackbar.showSnack(EditProfileActivity.this, getResources().getString(R.string.noInternet));
+            }
         }
         return super.onOptionsItemSelected(item);
     }

@@ -19,10 +19,12 @@ import android.widget.TextView;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.ImageLoader;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.create_homestay.presenter.CreateHomestayPresenter;
 import com.thanhduy.ophuot.database.SqlLiteDbHelper;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -185,8 +187,12 @@ public class CreateHomeStayActivityFour extends BaseActivity implements View.OnC
     @Override
     public void onClick(View v) {
         if (v == btnComplete) {
-            showProgessDialog();
-            createHomestay();
+            if (InternetConnection.getInstance().isOnline(CreateHomeStayActivityFour.this)) {
+                showProgessDialog();
+                createHomestay();
+            } else {
+                ShowSnackbar.showSnack(CreateHomeStayActivityFour.this, getResources().getString(R.string.noInternet));
+            }
         }
     }
 

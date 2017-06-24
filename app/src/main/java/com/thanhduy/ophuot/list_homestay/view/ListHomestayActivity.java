@@ -263,14 +263,6 @@ public class ListHomestayActivity extends BaseActivity {
                 homestay.getFavorite().clear();
                 homestay.setFavorite(homestayIntent.getFavorite());
                 if (homestay.getFavorite() != null) {
-//                    if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
-//                        homestay.getFavorite().remove(BaseActivity.getUid());
-//                        //set icon
-//                        listHomestayAdapter.notifyDataSetChanged();
-//                    } else {
-//                        homestay.getFavorite().put(BaseActivity.getUid(), true);
-//                        listHomestayAdapter.notifyDataSetChanged();
-//                    }
                     listHomestayAdapter.notifyDataSetChanged();
                 } else {
                     Map<String, Boolean> dataFavorite = new HashMap<>();

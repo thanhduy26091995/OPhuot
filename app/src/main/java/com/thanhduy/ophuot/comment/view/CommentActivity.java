@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.comment.CommentAdapter;
 import com.thanhduy.ophuot.comment.presenter.CommentPresenter;
 import com.thanhduy.ophuot.model.Comment;
@@ -29,6 +30,7 @@ import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.MyLinearLayoutManager;
 import com.thanhduy.ophuot.utils.SessionManagerUser;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -167,11 +169,16 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v == imgSend) {
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                //check data exists
-                presenter.homestayIsExists(homestay);
+            if (InternetConnection.getInstance().isOnline(CommentActivity.this)) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    //check data exists
+                    presenter.homestayIsExists(homestay);
+                } else {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), this);
+                }
             } else {
-                ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), this);
+                hideKeyboardWhenCommented(imgSend);
+                ShowSnackbar.showSnack(CommentActivity.this, getResources().getString(R.string.noInternet));
             }
         }
     }

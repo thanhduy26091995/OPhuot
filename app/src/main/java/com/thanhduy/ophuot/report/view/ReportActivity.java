@@ -14,10 +14,12 @@ import android.widget.TextView;
 
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.report.presenter.ReportPresenter;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -119,30 +121,34 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v == btnReport) {
-            if (!chk1.isChecked() && !chk2.isChecked() && !chk3.isChecked() && !chk4.isChecked() &&
-                    !chk5.isChecked() && edtContent.getText().length() == 0) {
-                ShowAlertDialog.showAlert(getResources().getString(R.string.fillAtLeastOne), ReportActivity.this);
+            if (InternetConnection.getInstance().isOnline(ReportActivity.this)) {
+                if (!chk1.isChecked() && !chk2.isChecked() && !chk3.isChecked() && !chk4.isChecked() &&
+                        !chk5.isChecked() && edtContent.getText().length() == 0) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.fillAtLeastOne), ReportActivity.this);
+                } else {
+                    presenter.sendReport(user.getUid(), getUid(), getContent());
+                    final Dialog dialog = new Dialog(ReportActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.custom_dialog);
+                    dialog.setCancelable(false);
+
+                    // set the custom dialog components - text, image and button
+                    TextView text = (TextView) dialog.findViewById(R.id.tv);
+                    text.setText(getResources().getString(R.string.savedReportContent));
+                    Button dialogButton = (Button) dialog.findViewById(R.id.btnok);
+                    // if button is clicked, close the custom dialog
+                    dialogButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+
+                    dialog.show();
+                }
             } else {
-                presenter.sendReport(user.getUid(), getUid(), getContent());
-                final Dialog dialog = new Dialog(ReportActivity.this);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.custom_dialog);
-                dialog.setCancelable(false);
-
-                // set the custom dialog components - text, image and button
-                TextView text = (TextView) dialog.findViewById(R.id.tv);
-                text.setText(getResources().getString(R.string.savedReportContent));
-                Button dialogButton = (Button) dialog.findViewById(R.id.btnok);
-                // if button is clicked, close the custom dialog
-                dialogButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                        finish();
-                    }
-                });
-
-                dialog.show();
+                ShowSnackbar.showSnack(ReportActivity.this, getResources().getString(R.string.noInternet));
             }
         }
 

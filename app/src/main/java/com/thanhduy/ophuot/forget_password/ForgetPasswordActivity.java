@@ -15,7 +15,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 /**
  * Created by buivu on 08/05/2017.
@@ -53,12 +55,16 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         if (v == btnResetPassword) {
-            if (!TextUtils.isEmpty(edtEmail.getText())){
-                sendEmailResetPassword(edtEmail.getText().toString());
+            if (InternetConnection.getInstance().isOnline(ForgetPasswordActivity.this)) {
+                if (!TextUtils.isEmpty(edtEmail.getText())) {
+                    sendEmailResetPassword(edtEmail.getText().toString());
+                } else {
+                    edtEmail.setError(getResources().getString(R.string.required));
+                }
+            } else {
+                ShowSnackbar.showSnack(ForgetPasswordActivity.this, getResources().getString(R.string.noInternet));
             }
-            else{
-                edtEmail.setError(getResources().getString(R.string.required));
-            }
+
         }
     }
 

@@ -31,6 +31,7 @@ import com.thanhduy.ophuot.main.view.MainActivity;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.EmailValidate;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -136,13 +137,29 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             contentLogin.setVisibility(View.GONE);
             contentRegister.setVisibility(View.VISIBLE);
         } else if (view == btnRegister) {
-            register();
+            if (InternetConnection.getInstance().isOnline(LoginActivity.this)) {
+                register();
+            } else {
+                ShowSnackbar.showSnack(LoginActivity.this, getResources().getString(R.string.noInternet));
+            }
         } else if (view == btnLogin) {
-            login();
+            if (InternetConnection.getInstance().isOnline(LoginActivity.this)) {
+                login();
+            } else {
+                ShowSnackbar.showSnack(LoginActivity.this, getResources().getString(R.string.noInternet));
+            }
         } else if (view == btnGoogle) {
-            loginWithGoogle();
+            if (InternetConnection.getInstance().isOnline(LoginActivity.this)) {
+                loginWithGoogle();
+            } else {
+                ShowSnackbar.showSnack(LoginActivity.this, getResources().getString(R.string.noInternet));
+            }
         } else if (view == btnFacebook) {
-            loginWithFacebook();
+            if (InternetConnection.getInstance().isOnline(LoginActivity.this)) {
+                loginWithFacebook();
+            } else {
+                ShowSnackbar.showSnack(LoginActivity.this, getResources().getString(R.string.noInternet));
+            }
         } else if (view == linearForget) {
             Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
             startActivity(intent);
@@ -158,14 +175,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void login() {
+        boolean isSuccess = true;
         String email = edtEmail.getText().toString();
         String password = edtPassword.getText().toString();
         if (email.length() == 0 || password.length() == 0) {
             ShowAlertDialog.showAlert(getResources().getString(R.string.fillAllData), this);
+            isSuccess = false;
             return;
         } else {
+            if (!EmailValidate.IsOk(email)) {
+                ShowAlertDialog.showAlert(getResources().getString(R.string.wrongFormatEmail), this);
+                isSuccess = false;
+                return;
+            }
+            if (password.length() < 6) {
+                ShowAlertDialog.showAlert(getResources().getString(R.string.largerThan6Letter), this);
+                isSuccess = false;
+                return;
+            }
+        }
+
+        if (isSuccess) {
             presenter.signIn(email, password);
         }
+
     }
 
     private void register() {

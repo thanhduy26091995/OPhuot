@@ -36,6 +36,7 @@ import com.thanhduy.ophuot.profile.presenter.ProfileUserPresenter;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.SessionManagerUser;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -282,25 +283,33 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.GALLERY_INTENT && resultCode == RESULT_OK) {
-            //load image into imageview
-            ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, data.getData().toString(), imgAvatar);
-            Constants.USER_FILE_PATH = getRealPathFromURI(data.getData());
-            presenter.addImageUser(getUid(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    presenter.editUserPhotoURL(getUid(), taskSnapshot.getDownloadUrl().toString());
-                }
-            });
+            if (InternetConnection.getInstance().isOnline(ProfileUserActivity.this)) {
+                //load image into imageview
+                ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, data.getData().toString(), imgAvatar);
+                Constants.USER_FILE_PATH = getRealPathFromURI(data.getData());
+                presenter.addImageUser(getUid(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        presenter.editUserPhotoURL(getUid(), taskSnapshot.getDownloadUrl().toString());
+                    }
+                });
+            } else {
+                ShowSnackbar.showSnack(ProfileUserActivity.this, getResources().getString(R.string.noInternet));
+            }
         } else if (requestCode == Constants.CAMERA_INTENT && resultCode == RESULT_OK) {
-            //load image into imageview
-            ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, data.getData().toString(), imgAvatar);
-            Constants.USER_FILE_PATH = getRealPathFromURI(data.getData());
-            presenter.addImageUser(getUid(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    presenter.editUserPhotoURL(getUid(), taskSnapshot.getDownloadUrl().toString());
-                }
-            });
+            if (InternetConnection.getInstance().isOnline(ProfileUserActivity.this)) {
+                //load image into imageview
+                ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, data.getData().toString(), imgAvatar);
+                Constants.USER_FILE_PATH = getRealPathFromURI(data.getData());
+                presenter.addImageUser(getUid(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        presenter.editUserPhotoURL(getUid(), taskSnapshot.getDownloadUrl().toString());
+                    }
+                });
+            } else {
+                ShowSnackbar.showSnack(ProfileUserActivity.this, getResources().getString(R.string.noInternet));
+            }
         }
     }
 

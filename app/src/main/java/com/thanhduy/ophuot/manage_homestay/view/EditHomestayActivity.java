@@ -23,10 +23,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.base.BaseActivity;
+import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.manage_homestay.presenter.ManageHomestayPresenter;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -234,9 +236,13 @@ public class EditHomestayActivity extends BaseActivity implements View.OnClickLi
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.action_confirm) {
-            if (isEditSuccessfully()) {
-                updateDataHomestay();
-                finish();
+            if (InternetConnection.getInstance().isOnline(EditHomestayActivity.this)) {
+                if (isEditSuccessfully()) {
+                    updateDataHomestay();
+                    finish();
+                }
+            } else {
+                ShowSnackbar.showSnack(EditHomestayActivity.this, getResources().getString(R.string.noInternet));
             }
         }
         return super.onOptionsItemSelected(item);

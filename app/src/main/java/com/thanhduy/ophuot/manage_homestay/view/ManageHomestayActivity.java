@@ -36,6 +36,7 @@ import com.thanhduy.ophuot.manage_homestay.AdapterViewPager;
 import com.thanhduy.ophuot.manage_homestay.presenter.ManageHomestayPresenter;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -304,8 +305,12 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        presenter.deleteHomestay(String.valueOf(homestay.getProvinceId()), String.valueOf(homestay.getDistrictId()), homestay.getId(), getUid());
-                        finish();
+                        if (InternetConnection.getInstance().isOnline(ManageHomestayActivity.this)) {
+                            presenter.deleteHomestay(String.valueOf(homestay.getProvinceId()), String.valueOf(homestay.getDistrictId()), homestay.getId(), getUid());
+                            finish();
+                        } else {
+                            ShowSnackbar.showSnack(ManageHomestayActivity.this, getResources().getString(R.string.noInternet));
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

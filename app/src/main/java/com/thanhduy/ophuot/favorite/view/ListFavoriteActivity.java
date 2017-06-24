@@ -33,6 +33,7 @@ import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.model.PostInfo;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,11 +168,15 @@ public class ListFavoriteActivity extends BaseActivity {
                     .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            if (favoriteId.equals(getUid())) {
-                                ShowAlertDialog.showAlert(getResources().getString(R.string.cannotDeleteList), ListFavoriteActivity.this);
+                            if (InternetConnection.getInstance().isOnline(ListFavoriteActivity.this)) {
+                                if (favoriteId.equals(getUid())) {
+                                    ShowAlertDialog.showAlert(getResources().getString(R.string.cannotDeleteList), ListFavoriteActivity.this);
+                                } else {
+                                    deleteHomestayList(getUid(), favoriteId);
+                                    finish();
+                                }
                             } else {
-                                deleteHomestayList(getUid(), favoriteId);
-                                finish();
+                                ShowSnackbar.showSnack(ListFavoriteActivity.this, getResources().getString(R.string.noInternet));
                             }
 
                         }
@@ -201,15 +206,18 @@ public class ListFavoriteActivity extends BaseActivity {
         builder.setPositiveButton(getResources().getString(R.string.change), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                favoriteName = edtFavoriteName.getText().toString();
-                if (TextUtils.isEmpty(favoriteName)) {
-                    ShowAlertDialog.showAlert(getResources().getString(R.string.favoriteNameRequired), ListFavoriteActivity.this);
+                if (InternetConnection.getInstance().isOnline(ListFavoriteActivity.this)) {
+                    favoriteName = edtFavoriteName.getText().toString();
+                    if (TextUtils.isEmpty(favoriteName)) {
+                        ShowAlertDialog.showAlert(getResources().getString(R.string.favoriteNameRequired), ListFavoriteActivity.this);
+                    } else {
+                        //update data
+                        changeFavoriteName(favoriteName, favoriteId);
+                        builder.create().dismiss();
+                    }
                 } else {
-                    //update data
-                    changeFavoriteName(favoriteName, favoriteId);
-                    builder.create().dismiss();
+                    ShowSnackbar.showSnack(ListFavoriteActivity.this, getResources().getString(R.string.noInternet));
                 }
-
             }
         });
         builder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
