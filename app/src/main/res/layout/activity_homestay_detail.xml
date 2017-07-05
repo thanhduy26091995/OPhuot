@@ -45,13 +45,6 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/no_image" />
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/no_image"></android.support.v4.view.ViewPager>
-
                 <ImageView
                     android:id="@+id/img_favorite"
                     android:layout_width="wrap_content"
@@ -118,6 +111,13 @@
                             android:textColor="@android:color/black" />
                     </LinearLayout>
                 </LinearLayout>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/no_image"></android.support.v4.view.ViewPager>
             </FrameLayout>
 
             <LinearLayout
@@ -125,6 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_weight="5"
+                android:baselineAligned="false"
                 android:orientation="vertical"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
@@ -204,7 +205,7 @@
                     android:paddingBottom="10dp"
                     android:paddingLeft="5dp"
                     android:paddingTop="10dp"
-                    android:text="Đánh giá của bạn"
+                    android:text="@string/your_rating"
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp" />
 
@@ -270,165 +271,186 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="5dp"
                     android:weightSum="2">
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/textView2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="@string/homestayType"
+                            android:textSize="@dimen/size_text_title" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:padding="5dp"
-                                android:text="@string/homestayType"
-                                android:textSize="@dimen/size_text_title" />
-
-                            <TextView
-                                android:id="@+id/txt_manage_type"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:padding="5dp"
-                                android:textColor="@color/md_grey_800"
-                                android:textSize="@dimen/size_text_title" />
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:padding="5dp"
-                                android:text="@string/numberBedrrom"
-                                android:textSize="@dimen/size_text_title" />
-
-                            <TextView
-                                android:id="@+id/txt_manage_number_bedroom"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:padding="5dp"
-                                android:textColor="@color/md_grey_800"
-                                android:textSize="@dimen/size_text_title" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:padding="5dp"
-                                android:text="@string/numberBed"
-                                android:textSize="@dimen/size_text_title" />
-
-                            <TextView
-                                android:id="@+id/txt_manage_number_bed"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:padding="5dp"
-                                android:textColor="@color/md_grey_800"
-                                android:textSize="@dimen/size_text_title" />
-                        </LinearLayout>
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="@string/maxPassenger"
+                            android:textSize="@dimen/size_text_title" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/txt_manage_type"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="Biệt thự"
+                            android:textColor="@color/md_grey_800"
+                            android:textSize="@dimen/size_text_title" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:padding="5dp"
-                                android:text="@string/maxPassenger"
-                                android:textSize="@dimen/size_text_title" />
-
-                            <TextView
-                                android:id="@+id/txt_manage_number_passemger"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:padding="5dp"
-                                android:textColor="@color/md_grey_800"
-                                android:textSize="@dimen/size_text_title" />
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/txt_manage_number_passemger"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:padding="5dp"
-                                android:text="@string/timeOpen"
-                                android:textSize="@dimen/size_text_title" />
-
-                            <TextView
-                                android:id="@+id/txt_manage_time_open"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:padding="5dp"
-                                android:textColor="@color/md_grey_800"
-                                android:textSize="@dimen/size_text_title" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:padding="5dp"
-                                android:text="@string/timeClose"
-                                android:textSize="@dimen/size_text_title" />
-
-                            <TextView
-                                android:id="@+id/txt_manage_time_close"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:padding="5dp"
-                                android:textColor="@color/md_grey_800"
-                                android:textSize="@dimen/size_text_title" />
-                        </LinearLayout>
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="10"
+                            android:textColor="@color/md_grey_800"
+                            android:textSize="@dimen/size_text_title" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@android:color/darker_gray" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="@string/numberBedrrom"
+                            android:textSize="@dimen/size_text_title" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="@string/timeOpen"
+                            android:textSize="@dimen/size_text_title" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txt_manage_number_bedroom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:textColor="@color/md_grey_800"
+                            android:textSize="@dimen/size_text_title" />
+
+                        <TextView
+                            android:id="@+id/txt_manage_time_open"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:textColor="@color/md_grey_800"
+                            android:textSize="@dimen/size_text_title" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@android:color/darker_gray" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="@string/numberBed"
+                            android:textSize="@dimen/size_text_title" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="@string/timeClose"
+                            android:textSize="@dimen/size_text_title" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txt_manage_number_bed"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:textColor="@color/md_grey_800"
+                            android:textSize="@dimen/size_text_title" />
+
+                        <TextView
+                            android:id="@+id/txt_manage_time_close"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:textColor="@color/md_grey_800"
+                            android:textSize="@dimen/size_text_title" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@android:color/darker_gray" />
                 </LinearLayout>
 
                 <TextView

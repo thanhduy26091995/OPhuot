@@ -48,7 +48,7 @@
                     android:layout_weight="1.5"
                     android:gravity="left|center"
                     android:paddingLeft="5dp"
-                    android:text="Chọn tỉnh/thành" />
+                    android:text="@string/province" />
 
                 <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/spnProvince"
@@ -81,7 +81,7 @@
                     android:layout_weight="1.5"
                     android:gravity="left|center"
                     android:paddingLeft="5dp"
-                    android:text="Chọn quận/huyện" />
+                    android:text="@string/district" />
 
                 <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/spnDistrict"
@@ -129,7 +129,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3.5"
                     android:ellipsize="end"
-                    android:hint="Chọn địa chỉ"
+                    android:hint="@string/address"
                     android:maxLines="1"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"></TextView>
@@ -178,7 +178,7 @@
                     android:layout_weight="3.5"
                     android:background="@android:color/transparent"
                     android:gravity="top"
-                    android:hint="Tên homestay" />
+                    android:hint="@string/homestayName" />
 
                 <!--<EditText-->
                 <!--android:layout_width="0dp"-->
@@ -224,7 +224,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3.5"
                     android:background="@android:color/transparent"
-                    android:hint="Mô tả về homestay"></EditText>
+                    android:hint="@string/homestayDes"></EditText>
 
             </LinearLayout>
 
@@ -297,7 +297,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3.5"
                     android:background="@android:color/transparent"
-                    android:hint="Giá của homestay"></EditText>
+                    android:hint="@string/homestayPrice"></EditText>
             </LinearLayout>
 
             <View
@@ -317,6 +317,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="10dp"
         android:background="@color/colorPrimary"
-        android:text="Next"
+        android:text="@string/next"
         android:textColor="@color/colorWhite" />
 </RelativeLayout>

@@ -27,7 +27,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="10dp"
         android:background="@color/colorPrimary"
-        android:text="Next"
+        android:text="@string/next"
         android:textColor="@color/colorWhite" />
 
     <android.support.v4.widget.NestedScrollView

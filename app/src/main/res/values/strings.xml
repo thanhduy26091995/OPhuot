@@ -10,8 +10,8 @@
     <string name="registerWithEmail">Register with Email</string>
     <string name="notification">Notification</string>
     <string name="fillAllData">Please fill out the form</string>
-    <string name="wrongFormatEmail">Sai định dạng Email</string>
-    <string name="largerThan6Letter">Wrong format email</string>
+    <string name="wrongFormatEmail">Wrong format email</string>
+    <string name="largerThan6Letter">Passwords must be at least 6 characters</string>
     <string name="passwordDoesntMatch">Password dont match</string>
     <string name="numberOfPhone">Phone number must be 10 or 11 characters</string>
     <string name="email">Email</string>
@@ -192,7 +192,11 @@
     <string name="nameRequired">You must enter your name before proceeding</string>
     <string name="favoriteNameRequired">You must enter the list name before proceeding</string>
     <string name="homestayDeleted">This homestay has been deleted by the owner</string>
-    <string name="termOfUse">Điều Khoản Sử Dụng</string>
+    <string name="termOfUse">Terms of Use</string>
+    <string name="your_rating">Your rating</string>
+    <string name="next">Next</string>
+    <string name="loading">Loading...</string>
+    <string name="send">Send</string>
     <string-array name="arr_language">
         <item>English</item>
         <item>Vietnamese</item>

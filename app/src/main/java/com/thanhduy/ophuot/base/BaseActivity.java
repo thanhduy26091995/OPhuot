@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.thanhduy.ophuot.R;
 
 /**
  * Created by buivu on 13/01/2017.
@@ -17,7 +18,7 @@ public class BaseActivity extends AppCompatActivity {
     public void showProgessDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage("Đang tải...");
+            mProgressDialog.setMessage(getResources().getString(R.string.loading));
             mProgressDialog.setCancelable(false);
 
             Runnable runnable = new Runnable() {
