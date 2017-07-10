@@ -1,6 +1,7 @@
 package com.thanhduy.ophuot.service;
 
 import android.app.ActivityManager;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -123,6 +124,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentText(data.get("message"))
                 .setAutoCancel(true)
                 .setLights(0xff00ff00, 300, 100)
+                .setPriority(Notification.PRIORITY_HIGH)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(pendingIntent);
 
         builder.setSmallIcon(getNotificationIcon(builder));
@@ -131,7 +134,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationManager.notify(0, builder.build());
         // play notification sound
         NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-        notificationUtils.playNotificationSound();
+       // notificationUtils.playNotificationSound();
     }
 
     private int getNotificationIcon(NotificationCompat.Builder notificationBuilder) {
