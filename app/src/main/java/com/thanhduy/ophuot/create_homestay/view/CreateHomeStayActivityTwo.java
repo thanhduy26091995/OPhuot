@@ -129,7 +129,7 @@ public class CreateHomeStayActivityTwo extends BaseActivity implements View.OnCl
         } else if (v == linearTimeOpen) {
             RadialTimePickerDialogFragment rtpd = new RadialTimePickerDialogFragment()
                     .setOnTimeSetListener(CreateHomeStayActivityTwo.this)
-                    .setStartTime(12, 00)
+                    .setStartTime(00, 00)
                     .setDoneText(getResources().getString(R.string.ok))
                     .setCancelText(getResources().getString(R.string.cancel));
             rtpd.show(getSupportFragmentManager(), FRAG_TAG_TIME_PICKER_OPEN);
