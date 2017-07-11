@@ -2,6 +2,7 @@ package com.thanhduy.ophuot.profile.view;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -80,7 +81,7 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
     private int gender;
     private double lat, lng;
     private SessionManagerUser sessionManagerUser;
-
+    private Uri mUri;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -228,9 +229,19 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
     }
 
     //open gallery to taking a picture
+
     private void openCamera() {
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.Images.Media.TITLE, "Image File Name");
+        mUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
         startActivityForResult(cameraIntent, Constants.CAMERA_INTENT);
+
+//        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (takePhotoIntent.resolveActivity(getPackageManager()) != null) {
+//            startActivityForResult(takePhotoIntent, Constants.CAMERA_INTENT);
+//        }
     }
 
     @Override
@@ -298,9 +309,10 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
             }
         } else if (requestCode == Constants.CAMERA_INTENT && resultCode == RESULT_OK) {
             if (InternetConnection.getInstance().isOnline(ProfileUserActivity.this)) {
+
                 //load image into imageview
-                ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, data.getData().toString(), imgAvatar);
-                Constants.USER_FILE_PATH = getRealPathFromURI(data.getData());
+                ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, mUri.toString(), imgAvatar);
+                Constants.USER_FILE_PATH = getRealPathFromURI(mUri);
                 presenter.addImageUser(getUid(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
