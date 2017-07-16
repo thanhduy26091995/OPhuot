@@ -99,45 +99,10 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     hideItemData();
-                    presenter.getAllPost(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            if (dataSnapshot != null) {
-                                PostInfo postInfo = dataSnapshot.getValue(PostInfo.class);
-                                if (!postInfos.contains(postInfo)) {
-                                    postInfos.add(postInfo);
-                                    myHomestayAdapter.notifyDataSetChanged();
-                                }
-                            }
-                            showItemData();
-                        }
-
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-                            PostInfo postInfo = dataSnapshot.getValue(PostInfo.class);
-                            int indexMyPostInList = findIndexMyPost(postInfo);
-                            postInfos.remove(indexMyPostInList);
-                            myHomestayAdapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            showItemData();
-                        }
-                    });
                 } else {
                     progressBar.setVisibility(View.GONE);
                 }
+                handleData();
             }
 
             @Override
@@ -145,7 +110,45 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
 
             }
         });
+    }
 
+    private void handleData(){
+        presenter.getAllPost(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot != null) {
+                    PostInfo postInfo = dataSnapshot.getValue(PostInfo.class);
+                    if (!postInfos.contains(postInfo)) {
+                        postInfos.add(postInfo);
+                        myHomestayAdapter.notifyDataSetChanged();
+                    }
+                }
+                showItemData();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                PostInfo postInfo = dataSnapshot.getValue(PostInfo.class);
+                int indexMyPostInList = findIndexMyPost(postInfo);
+                postInfos.remove(indexMyPostInList);
+                myHomestayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                showItemData();
+            }
+        });
     }
 
     private int findIndexMyPost(PostInfo postInfo) {

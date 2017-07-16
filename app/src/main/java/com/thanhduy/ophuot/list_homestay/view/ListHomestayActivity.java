@@ -260,7 +260,9 @@ public class ListHomestayActivity extends BaseActivity {
             Homestay homestayIntent = (Homestay) data.getSerializableExtra(Constants.HOMESTAY);
             if (Constants.IS_CHANGE_LIST_FAVORITE) {
                 Homestay homestay = homestayList.get(position);
-                homestay.getFavorite().clear();
+                if (homestay.getFavorite() != null){
+                    homestay.getFavorite().clear();
+                }
                 homestay.setFavorite(homestayIntent.getFavorite());
                 if (homestay.getFavorite() != null) {
                     listHomestayAdapter.notifyDataSetChanged();

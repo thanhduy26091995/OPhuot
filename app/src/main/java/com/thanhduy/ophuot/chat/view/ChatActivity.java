@@ -41,6 +41,7 @@ import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.chat.ChatAdapter;
 import com.thanhduy.ophuot.chat.presenter.ChatPresenter;
+import com.thanhduy.ophuot.model.LastMessage;
 import com.thanhduy.ophuot.model.Message;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.push_notification.PushMessage;
@@ -361,6 +362,16 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    private void updateLastMessage(String currentId, String partnerId, Message message) {
+        try {
+            LastMessage lastMessage = new LastMessage(partnerId, message.getTimestamp() * -1);
+            Map<String, Object> data = lastMessage.toMap();
+            mDatabase.child(Constants.USERS).child(currentId).child(Constants.CHAT).child(partnerId).updateChildren(data);
+        } catch (Exception e) {
+            Log.d("CHAT", e.getMessage());
+        }
+    }
+
     private void updateMessage(String data, String key, String currentId, String partnerId) {
         Map<String, Object> dataUpdate = new HashMap<>();
         dataUpdate.put(Constants.CONTENT, data);
@@ -377,6 +388,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 final String key = mDatabase.child(Constants.MESSAGES).child(getUid()).child(partnerId).push().getKey();
                 addData(key, getUid(), partnerId, message, true);
                 addData(key, partnerId, getUid(), message, false);
+                //update last message
+                updateLastMessage(getUid(), partnerId, message);
+                updateLastMessage(partnerId, getUid(), message);
 
                 byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(data.getData()));
                 String fileName = String.format("%d%s", new Date().getTime(), getUid());
@@ -411,6 +425,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 final String key = mDatabase.child(Constants.MESSAGES).child(getUid()).child(partnerId).push().getKey();
                 addData(key, getUid(), partnerId, message, true);
                 addData(key, partnerId, getUid(), message, false);
+                //update last message
+                updateLastMessage(getUid(), partnerId, message);
+                updateLastMessage(partnerId, getUid(), message);
 
                 byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(mUri));
                 String fileName = String.format("%d%s", new Date().getTime(), getUid());

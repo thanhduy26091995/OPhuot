@@ -528,7 +528,7 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
                     }
                     default: {
                         ratingBar.setRating(1);
-                        txtRatingContent.setText("Bad");
+                        txtRatingContent.setText(getResources().getString(R.string.veryBad));
                         break;
                     }
                 }
