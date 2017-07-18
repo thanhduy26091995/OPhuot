@@ -199,6 +199,7 @@
     <string name="next">Tiếp theo</string>
     <string name="loading">Đang tải...</string>
     <string name="send">Gửi</string>
+    <string name="error">Có lỗi, vui lòng thử lại!</string>
     <string-array name="arr_language">
         <item>Tiếng Anh</item>
         <item>Tiếng Việt</item>

@@ -21,6 +21,7 @@ import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.chat_list.ChatListAdapter;
 import com.thanhduy.ophuot.chat_list.presenter.ChatListPresenter;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,53 +75,61 @@ public class ChatListFragment extends Fragment {
     }
 
     private void loadDataChatList() {
-        presenter.getAllChat(BaseActivity.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    hideItemData();
-                    presenter.getAllChat(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            if (dataSnapshot != null) {
-                                if (!listUid.contains(dataSnapshot.getKey())) {
-                                    listUid.add(dataSnapshot.getKey());
-                                    chatListAdapter.notifyDataSetChanged();
+        try {
+            presenter.getAllChat(BaseActivity.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        hideItemData();
+                        presenter.getAllChat(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                try {
+                                    if (dataSnapshot != null) {
+                                        if (!listUid.contains(dataSnapshot.getKey())) {
+                                            listUid.add(dataSnapshot.getKey());
+                                            chatListAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                    showItemData();
+                                } catch (Exception e) {
+                                    ShowSnackbar.showSnack(getActivity(), getResources().getString(R.string.error));
                                 }
                             }
-                            showItemData();
-                        }
 
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            showItemData();
-                        }
-                    });
-                } else {
-                    mRecycler.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.GONE);
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                showItemData();
+                            }
+                        });
+                    } else {
+                        mRecycler.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(getActivity(), getResources().getString(R.string.error));
+        }
     }
 }

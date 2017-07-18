@@ -20,6 +20,7 @@ import com.thanhduy.ophuot.profile.guess_profile.GuessProfileActivitiy;
 import com.thanhduy.ophuot.profile.view.ProfileUserActivity;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.DateFormatter;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +57,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
         //load data
         holder.txtContent.setText(comment.getContent());
         holder.txtTime.setText(DateFormatter.formatDateByYMD(comment.getCommentTime()));
-       // holder.ratingBar.setRating((int) comment.getRating());
+        // holder.ratingBar.setRating((int) comment.getRating());
         //load name and avatar
         if (listUserCommented.get(comment.getCommentBy()) != null) {
             final User user = listUserCommented.get(comment.getCommentBy());
@@ -75,22 +76,26 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
             mDatabase.child(Constants.USERS).child(comment.getCommentBy()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot != null) {
-                        final User user = dataSnapshot.getValue(User.class);
-                        if (user != null) {
-                            //save to hashmap
-                            listUserCommented.put(comment.getCommentBy(), user);
-                            //load data
-                            holder.txtName.setText(user.getName());
-                            ImageLoader.getInstance().loadImageAvatar(activity, user.getAvatar(), holder.imgAvatar);
-                            //event click
-                            holder.imgAvatar.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    eventClickAvatar(activity, user);
-                                }
-                            });
+                    try {
+                        if (dataSnapshot != null) {
+                            final User user = dataSnapshot.getValue(User.class);
+                            if (user != null) {
+                                //save to hashmap
+                                listUserCommented.put(comment.getCommentBy(), user);
+                                //load data
+                                holder.txtName.setText(user.getName());
+                                ImageLoader.getInstance().loadImageAvatar(activity, user.getAvatar(), holder.imgAvatar);
+                                //event click
+                                holder.imgAvatar.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        eventClickAvatar(activity, user);
+                                    }
+                                });
+                            }
                         }
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(activity, activity.getResources().getString(R.string.error));
                     }
                 }
 

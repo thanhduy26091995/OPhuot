@@ -108,47 +108,55 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
 
     private void initInfo() {
         if (InternetConnection.getInstance().isOnline(ProfileUserActivity.this)) {
-            showProgessDialog();
-            mDatabase.child(Constants.USERS).child(BaseActivity.getUid()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot != null) {
-                        hideProgressDialog();
-                        User user = dataSnapshot.getValue(User.class);
-                        if (user != null) {
-                            txtName.setText(user.getName());
-                            txtAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
-                            txtDescription.setText(user.getDescription());
-                            txtPhone.setText(user.getPhone());
-                            if (user.getGender() == 1) {
-                                txtGender.setText("Nam");
-                            } else {
-                                txtGender.setText("Nữ");
+            try {
+                showProgessDialog();
+                mDatabase.child(Constants.USERS).child(BaseActivity.getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        try {
+                            if (dataSnapshot != null) {
+                                hideProgressDialog();
+                                User user = dataSnapshot.getValue(User.class);
+                                if (user != null) {
+                                    txtName.setText(user.getName());
+                                    txtAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
+                                    txtDescription.setText(user.getDescription());
+                                    txtPhone.setText(user.getPhone());
+                                    if (user.getGender() == 1) {
+                                        txtGender.setText("Nam");
+                                    } else {
+                                        txtGender.setText("Nữ");
+                                    }
+                                    //checkGender(user.getGender());
+                                    ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, user.getAvatar(), imgAvatar);
+                                    //save to instance
+                                    name = user.getName();
+                                    address = user.getAddress().get(Constants.ADDRESS).toString();
+                                    lat = Double.parseDouble(user.getAddress().get(Constants.LAT).toString());
+                                    lng = Double.parseDouble(user.getAddress().get(Constants.LNG).toString());
+                                    gender = user.getGender();
+                                    phone = user.getPhone();
+                                    description = user.getDescription();
+                                    //save data to session
+                                    sessionManagerUser.createLoginSession(user);
+                                }
                             }
-                            //checkGender(user.getGender());
-                            ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, user.getAvatar(), imgAvatar);
-                            //save to instance
-                            name = user.getName();
-                            address = user.getAddress().get(Constants.ADDRESS).toString();
-                            lat = Double.parseDouble(user.getAddress().get(Constants.LAT).toString());
-                            lng = Double.parseDouble(user.getAddress().get(Constants.LNG).toString());
-                            gender = user.getGender();
-                            phone = user.getPhone();
-                            description = user.getDescription();
-                            //save data to session
-                            sessionManagerUser.createLoginSession(user);
+                        } catch (Exception e) {
+                            ShowSnackbar.showSnack(ProfileUserActivity.this, getResources().getString(R.string.error));
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    if (databaseError.getCode() == -3) {
-                        ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), ProfileUserActivity.this);
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        if (databaseError.getCode() == -3) {
+                            ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), ProfileUserActivity.this);
+                        }
+                        hideProgressDialog();
                     }
-                    hideProgressDialog();
-                }
-            });
+                });
+            } catch (Exception e) {
+                ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+            }
         } else {
             Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
                     .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
@@ -295,30 +303,39 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.GALLERY_INTENT && resultCode == RESULT_OK) {
             if (InternetConnection.getInstance().isOnline(ProfileUserActivity.this)) {
-                //load image into imageview
-                ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, data.getData().toString(), imgAvatar);
-                Constants.USER_FILE_PATH = getRealPathFromURI(data.getData());
-                presenter.addImageUser(getUid(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        presenter.editUserPhotoURL(getUid(), taskSnapshot.getDownloadUrl().toString());
-                    }
-                });
+                try {
+                    //load image into imageview
+                    ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, data.getData().toString(), imgAvatar);
+                    Constants.USER_FILE_PATH = getRealPathFromURI(data.getData());
+                    presenter.addImageUser(getUid(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            presenter.editUserPhotoURL(getUid(), taskSnapshot.getDownloadUrl().toString());
+                        }
+                    });
+                } catch (Exception e) {
+                    ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+                }
             } else {
                 ShowSnackbar.showSnack(ProfileUserActivity.this, getResources().getString(R.string.noInternet));
             }
         } else if (requestCode == Constants.CAMERA_INTENT && resultCode == RESULT_OK) {
             if (InternetConnection.getInstance().isOnline(ProfileUserActivity.this)) {
-
-                //load image into imageview
-                ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, mUri.toString(), imgAvatar);
-                Constants.USER_FILE_PATH = getRealPathFromURI(mUri);
-                presenter.addImageUser(getUid(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        presenter.editUserPhotoURL(getUid(), taskSnapshot.getDownloadUrl().toString());
+                try {
+                    if (mUri != null) {
+                        //load image into imageview
+                        ImageLoader.getInstance().loadImageAvatar(ProfileUserActivity.this, mUri.toString(), imgAvatar);
+                        Constants.USER_FILE_PATH = getRealPathFromURI(mUri);
+                        presenter.addImageUser(getUid(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                presenter.editUserPhotoURL(getUid(), taskSnapshot.getDownloadUrl().toString());
+                            }
+                        });
                     }
-                });
+                } catch (Exception e) {
+                    ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+                }
             } else {
                 ShowSnackbar.showSnack(ProfileUserActivity.this, getResources().getString(R.string.noInternet));
             }

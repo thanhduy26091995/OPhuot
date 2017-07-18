@@ -17,6 +17,7 @@ import com.thanhduy.ophuot.base.BaseActivity;
 import com.thanhduy.ophuot.favorite.FavoriteAdapter;
 import com.thanhduy.ophuot.favorite.presenter.FavoritePresenter;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,41 +57,53 @@ public class FavoriteFragment extends android.support.v4.app.Fragment {
     }
 
     private void loadDataFavorite() {
-        presenter.getAllFavoriteHomestay(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot != null) {
-                    if (!listFavoriteId.contains(dataSnapshot.getKey())) {
-                        listFavoriteId.add(dataSnapshot.getKey());
-                        favoriteAdapter.notifyDataSetChanged();
+        try {
+            presenter.getAllFavoriteHomestay(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    try {
+                        if (dataSnapshot != null) {
+                            if (!listFavoriteId.contains(dataSnapshot.getKey())) {
+                                listFavoriteId.add(dataSnapshot.getKey());
+                                favoriteAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(getActivity(), getActivity().getResources().getString(R.string.error));
                     }
                 }
-            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    if (listFavoriteId.contains(dataSnapshot.getKey())) {
-                        listFavoriteId.remove(dataSnapshot.getKey());
-                        favoriteAdapter.notifyDataSetChanged();
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    try {
+                        if (dataSnapshot != null) {
+                            if (listFavoriteId.contains(dataSnapshot.getKey())) {
+                                listFavoriteId.remove(dataSnapshot.getKey());
+                                favoriteAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(getActivity(), getActivity().getResources().getString(R.string.error));
                     }
                 }
-            }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(getActivity(), getActivity().getResources().getString(R.string.error));
+        }
     }
 }

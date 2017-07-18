@@ -25,6 +25,7 @@ import com.thanhduy.ophuot.list_homestay.presenter.ListHomestayPresenter;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,125 +119,144 @@ public class ListHomestayActivity extends BaseActivity {
     }
 
     private void loadDataHomestayByProvince() {
-        presenter.getListHomestayByProcince(provinceId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    hideItemData();
-                    presenter.getListHomestayByProcince(provinceId).addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            if (dataSnapshot != null) {
-                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                    Homestay homestay = snapshot.getValue(Homestay.class);
-                                    if (homestay != null) {
-                                        if (!homestayList.contains(homestay)) {
-                                            homestayList.add(homestay);
-                                            listHomestayAdapter.notifyDataSetChanged();
-                                            Log.d("OWNER", homestay.getPostBy());
+        try {
+            presenter.getListHomestayByProcince(provinceId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        hideItemData();
+                        presenter.getListHomestayByProcince(provinceId).addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                try {
+                                    if (dataSnapshot != null) {
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            Homestay homestay = snapshot.getValue(Homestay.class);
+                                            if (homestay != null) {
+                                                if (!homestayList.contains(homestay)) {
+                                                    homestayList.add(homestay);
+                                                    listHomestayAdapter.notifyDataSetChanged();
+                                                    Log.d("OWNER", homestay.getPostBy());
+                                                }
+                                            }
                                         }
                                     }
+                                    showItemData();
+                                } catch (Exception e) {
+                                    ShowSnackbar.showSnack(ListHomestayActivity.this, getResources().getString(R.string.error));
                                 }
                             }
-                            showItemData();
-                        }
 
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            if (databaseError.getCode() == -3) {
-                                ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), ListHomestayActivity.this);
                             }
-                            showItemData();
-                        }
-                    });
-                } else {
-                    //nếu không có node này
-                    imgNoResult.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                    mRecycler.setVisibility(View.GONE);
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                try {
+                                    if (databaseError.getCode() == -3) {
+                                        ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), ListHomestayActivity.this);
+                                    }
+                                    showItemData();
+                                } catch (Exception e) {
+                                    ShowSnackbar.showSnack(ListHomestayActivity.this, getResources().getString(R.string.error));
+                                }
+                            }
+                        });
+                    } else {
+                        //nếu không có node này
+                        imgNoResult.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                        mRecycler.setVisibility(View.GONE);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     private void loadDataHomestayByProvinceAndDistrict() {
-        presenter.getListHomestayWithBothProvinceAndDistrict(provinceId, districtId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    hideItemData();
-                    presenter.getListHomestayWithBothProvinceAndDistrict(provinceId, districtId).addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            if (dataSnapshot != null) {
-                                Homestay homestay = dataSnapshot.getValue(Homestay.class);
-                                if (homestay != null) {
-                                    if (!homestayList.contains(homestay)) {
-                                        homestayList.add(homestay);
-                                        listHomestayAdapter.notifyDataSetChanged();
+        try {
+            presenter.getListHomestayWithBothProvinceAndDistrict(provinceId, districtId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        if (dataSnapshot.exists()) {
+                            hideItemData();
+                            presenter.getListHomestayWithBothProvinceAndDistrict(provinceId, districtId).addChildEventListener(new ChildEventListener() {
+                                @Override
+                                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                    if (dataSnapshot != null) {
+                                        Homestay homestay = dataSnapshot.getValue(Homestay.class);
+                                        if (homestay != null) {
+                                            if (!homestayList.contains(homestay)) {
+                                                homestayList.add(homestay);
+                                                listHomestayAdapter.notifyDataSetChanged();
+                                            }
+                                        }
                                     }
+                                    showItemData();
                                 }
-                            }
-                            showItemData();
+
+                                @Override
+                                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                }
+
+                                @Override
+                                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                }
+
+                                @Override
+                                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    if (databaseError.getCode() == -3) {
+                                        ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), ListHomestayActivity.this);
+                                    }
+                                    showItemData();
+                                }
+                            });
+                        } else {
+                            //nếu không có node này
+                            imgNoResult.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
                         }
-
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            if (databaseError.getCode() == -3) {
-                                ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), ListHomestayActivity.this);
-                            }
-                            showItemData();
-                        }
-                    });
-                } else {
-                    //nếu không có node này
-                    imgNoResult.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(ListHomestayActivity.this, getResources().getString(R.string.error));
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
 
     }
 
@@ -256,26 +276,29 @@ public class ListHomestayActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 100 && resultCode == RESULT_OK) {
-            int position = data.getIntExtra(Constants.POSITION, 0);
-            Homestay homestayIntent = (Homestay) data.getSerializableExtra(Constants.HOMESTAY);
-            if (Constants.IS_CHANGE_LIST_FAVORITE) {
-                Homestay homestay = homestayList.get(position);
-                if (homestay.getFavorite() != null){
-                    homestay.getFavorite().clear();
+            try {
+                int position = data.getIntExtra(Constants.POSITION, 0);
+                Homestay homestayIntent = (Homestay) data.getSerializableExtra(Constants.HOMESTAY);
+                if (Constants.IS_CHANGE_LIST_FAVORITE) {
+                    Homestay homestay = homestayList.get(position);
+                    if (homestay.getFavorite() != null) {
+                        homestay.getFavorite().clear();
+                    }
+                    homestay.setFavorite(homestayIntent.getFavorite());
+                    if (homestay.getFavorite() != null) {
+                        listHomestayAdapter.notifyDataSetChanged();
+                    } else {
+                        Map<String, Boolean> dataFavorite = new HashMap<>();
+                        dataFavorite.put(BaseActivity.getUid(), true);
+                        homestay.setFavorite(dataFavorite);
+                        homestay.getFavorite().put(BaseActivity.getUid(), true);
+                        listHomestayAdapter.notifyDataSetChanged();
+                    }
+                    Constants.IS_CHANGE_LIST_FAVORITE = false;
                 }
-                homestay.setFavorite(homestayIntent.getFavorite());
-                if (homestay.getFavorite() != null) {
-                    listHomestayAdapter.notifyDataSetChanged();
-                } else {
-                    Map<String, Boolean> dataFavorite = new HashMap<>();
-                    dataFavorite.put(BaseActivity.getUid(), true);
-                    homestay.setFavorite(dataFavorite);
-                    homestay.getFavorite().put(BaseActivity.getUid(), true);
-                    listHomestayAdapter.notifyDataSetChanged();
-                }
-                Constants.IS_CHANGE_LIST_FAVORITE = false;
+            } catch (Exception e) {
+                ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
             }
-
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

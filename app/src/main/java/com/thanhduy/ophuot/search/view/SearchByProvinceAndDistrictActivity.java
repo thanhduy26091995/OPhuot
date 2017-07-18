@@ -27,6 +27,7 @@ import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.search.presenter.SearchPresenter;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,29 +98,33 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
     }
 
     private void handleData() {
-        hideItemData();
-        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(provinceId)).child(String.valueOf(districtId)).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    //recyclerView.setVisibility(View.VISIBLE);
-                    //fabMap.setVisibility(View.VISIBLE);
-                    // linearNoResult.setVisibility(View.GONE);
-                    //show data
-                    loadDataHomestayByProvinceAndDistrict();
-                } else {
-                    recyclerView.setVisibility(View.GONE);
-                    fabMap.setVisibility(View.GONE);
-                    imgNoResult.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
+        try {
+            hideItemData();
+            mDatabase.child(Constants.HOMESTAY).child(String.valueOf(provinceId)).child(String.valueOf(districtId)).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        //recyclerView.setVisibility(View.VISIBLE);
+                        //fabMap.setVisibility(View.VISIBLE);
+                        // linearNoResult.setVisibility(View.GONE);
+                        //show data
+                        loadDataHomestayByProvinceAndDistrict();
+                    } else {
+                        recyclerView.setVisibility(View.GONE);
+                        fabMap.setVisibility(View.GONE);
+                        imgNoResult.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     private void showItemData() {
@@ -135,45 +140,58 @@ public class SearchByProvinceAndDistrictActivity extends BaseActivity {
     }
 
     private void loadDataHomestayByProvinceAndDistrict() {
-        hideItemData();
-        presenter.searchHomestayByProvinceAndDistrict(provinceId, districtId).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot != null) {
-                    Homestay homestay = dataSnapshot.getValue(Homestay.class);
-                    if (homestay != null) {
-                        if (!homestayList.contains(homestay)) {
-                            homestayList.add(homestay);
-                            listHomestayAdapter.notifyDataSetChanged();
+        try {
+            hideItemData();
+            presenter.searchHomestayByProvinceAndDistrict(provinceId, districtId).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    try {
+                        if (dataSnapshot != null) {
+                            Homestay homestay = dataSnapshot.getValue(Homestay.class);
+                            if (homestay != null) {
+                                if (!homestayList.contains(homestay)) {
+                                    homestayList.add(homestay);
+                                    listHomestayAdapter.notifyDataSetChanged();
+                                }
+                            }
                         }
+                        showItemData();
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(SearchByProvinceAndDistrictActivity.this, getResources().getString(R.string.error));
                     }
                 }
-                showItemData();
-            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                if (databaseError.getCode() == -3) {
-                    ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), SearchByProvinceAndDistrictActivity.this);
                 }
-                showItemData();
-            }
-        });
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    try {
+                        if (databaseError.getCode() == -3) {
+                            ShowAlertDialog.showAlert(getResources().getString(R.string.accountBlocked), SearchByProvinceAndDistrictActivity.this);
+                        }
+                        showItemData();
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(SearchByProvinceAndDistrictActivity.this, getResources().getString(R.string.error));
+                    }
+
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     @Override

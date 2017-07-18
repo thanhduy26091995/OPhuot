@@ -34,6 +34,7 @@ import com.thanhduy.ophuot.config.presenter.ConfigPresenter;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.utils.Constants;
 import com.thanhduy.ophuot.utils.SessionManagerForLanguage;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.Locale;
 import java.util.Map;
@@ -95,71 +96,87 @@ public class ConfigFragment extends Fragment {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        presenter.getAllNoti(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                if (dataSnapshot != null) {
-                                    String homestayId = dataSnapshot.getKey();
-                                    //update state
-                                    presenter.updateNotiComment(BaseActivity.getUid(), homestayId, true);
-                                    //register topic
-                                    FirebaseMessaging.getInstance().subscribeToTopic(homestayId);
+                        try {
+                            presenter.getAllNoti(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
+                                @Override
+                                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                    try {
+                                        if (dataSnapshot != null) {
+                                            String homestayId = dataSnapshot.getKey();
+                                            //update state
+                                            presenter.updateNotiComment(BaseActivity.getUid(), homestayId, true);
+                                            //register topic
+                                            FirebaseMessaging.getInstance().subscribeToTopic(homestayId);
+                                        }
+                                    } catch (Exception e) {
+                                        ShowSnackbar.showSnack(getActivity(), getResources().getString(R.string.error));
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                @Override
+                                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                                @Override
+                                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                                @Override
+                                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
-                            }
-                        });
+                                }
+                            });
+                        } catch (Exception e) {
+                            ShowSnackbar.showSnack(getActivity(), getResources().getString(R.string.error));
+                        }
                     } else {
-                        presenter.getAllNoti(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                if (dataSnapshot != null) {
-                                    String homestayId = dataSnapshot.getKey();
-                                    //update state
-                                    presenter.updateNotiComment(BaseActivity.getUid(), homestayId, false);
-                                    //register topic
-                                    FirebaseMessaging.getInstance().unsubscribeFromTopic(homestayId);
+                        try {
+                            presenter.getAllNoti(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
+                                @Override
+                                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                    try {
+                                        if (dataSnapshot != null) {
+                                            String homestayId = dataSnapshot.getKey();
+                                            //update state
+                                            presenter.updateNotiComment(BaseActivity.getUid(), homestayId, false);
+                                            //register topic
+                                            FirebaseMessaging.getInstance().unsubscribeFromTopic(homestayId);
+                                        }
+                                    } catch (Exception e) {
+                                        ShowSnackbar.showSnack(getActivity(), getResources().getString(R.string.error));
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                @Override
+                                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                                @Override
+                                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                                @Override
+                                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
-                            }
-                        });
+                                }
+                            });
+                        } catch (Exception e) {
+                            ShowSnackbar.showSnack(getActivity(), getResources().getString(R.string.error));
+                        }
                     }
                 }
             });
@@ -227,38 +244,46 @@ public class ConfigFragment extends Fragment {
     }
 
     private void initData() {
-        mDatabase.child(Constants.USERS).child(getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    User user = dataSnapshot.getValue(User.class);
-                    if (user != null) {
-                        String deviceToken = user.getDeviceToken();
-                        if (deviceToken.length() > 3) {
-                            chkLanguage.setChecked(true);
-                        } else {
-                            chkLanguage.setChecked(false);
-                        }
-                        int count = 0;
-                        Map<String, Object> notiComment = user.getNotiComment();
-                        for (Map.Entry<String, Object> entry : notiComment.entrySet()) {
-                            if ((Boolean) entry.getValue()) {
-                                count++;
+        try {
+            mDatabase.child(Constants.USERS).child(getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        if (dataSnapshot != null) {
+                            User user = dataSnapshot.getValue(User.class);
+                            if (user != null) {
+                                String deviceToken = user.getDeviceToken();
+                                if (deviceToken.length() > 3) {
+                                    chkLanguage.setChecked(true);
+                                } else {
+                                    chkLanguage.setChecked(false);
+                                }
+                                int count = 0;
+                                Map<String, Object> notiComment = user.getNotiComment();
+                                for (Map.Entry<String, Object> entry : notiComment.entrySet()) {
+                                    if ((Boolean) entry.getValue()) {
+                                        count++;
+                                    }
+                                }
+                                if (count > 0) {
+                                    chkComment.setChecked(true);
+                                } else {
+                                    chkComment.setChecked(false);
+                                }
                             }
                         }
-                        if (count > 0) {
-                            chkComment.setChecked(true);
-                        } else {
-                            chkComment.setChecked(false);
-                        }
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(getActivity(), getResources().getString(R.string.error));
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(getActivity(), getResources().getString(R.string.error));
+        }
     }
 }

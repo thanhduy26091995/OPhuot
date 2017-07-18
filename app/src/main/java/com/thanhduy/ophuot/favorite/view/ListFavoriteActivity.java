@@ -235,72 +235,84 @@ public class ListFavoriteActivity extends BaseActivity {
     }
 
     private void changeFavoriteName(String name, String favoriteId) {
-        //update title
-        getSupportActionBar().setTitle(name);
+        try {
+            //update title
+            getSupportActionBar().setTitle(name);
 
-        Map<String, Object> dataForChange = new HashMap<>();
-        dataForChange.put(Constants.FAVORITE_NAME, name);
-        //update data
-        mDatabase.child(Constants.USERS).child(getUid()).child(Constants.FAVORITE).child(favoriteId).child(Constants.INFO).updateChildren(dataForChange);
+            Map<String, Object> dataForChange = new HashMap<>();
+            dataForChange.put(Constants.FAVORITE_NAME, name);
+            //update data
+            mDatabase.child(Constants.USERS).child(getUid()).child(Constants.FAVORITE).child(favoriteId).child(Constants.INFO).updateChildren(dataForChange);
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     private void deleteHomestayList(final String uid, String favoriteId) {
-        mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).child(favoriteId).child(Constants.LIST_HOMESTAY).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot != null) {
-                    PostInfo postInfo = dataSnapshot.getValue(PostInfo.class);
-                    if (postInfo != null) {
-                        //xóa thông tin người dùng trong node favorite của node lớn homestay
-                        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
-                                .child(postInfo.getHomestayId()).child(Constants.FAVORITE).child(uid).removeValue();
+        try {
+            mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).child(favoriteId).child(Constants.LIST_HOMESTAY).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    if (dataSnapshot != null) {
+                        PostInfo postInfo = dataSnapshot.getValue(PostInfo.class);
+                        if (postInfo != null) {
+                            //xóa thông tin người dùng trong node favorite của node lớn homestay
+                            mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
+                                    .child(postInfo.getHomestayId()).child(Constants.FAVORITE).child(uid).removeValue();
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            }
+                }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-        //delete homestay from node users
-        mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).child(favoriteId).removeValue();
+                }
+            });
+            //delete homestay from node users
+            mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).child(favoriteId).removeValue();
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 100 && resultCode == RESULT_OK) {
-            int position = data.getIntExtra(Constants.POSITION, 0);
-            Homestay homestayIntent = (Homestay) data.getSerializableExtra(Constants.HOMESTAY);
-            if (Constants.IS_CHANGE_LIST_FAVORITE) {
-                Homestay homestay = listHomestay.get(position);
-                homestay.getFavorite().clear();
-                homestay.setFavorite(homestayIntent.getFavorite());
-                if (homestay.getFavorite() != null) {
-                    listHomestayAdapter.notifyDataSetChanged();
-                } else {
-                    Map<String, Boolean> dataFavorite = new HashMap<>();
-                    dataFavorite.put(BaseActivity.getUid(), true);
-                    homestay.setFavorite(dataFavorite);
-                    homestay.getFavorite().put(BaseActivity.getUid(), true);
-                    listHomestayAdapter.notifyDataSetChanged();
+            try {
+                int position = data.getIntExtra(Constants.POSITION, 0);
+                Homestay homestayIntent = (Homestay) data.getSerializableExtra(Constants.HOMESTAY);
+                if (Constants.IS_CHANGE_LIST_FAVORITE) {
+                    Homestay homestay = listHomestay.get(position);
+                    homestay.getFavorite().clear();
+                    homestay.setFavorite(homestayIntent.getFavorite());
+                    if (homestay.getFavorite() != null) {
+                        listHomestayAdapter.notifyDataSetChanged();
+                    } else {
+                        Map<String, Boolean> dataFavorite = new HashMap<>();
+                        dataFavorite.put(BaseActivity.getUid(), true);
+                        homestay.setFavorite(dataFavorite);
+                        homestay.getFavorite().put(BaseActivity.getUid(), true);
+                        listHomestayAdapter.notifyDataSetChanged();
+                    }
+                    Constants.IS_CHANGE_LIST_FAVORITE = false;
                 }
-                Constants.IS_CHANGE_LIST_FAVORITE = false;
+            } catch (Exception e) {
+                ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
             }
 
         }

@@ -156,53 +156,65 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void loadDataChat() {
-        presenter.loadAllDataImage(getUid(), partnerId).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot != null) {
-                    Message message = dataSnapshot.getValue(Message.class);
-                    if (message != null) {
-                        messageList.add(message);
-                        recyclerChat.scrollToPosition(messageList.size() - 1);
-                        chatAdapter.notifyDataSetChanged();
-
-                    }
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot != null) {
-                    Message messageUpdate = dataSnapshot.getValue(Message.class);
-                    if (messageUpdate != null) {
-                        for (int i = messageList.size() - 1; i >= 0; i--) {
-                            if (messageUpdate.getTimestamp() == messageList.get(i).getTimestamp() && messageUpdate.getSendBy().equals(messageList.get(i).getSendBy()) &&
-                                    messageUpdate.getReceiveBy().equals(messageList.get(i).getReceiveBy())) {
-                                messageList.set(i, messageUpdate);
+        try {
+            presenter.loadAllDataImage(getUid(), partnerId).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    try {
+                        if (dataSnapshot != null) {
+                            Message message = dataSnapshot.getValue(Message.class);
+                            if (message != null) {
+                                messageList.add(message);
+                                recyclerChat.scrollToPosition(messageList.size() - 1);
                                 chatAdapter.notifyDataSetChanged();
-                                break;
+
                             }
                         }
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(ChatActivity.this, getResources().getString(R.string.error));
                     }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    try {
+                        if (dataSnapshot != null) {
+                            Message messageUpdate = dataSnapshot.getValue(Message.class);
+                            if (messageUpdate != null) {
+                                for (int i = messageList.size() - 1; i >= 0; i--) {
+                                    if (messageUpdate.getTimestamp() == messageList.get(i).getTimestamp() && messageUpdate.getSendBy().equals(messageList.get(i).getSendBy()) &&
+                                            messageUpdate.getReceiveBy().equals(messageList.get(i).getReceiveBy())) {
+                                        messageList.set(i, messageUpdate);
+                                        chatAdapter.notifyDataSetChanged();
+                                        break;
+                                    }
+                                }
+                            }
+
+                        }
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(ChatActivity.this, getResources().getString(R.string.error));
+                    }
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
                 }
-            }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(ChatActivity.this, getResources().getString(R.string.error));
+        }
     }
 
     @Override
@@ -255,28 +267,32 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void addDataMessage() {
-        String content = edtContent.getText().toString();
-        long timestamp = new Date().getTime();
-        Message message = new Message(content, false, timestamp, getUid());
-        message.setDisplayStatus(false);
-        //add message
-        presenter.addMessage(partnerId, message);
-        recyclerChat.smoothScrollToPosition(chatAdapter.getItemCount());
-        //send push notification
-        //send push notification
-        String[] regIds = {deviceToken};
+        try {
+            String content = edtContent.getText().toString();
+            long timestamp = new Date().getTime();
+            Message message = new Message(content, false, timestamp, getUid());
+            message.setDisplayStatus(false);
+            //add message
+            presenter.addMessage(partnerId, message);
+            recyclerChat.smoothScrollToPosition(chatAdapter.getItemCount());
+            //send push notification
+            //send push notification
+            String[] regIds = {deviceToken};
 
-        JSONArray regArray = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            try {
-                regArray = new JSONArray(regIds);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            JSONArray regArray = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                try {
+                    regArray = new JSONArray(regIds);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+            PushMessage.sendMessageChat(regArray, hashDataUser.get(SessionManagerUser.KEY_NAME), edtContent.getText().toString(), "", getUid(), hashDataUser.get(SessionManagerUser.KEY_DEVICE_TOKEN), hashDataUser.get(SessionManagerUser.KEY_AVATAR));
+            //clear data
+            edtContent.setText("");
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(ChatActivity.this, getResources().getString(R.string.error));
         }
-        PushMessage.sendMessageChat(regArray, hashDataUser.get(SessionManagerUser.KEY_NAME), edtContent.getText().toString(), "", getUid(), hashDataUser.get(SessionManagerUser.KEY_DEVICE_TOKEN), hashDataUser.get(SessionManagerUser.KEY_AVATAR));
-        //clear data
-        edtContent.setText("");
     }
 
     @Override
@@ -382,75 +398,80 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK) {
             if (InternetConnection.getInstance().isOnline(ChatActivity.this)) {
-                //save data first
-                final Message message = new Message("https://firebasestorage.googleapis.com/v0/b/ophuot-62634.appspot.com/o/no_img.png?alt=media&token=dbf25756-34cc-47ca-877e-92a0cd84e231", true, new Date().getTime(), getUid());
-                // final String key = String.format("%s%d", getUid(), new Date().getTime());
-                final String key = mDatabase.child(Constants.MESSAGES).child(getUid()).child(partnerId).push().getKey();
-                addData(key, getUid(), partnerId, message, true);
-                addData(key, partnerId, getUid(), message, false);
-                //update last message
-                updateLastMessage(getUid(), partnerId, message);
-                updateLastMessage(partnerId, getUid(), message);
+                try {
+                    if (data.getData() != null) {
+                        //save data first
+                        final Message message = new Message("https://firebasestorage.googleapis.com/v0/b/ophuot-62634.appspot.com/o/no_img.png?alt=media&token=dbf25756-34cc-47ca-877e-92a0cd84e231", true, new Date().getTime(), getUid());
+                        // final String key = String.format("%s%d", getUid(), new Date().getTime());
+                        final String key = mDatabase.child(Constants.MESSAGES).child(getUid()).child(partnerId).push().getKey();
+                        addData(key, getUid(), partnerId, message, true);
+                        addData(key, partnerId, getUid(), message, false);
+                        //update last message
+                        updateLastMessage(getUid(), partnerId, message);
+                        updateLastMessage(partnerId, getUid(), message);
 
-                byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(data.getData()));
-                String fileName = String.format("%d%s", new Date().getTime(), getUid());
-                StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
-                UploadTask uploadTask = storageForUpFile.putBytes(arrImageBytes);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("CHAT_IMAGE", e.getMessage());
+                        byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(data.getData()));
+                        String fileName = String.format("%d%s", new Date().getTime(), getUid());
+                        StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
+                        UploadTask uploadTask = storageForUpFile.putBytes(arrImageBytes);
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("CHAT_IMAGE", e.getMessage());
+                            }
+                        });
+                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                //update message
+                                updateMessage(taskSnapshot.getDownloadUrl().toString(), key, getUid(), partnerId);
+                                updateMessage(taskSnapshot.getDownloadUrl().toString(), key, partnerId, getUid());
+                            }
+                        });
                     }
-                });
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        //Message message = new Message(taskSnapshot.getDownloadUrl().toString(), true, new Date().getTime(), getUid());
-                        //add message
-                        //presenter.addMessage(partnerId, message);
-
-                        //update message
-                        updateMessage(taskSnapshot.getDownloadUrl().toString(), key, getUid(), partnerId);
-                        updateMessage(taskSnapshot.getDownloadUrl().toString(), key, partnerId, getUid());
-                    }
-                });
+                } catch (Exception e) {
+                    ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+                }
             } else {
                 ShowSnackbar.showSnack(ChatActivity.this, getResources().getString(R.string.noInternet));
             }
         } else if (requestCode == Constants.CAMERA_INTENT && resultCode == RESULT_OK) {
             if (InternetConnection.getInstance().isOnline(ChatActivity.this)) {
-                //save data first
-                final Message message = new Message("https://firebasestorage.googleapis.com/v0/b/ophuot-62634.appspot.com/o/no_img.png?alt=media&token=dbf25756-34cc-47ca-877e-92a0cd84e231", true, new Date().getTime(), getUid());
-                // final String key = String.format("%s%d", getUid(), new Date().getTime());
-                final String key = mDatabase.child(Constants.MESSAGES).child(getUid()).child(partnerId).push().getKey();
-                addData(key, getUid(), partnerId, message, true);
-                addData(key, partnerId, getUid(), message, false);
-                //update last message
-                updateLastMessage(getUid(), partnerId, message);
-                updateLastMessage(partnerId, getUid(), message);
+                try {
+                    if (mUri != null) {
+                        //save data first
+                        final Message message = new Message("https://firebasestorage.googleapis.com/v0/b/ophuot-62634.appspot.com/o/no_img.png?alt=media&token=dbf25756-34cc-47ca-877e-92a0cd84e231", true, new Date().getTime(), getUid());
+                        // final String key = String.format("%s%d", getUid(), new Date().getTime());
+                        final String key = mDatabase.child(Constants.MESSAGES).child(getUid()).child(partnerId).push().getKey();
+                        addData(key, getUid(), partnerId, message, true);
+                        addData(key, partnerId, getUid(), message, false);
+                        //update last message
+                        updateLastMessage(getUid(), partnerId, message);
+                        updateLastMessage(partnerId, getUid(), message);
 
-                byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(mUri));
-                String fileName = String.format("%d%s", new Date().getTime(), getUid());
-                StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
-                UploadTask uploadTask = storageForUpFile.putBytes(arrImageBytes);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("CHAT_IMAGE", e.getMessage());
+                        byte[] arrImageBytes = EncodeImage.encodeImage(getRealPathFromURI(mUri));
+                        String fileName = String.format("%d%s", new Date().getTime(), getUid());
+                        StorageReference storageForUpFile = mStorage.child(Constants.CHAT).child(fileName);
+                        UploadTask uploadTask = storageForUpFile.putBytes(arrImageBytes);
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("CHAT_IMAGE", e.getMessage());
+                            }
+                        });
+                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                //update message
+                                updateMessage(taskSnapshot.getDownloadUrl().toString(), key, getUid(), partnerId);
+                                updateMessage(taskSnapshot.getDownloadUrl().toString(), key, partnerId, getUid());
+                            }
+                        });
                     }
-                });
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    Message message = new Message(taskSnapshot.getDownloadUrl().toString(), true, new Date().getTime(), getUid());
-//                    //add message
-//                    presenter.addMessage(partnerId, message);
 
-                        //update message
-                        updateMessage(taskSnapshot.getDownloadUrl().toString(), key, getUid(), partnerId);
-                        updateMessage(taskSnapshot.getDownloadUrl().toString(), key, partnerId, getUid());
-                    }
-                });
+                } catch (Exception e) {
+                    ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+                }
             } else {
                 ShowSnackbar.showSnack(ChatActivity.this, getResources().getString(R.string.noInternet));
             }
@@ -459,7 +480,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private String getRealPathFromURI(Uri uri) {
-
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);

@@ -67,43 +67,47 @@ public class FavoriteListAdapterForBottomDialog extends RecyclerView.Adapter<Fav
         mDatabase.child(Constants.USERS).child(BaseActivity.getUid()).child(Constants.FAVORITE).child(favoriteId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    final FavoriteInfo favoriteInfo = dataSnapshot.child(Constants.INFO).getValue(FavoriteInfo.class);
-                    if (favoriteInfo != null) {
-                        holder.txtFavoriteName.setText(favoriteInfo.getFavoriteName());
-                        holder.txtFavoriteNumber.setText(String.format("%d %s", dataSnapshot.child(Constants.LIST_HOMESTAY).getChildrenCount(), activity.getResources().getString(R.string.post)));
-                    }
-                    for (DataSnapshot listHomestay : dataSnapshot.child(Constants.LIST_HOMESTAY).getChildren()) {
-                        PostInfo postInfo = listHomestay.getValue(PostInfo.class);
-                        if (postInfo != null) {
-                            mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
-                                    .child(postInfo.getHomestayId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot != null) {
-                                        Homestay homestay = dataSnapshot.getValue(Homestay.class);
-                                        if (homestay != null) {
-                                            ImageLoader.getInstance().loadImageOther(activity, homestay.getImages().get(0), holder.imgFavoriteImage);
+                try {
+                    if (dataSnapshot != null) {
+                        final FavoriteInfo favoriteInfo = dataSnapshot.child(Constants.INFO).getValue(FavoriteInfo.class);
+                        if (favoriteInfo != null) {
+                            holder.txtFavoriteName.setText(favoriteInfo.getFavoriteName());
+                            holder.txtFavoriteNumber.setText(String.format("%d %s", dataSnapshot.child(Constants.LIST_HOMESTAY).getChildrenCount(), activity.getResources().getString(R.string.post)));
+                        }
+                        for (DataSnapshot listHomestay : dataSnapshot.child(Constants.LIST_HOMESTAY).getChildren()) {
+                            PostInfo postInfo = listHomestay.getValue(PostInfo.class);
+                            if (postInfo != null) {
+                                mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
+                                        .child(postInfo.getHomestayId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot != null) {
+                                            Homestay homestay = dataSnapshot.getValue(Homestay.class);
+                                            if (homestay != null) {
+                                                ImageLoader.getInstance().loadImageOther(activity, homestay.getImages().get(0), holder.imgFavoriteImage);
+                                            }
                                         }
                                     }
-                                }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                }
-                            });
+                                    }
+                                });
+                            }
+                            break;
                         }
-                        break;
+                        //event click item
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                addDataToFavoriteHomestay(postInfoFromFragment, BaseActivity.getUid(), favoriteId);
+                                positionCallback.positionCallBack(positionItem);
+                            }
+                        });
                     }
-                    //event click item
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            addDataToFavoriteHomestay(postInfoFromFragment, BaseActivity.getUid(), favoriteId);
-                            positionCallback.positionCallBack(positionItem);
-                        }
-                    });
+                } catch (Exception e) {
+
                 }
             }
 
@@ -135,25 +139,29 @@ public class FavoriteListAdapterForBottomDialog extends RecyclerView.Adapter<Fav
     }
 
     private void addDataToFavoriteHomestay(PostInfo postInfo, String userId, final String favoriteId) {
-        /*
+        try {
+            /*
         save user node
          */
-        //init data favorite
-        Map<String, Object> data = new HashMap<>();
-        data.put(Constants.ID_DISTRICT, postInfo.getDistrictId());
-        data.put(Constants.ID_PROVINCE, postInfo.getProvinceId());
-        data.put(Constants.HOMESTAY_ID, postInfo.getHomestayId());
-        //save homestay to list homestay favorite (yêu thích cảu tôi)
-        mDatabase.child(Constants.USERS).child(userId).child(Constants.FAVORITE).child(favoriteId).child(Constants.LIST_HOMESTAY).child(postInfo.getHomestayId()).updateChildren(data);
+            //init data favorite
+            Map<String, Object> data = new HashMap<>();
+            data.put(Constants.ID_DISTRICT, postInfo.getDistrictId());
+            data.put(Constants.ID_PROVINCE, postInfo.getProvinceId());
+            data.put(Constants.HOMESTAY_ID, postInfo.getHomestayId());
+            //save homestay to list homestay favorite (yêu thích cảu tôi)
+            mDatabase.child(Constants.USERS).child(userId).child(Constants.FAVORITE).child(favoriteId).child(Constants.LIST_HOMESTAY).child(postInfo.getHomestayId()).updateChildren(data);
         /*
             save homestay node
          */
-        //add data into homestay favorite (save homestay node)
-        Map<String, Object> dataFavoriteHomestay = new HashMap<>();
-        dataFavoriteHomestay.put(userId, true);
-        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
-                .child(postInfo.getHomestayId()).child(Constants.FAVORITE).updateChildren(dataFavoriteHomestay);
-        //close dialog fragment
-        BottomDialogFragment.instance.dismiss();
+            //add data into homestay favorite (save homestay node)
+            Map<String, Object> dataFavoriteHomestay = new HashMap<>();
+            dataFavoriteHomestay.put(userId, true);
+            mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
+                    .child(postInfo.getHomestayId()).child(Constants.FAVORITE).updateChildren(dataFavoriteHomestay);
+            //close dialog fragment
+            BottomDialogFragment.instance.dismiss();
+        } catch (Exception e) {
+
+        }
     }
 }

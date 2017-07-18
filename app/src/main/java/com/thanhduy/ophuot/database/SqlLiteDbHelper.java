@@ -19,8 +19,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.thanhduy.ophuot.R.string.province;
-
 public class SqlLiteDbHelper extends SQLiteOpenHelper {
 
     // All Static variables
@@ -99,116 +97,140 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
 
     //get list province
     public List<Province> getAllProvince() {
-        SQLiteDatabase database = this.getReadableDatabase();
-
         List<Province> provinces = new ArrayList<>();
-        Cursor cursor = database.query("Provinces", null, null, null, null, null, null);
-        while (cursor.moveToNext()) {
-            Province province = new Province();
-            int provinceId = cursor.getInt(0);
-            String provinceName = cursor.getString(1);
-            //save data
-            province.setProvinceId(provinceId);
-            province.setProvinceName(provinceName);
-            provinces.add(province);
+        try {
+            SQLiteDatabase database = this.getReadableDatabase();
+
+            Cursor cursor = database.query("Provinces", null, null, null, null, null, null);
+            while (cursor.moveToNext()) {
+                Province province = new Province();
+                int provinceId = cursor.getInt(0);
+                String provinceName = cursor.getString(1);
+                //save data
+                province.setProvinceId(provinceId);
+                province.setProvinceName(provinceName);
+                provinces.add(province);
+            }
+            cursor.close();
+            database.close();
+        } catch (Exception e) {
+
         }
-        cursor.close();
-        database.close();
         return provinces;
     }
 
     //get list district by provinceName
     public List<District> getDistrictsByProvinceName(String provinceName) {
-        SQLiteDatabase database = this.getReadableDatabase();
-
         List<District> districts = new ArrayList<>();
-        String selectQuery = "SELECT * FROM districts where province_id in (select id from provinces where name like '%" + provinceName + "%')";
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        while (cursor.moveToNext()) {
-            District district = new District();
-            int districtId = cursor.getInt(0);
-            String districtName = cursor.getString(2);
-            int provinceId = cursor.getInt(1);
-            //save data
-            district.setProvinceId(provinceId);
-            district.setDistrictId(districtId);
-            district.setDistrictName(districtName);
-            //save data to list
-            districts.add(district);
+        try {
+            SQLiteDatabase database = this.getReadableDatabase();
+            String selectQuery = "SELECT * FROM districts where province_id in (select id from provinces where name like '%" + provinceName + "%')";
+            Cursor cursor = database.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                District district = new District();
+                int districtId = cursor.getInt(0);
+                String districtName = cursor.getString(2);
+                int provinceId = cursor.getInt(1);
+                //save data
+                district.setProvinceId(provinceId);
+                district.setDistrictId(districtId);
+                district.setDistrictName(districtName);
+                //save data to list
+                districts.add(district);
+            }
+            cursor.close();
+            database.close();
+        } catch (Exception e) {
+
         }
-        cursor.close();
-        database.close();
         return districts;
     }
 
     //get list district by provinceName
     public List<District> getDistrictsByProvinceId(int provinceId) {
-        SQLiteDatabase database = this.getReadableDatabase();
-
         List<District> districts = new ArrayList<>();
-        String selectQuery = "SELECT * FROM districts where province_id = '" + provinceId + "'";
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        while (cursor.moveToNext()) {
-            District district = new District();
-            int districtId = cursor.getInt(0);
-            String districtName = cursor.getString(2);
-            //save data
-            district.setProvinceId(provinceId);
-            district.setDistrictId(districtId);
-            district.setDistrictName(districtName);
-            //save data to list
-            districts.add(district);
+        try {
+            SQLiteDatabase database = this.getReadableDatabase();
+            String selectQuery = "SELECT * FROM districts where province_id = '" + provinceId + "'";
+            Cursor cursor = database.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                District district = new District();
+                int districtId = cursor.getInt(0);
+                String districtName = cursor.getString(2);
+                //save data
+                district.setProvinceId(provinceId);
+                district.setDistrictId(districtId);
+                district.setDistrictName(districtName);
+                //save data to list
+                districts.add(district);
+            }
+            cursor.close();
+            database.close();
+        } catch (Exception e) {
+
         }
-        cursor.close();
-        database.close();
         return districts;
     }
 
     //get provinceId by province_name
     public int getProvinceIdByProvinceName(String provinceName) {
-        SQLiteDatabase database = this.getReadableDatabase();
         int provinceId = 0;
-        String selectQuery = "select id from provinces where name like '%" + provinceName + "%'";
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        if (cursor != null && cursor.moveToFirst()) {
-            provinceId = cursor.getInt(0);
-            cursor.close();
+        try {
+            SQLiteDatabase database = this.getReadableDatabase();
+            String selectQuery = "select id from provinces where name like '%" + provinceName + "%'";
+            Cursor cursor = database.rawQuery(selectQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+            }
+            if (cursor != null && cursor.moveToFirst()) {
+                provinceId = cursor.getInt(0);
+                cursor.close();
+
+            }
+            database.close();
+        } catch (Exception e) {
 
         }
-        database.close();
         return provinceId;
     }
 
     //get districtId by districtName
     public int getDistrictIdByDistrictName(String districtName) {
-        SQLiteDatabase database = this.getReadableDatabase();
+        int districtId = 0;
+        try {
+            SQLiteDatabase database = this.getReadableDatabase();
 
-        String selectQuery = "select id from districts where name like '%" + districtName + "%'";
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
+            String selectQuery = "select id from districts where name like '%" + districtName + "%'";
+            Cursor cursor = database.rawQuery(selectQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+            }
+            districtId = cursor.getInt(0);
+            cursor.close();
+            database.close();
+        } catch (Exception e) {
+
         }
-        int districtId = cursor.getInt(0);
-        cursor.close();
-        database.close();
         return districtId;
     }
 
     //get districtName by districtId
     public String getDistrictNameByDistrictId(String districtId) {
-        SQLiteDatabase database = this.getReadableDatabase();
+        String districtName = "";
 
-        String selectQuery = "select name from districts where id = '" + districtId + "'";
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
+        try {
+            SQLiteDatabase database = this.getReadableDatabase();
+            String selectQuery = "select name from districts where id = '" + districtId + "'";
+            Cursor cursor = database.rawQuery(selectQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+            }
+            districtName = cursor.getString(0);
+            cursor.close();
+            database.close();
+        } catch (Exception e) {
+
         }
-        String districtName = cursor.getString(0);
-        cursor.close();
-        database.close();
         return districtName;
     }
 
@@ -235,25 +257,29 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
 
     //search
     public List<SearchResult> searchProvinceOrDistrict(String name) {
-        SQLiteDatabase database = this.getReadableDatabase();
-
         List<SearchResult> searchResults = new ArrayList<>();
-        String selectQuery = "SELECT * FROM (select D.name || ', ' || P.name 'name', P.id 'provinceId', D.id 'districtId'\n" +
-                "from districts as D, provinces as P\n" +
-                "where D.province_id = P.id)\n" +
-                "where name like '%"+name+"%'";
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        while (cursor.moveToNext()) {
-            String searchResultName = cursor.getString(0);
-            Integer provinceId = cursor.getInt(1);
-            Integer districtId = cursor.getInt(2);
-            SearchResult searchResult = new SearchResult(searchResultName, provinceId, districtId);
-            //save data to list
-            searchResults.add(searchResult);
-        }
-        cursor.close();
 
-        database.close();
+        try {
+            SQLiteDatabase database = this.getReadableDatabase();
+            String selectQuery = "SELECT * FROM (select D.name || ', ' || P.name 'name', P.id 'provinceId', D.id 'districtId'\n" +
+                    "from districts as D, provinces as P\n" +
+                    "where D.province_id = P.id)\n" +
+                    "where name like '%" + name + "%'";
+            Cursor cursor = database.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                String searchResultName = cursor.getString(0);
+                Integer provinceId = cursor.getInt(1);
+                Integer districtId = cursor.getInt(2);
+                SearchResult searchResult = new SearchResult(searchResultName, provinceId, districtId);
+                //save data to list
+                searchResults.add(searchResult);
+            }
+            cursor.close();
+
+            database.close();
+        } catch (Exception e) {
+
+        }
         return searchResults;
     }
 }

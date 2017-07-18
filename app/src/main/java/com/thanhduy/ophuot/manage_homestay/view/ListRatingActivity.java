@@ -13,6 +13,7 @@ import com.thanhduy.ophuot.manage_homestay.ListRatingAdapter;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.model.Rating;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,16 +50,20 @@ public class ListRatingActivity extends BaseActivity {
     }
 
     private void loadData() {
-        if (homestay.getRatingBy() != null) {
-            for (Map.Entry<String, Object> entry : homestay.getRatingBy().entrySet()) {
-                Rating rating = new Rating();
-                String id = entry.getKey();
-                Long rate = (long) entry.getValue();
-                //save rating
-                rating.setId(id);
-                rating.setRating(rate);
-                ratingList.add(rating);
+        try {
+            if (homestay.getRatingBy() != null) {
+                for (Map.Entry<String, Object> entry : homestay.getRatingBy().entrySet()) {
+                    Rating rating = new Rating();
+                    String id = entry.getKey();
+                    Long rate = (long) entry.getValue();
+                    //save rating
+                    rating.setId(id);
+                    rating.setRating(rate);
+                    ratingList.add(rating);
+                }
             }
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
         }
 
     }

@@ -130,26 +130,30 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
                         !chk5.isChecked() && edtContent.getText().length() == 0) {
                     ShowAlertDialog.showAlert(getResources().getString(R.string.fillAtLeastOne), ReportActivity.this);
                 } else {
-                    presenter.sendReport(user.getUid(), getUid(), getContent());
-                    final Dialog dialog = new Dialog(ReportActivity.this);
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setContentView(R.layout.custom_dialog);
-                    dialog.setCancelable(false);
+                    try {
+                        presenter.sendReport(user.getUid(), getUid(), getContent());
+                        final Dialog dialog = new Dialog(ReportActivity.this);
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setContentView(R.layout.custom_dialog);
+                        dialog.setCancelable(false);
 
-                    // set the custom dialog components - text, image and button
-                    TextView text = (TextView) dialog.findViewById(R.id.tv);
-                    text.setText(getResources().getString(R.string.savedReportContent));
-                    Button dialogButton = (Button) dialog.findViewById(R.id.btnok);
-                    // if button is clicked, close the custom dialog
-                    dialogButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    });
+                        // set the custom dialog components - text, image and button
+                        TextView text = (TextView) dialog.findViewById(R.id.tv);
+                        text.setText(getResources().getString(R.string.savedReportContent));
+                        Button dialogButton = (Button) dialog.findViewById(R.id.btnok);
+                        // if button is clicked, close the custom dialog
+                        dialogButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
 
-                    dialog.show();
+                        dialog.show();
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+                    }
                 }
             } else {
                 ShowSnackbar.showSnack(ReportActivity.this, getResources().getString(R.string.noInternet));

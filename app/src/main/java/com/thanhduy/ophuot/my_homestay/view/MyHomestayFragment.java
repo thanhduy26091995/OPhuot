@@ -25,6 +25,7 @@ import com.thanhduy.ophuot.my_homestay.MyHomestayAdapter;
 import com.thanhduy.ophuot.my_homestay.presenter.MyHomestayPresenter;
 import com.thanhduy.ophuot.utils.MyLinearLayoutManager;
 import com.thanhduy.ophuot.utils.ShowAlertDialog;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,61 +95,82 @@ public class MyHomestayFragment extends Fragment implements View.OnClickListener
     }
 
     private void loadData() {
-        presenter.getAllPost(BaseActivity.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    hideItemData();
-                } else {
-                    progressBar.setVisibility(View.GONE);
-                }
-                handleData();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void handleData(){
-        presenter.getAllPost(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot != null) {
-                    PostInfo postInfo = dataSnapshot.getValue(PostInfo.class);
-                    if (!postInfos.contains(postInfo)) {
-                        postInfos.add(postInfo);
-                        myHomestayAdapter.notifyDataSetChanged();
+        try {
+            presenter.getAllPost(BaseActivity.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        if (dataSnapshot.exists()) {
+                            hideItemData();
+                        } else {
+                            progressBar.setVisibility(View.GONE);
+                        }
+                        handleData();
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(getActivity(), getActivity().getResources().getString(R.string.error));
                     }
                 }
-                showItemData();
-            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(getActivity(), getActivity().getResources().getString(R.string.error));
+        }
+    }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                PostInfo postInfo = dataSnapshot.getValue(PostInfo.class);
-                int indexMyPostInList = findIndexMyPost(postInfo);
-                postInfos.remove(indexMyPostInList);
-                myHomestayAdapter.notifyDataSetChanged();
-            }
+    private void handleData() {
+        try {
+            presenter.getAllPost(BaseActivity.getUid()).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    try {
+                        if (dataSnapshot != null) {
+                            PostInfo postInfo = dataSnapshot.getValue(PostInfo.class);
+                            if (!postInfos.contains(postInfo)) {
+                                postInfos.add(postInfo);
+                                myHomestayAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        showItemData();
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(getActivity(), getActivity().getResources().getString(R.string.error));
+                    }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                }
 
-            }
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                showItemData();
-            }
-        });
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    try {
+                        PostInfo postInfo = dataSnapshot.getValue(PostInfo.class);
+                        int indexMyPostInList = findIndexMyPost(postInfo);
+                        postInfos.remove(indexMyPostInList);
+                        myHomestayAdapter.notifyDataSetChanged();
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(getActivity(), getActivity().getResources().getString(R.string.error));
+                    }
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    showItemData();
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(getActivity(), getActivity().getResources().getString(R.string.error));
+        }
     }
 
     private int findIndexMyPost(PostInfo postInfo) {

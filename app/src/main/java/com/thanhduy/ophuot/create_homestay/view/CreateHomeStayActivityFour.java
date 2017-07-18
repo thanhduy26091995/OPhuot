@@ -197,22 +197,26 @@ public class CreateHomeStayActivityFour extends BaseActivity implements View.OnC
     }
 
     private void createHomestay() {
-        //create map address
-        Map<String, Object> address = new HashMap<>();
-        address.put(Constants.ADDRESS, strAddress);
-        address.put(Constants.LAT, lat);
-        address.put(Constants.LNG, lng);
-        //create instance homestay
-        long creatAt = new Date().getTime();
-        Homestay homestay = new Homestay(address, strDescription, mapDataDetails, strHomestayName, getUid(), strPrice,
-                0, strType, creatAt);
-        presenter.createHomestay(String.valueOf(provinceId), String.valueOf(districtId), homestay, listImage);
+        try {
+            //create map address
+            Map<String, Object> address = new HashMap<>();
+            address.put(Constants.ADDRESS, strAddress);
+            address.put(Constants.LAT, lat);
+            address.put(Constants.LNG, lng);
+            //create instance homestay
+            long creatAt = new Date().getTime();
+            Homestay homestay = new Homestay(address, strDescription, mapDataDetails, strHomestayName, getUid(), strPrice,
+                    0, strType, creatAt);
+            presenter.createHomestay(String.valueOf(provinceId), String.valueOf(districtId), homestay, listImage);
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     public void showProgessDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage("Đang tải...");
+            mProgressDialog.setMessage(getResources().getString(R.string.loading));
             mProgressDialog.setCancelable(false);
 
             Runnable runnable = new Runnable() {

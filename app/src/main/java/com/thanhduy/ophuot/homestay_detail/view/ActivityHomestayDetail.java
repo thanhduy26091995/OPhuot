@@ -213,93 +213,97 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
     }
 
     private void loadData() {
-        //load title
-        getSupportActionBar().setTitle(homestay.getName());
-        txtTitleType.setText(homestay.getType());
-        txtTitlePrice.setText(homestay.getPrice());
-        txtTitleNumberBathroom.setText(homestay.getDetails().get(Constants.BATH_ROOM).toString());
-        txtDescription.setText(homestay.getDescription());
-        txtType.setText(homestay.getType());
-        txtNumberPassenger.setText(homestay.getDetails().get(Constants.MAX).toString());
-        txtNumberBedroom.setText(homestay.getDetails().get(Constants.BED_ROOM).toString());
-        txtTimeClose.setText(homestay.getDetails().get(Constants.TIME_CLOSE).toString());
-        txtTimeOpen.setText(homestay.getDetails().get(Constants.TIME_OPEN).toString());
-        txtNumberBed.setText(homestay.getDetails().get(Constants.BED).toString());
-        txtConvenient.setText(homestay.getDetails().get(Constants.CONVENIENT).toString());
-        txtAnimal.setText(Boolean.parseBoolean(homestay.getDetails().get(Constants.PET).toString()) ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
+        try {
+            //load title
+            getSupportActionBar().setTitle(homestay.getName());
+            txtTitleType.setText(homestay.getType());
+            txtTitlePrice.setText(homestay.getPrice());
+            txtTitleNumberBathroom.setText(homestay.getDetails().get(Constants.BATH_ROOM).toString());
+            txtDescription.setText(homestay.getDescription());
+            txtType.setText(homestay.getType());
+            txtNumberPassenger.setText(homestay.getDetails().get(Constants.MAX).toString());
+            txtNumberBedroom.setText(homestay.getDetails().get(Constants.BED_ROOM).toString());
+            txtTimeClose.setText(homestay.getDetails().get(Constants.TIME_CLOSE).toString());
+            txtTimeOpen.setText(homestay.getDetails().get(Constants.TIME_OPEN).toString());
+            txtNumberBed.setText(homestay.getDetails().get(Constants.BED).toString());
+            txtConvenient.setText(homestay.getDetails().get(Constants.CONVENIENT).toString());
+            txtAnimal.setText(Boolean.parseBoolean(homestay.getDetails().get(Constants.PET).toString()) ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
 
 
-        //load info owner
-        if (user == null) {
-            mDatabase.child(Constants.USERS).child(homestay.getPostBy()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot != null) {
-                        User user = dataSnapshot.getValue(User.class);
-                        if (user != null) {
-                            txtOwnerName.setText(user.getName());
-                            txtOwnerAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
-                            txtTime.setText(String.format("%s %s", getResources().getString(R.string.joinAt), DateFormatter.formatDate(user.getCreateAt())));
+            //load info owner
+            if (user == null) {
+                mDatabase.child(Constants.USERS).child(homestay.getPostBy()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot != null) {
+                            User user = dataSnapshot.getValue(User.class);
+                            if (user != null) {
+                                txtOwnerName.setText(user.getName());
+                                txtOwnerAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
+                                txtTime.setText(String.format("%s %s", getResources().getString(R.string.joinAt), DateFormatter.formatDate(user.getCreateAt())));
 //                            ImageLoader.getInstance().loadImageAvatar(ActivityHomestayDetail.this,
 //                                    user.getAvatar(), imgAvatar);
 
-                            final ImageViewAware imageViewAware = new ImageViewAware(imgAvatar);
-                            Glide.with(ActivityHomestayDetail.this)
-                                    .load(user.getAvatar())
-                                    .asBitmap()
-                                    .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                            OldRoundedBitmapDisplayer oldRoundedBitmapDisplayer = new OldRoundedBitmapDisplayer(20);
-                                            oldRoundedBitmapDisplayer.display(resource, imageViewAware, null);
-                                        }
-                                    });
+                                final ImageViewAware imageViewAware = new ImageViewAware(imgAvatar);
+                                Glide.with(ActivityHomestayDetail.this)
+                                        .load(user.getAvatar())
+                                        .asBitmap()
+                                        .centerCrop()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .into(new SimpleTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                                OldRoundedBitmapDisplayer oldRoundedBitmapDisplayer = new OldRoundedBitmapDisplayer(20);
+                                                oldRoundedBitmapDisplayer.display(resource, imageViewAware, null);
+                                            }
+                                        });
 
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
-        } else {
-            txtOwnerName.setText(user.getName());
-            txtOwnerAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
-            txtTime.setText(String.format("%s %s", getResources().getString(R.string.joinAt), DateFormatter.formatDate(user.getCreateAt())));
+                    }
+                });
+            } else {
+                txtOwnerName.setText(user.getName());
+                txtOwnerAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
+                txtTime.setText(String.format("%s %s", getResources().getString(R.string.joinAt), DateFormatter.formatDate(user.getCreateAt())));
 //            ImageLoader.getInstance().loadImageAvatar(ActivityHomestayDetail.this,
 //                    user.getAvatar(), imgAvatar);
 
-            final ImageViewAware imageViewAware = new ImageViewAware(imgAvatar);
-            Glide.with(ActivityHomestayDetail.this)
-                    .load(user.getAvatar())
-                    .asBitmap()
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            OldRoundedBitmapDisplayer oldRoundedBitmapDisplayer = new OldRoundedBitmapDisplayer(20);
-                            oldRoundedBitmapDisplayer.display(resource, imageViewAware, null);
-                        }
-                    });
-        }
-        //yêu thích hoặc không
-        if (homestay.getFavorite() != null) {
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
-                    imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+                final ImageViewAware imageViewAware = new ImageViewAware(imgAvatar);
+                Glide.with(ActivityHomestayDetail.this)
+                        .load(user.getAvatar())
+                        .asBitmap()
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                OldRoundedBitmapDisplayer oldRoundedBitmapDisplayer = new OldRoundedBitmapDisplayer(20);
+                                oldRoundedBitmapDisplayer.display(resource, imageViewAware, null);
+                            }
+                        });
+            }
+            //yêu thích hoặc không
+            if (homestay.getFavorite() != null) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
+                        imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+                    } else {
+                        imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                    }
                 } else {
                     imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                 }
             } else {
                 imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
             }
-        } else {
-            imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
         }
     }
 
@@ -386,26 +390,52 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
             }
         } else if (v == imgFavorite) {
             if (InternetConnection.getInstance().isOnline(ActivityHomestayDetail.this)) {
-                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    PostInfo postInfo = new PostInfo(homestay.getDistrictId(), homestay.getProvinceId(), homestay.getId());
-                    if (homestay.getFavorite() != null) {
-                        if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
-                            deleteFavoriteHomstay(postInfo, BaseActivity.getUid());
-                            homestay.getFavorite().remove(BaseActivity.getUid());
-                            Log.d("SIZE", "" + homestay.getFavorite().size());
-                            //set icon
-                            imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                            //show snackbar
-                            ShowSnackbar.showSnack(ActivityHomestayDetail.this, String.format("%s %s %s", getResources().getString(R.string.deleteFavorite),
-                                    homestay.getName(), getResources().getString(R.string.outOfFavorite)));
-                            Constants.IS_CHANGE_LIST_FAVORITE = true;
+                try {
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                        PostInfo postInfo = new PostInfo(homestay.getDistrictId(), homestay.getProvinceId(), homestay.getId());
+                        if (homestay.getFavorite() != null) {
+                            if (homestay.getFavorite().containsKey(BaseActivity.getUid())) {
+                                deleteFavoriteHomstay(postInfo, BaseActivity.getUid());
+                                homestay.getFavorite().remove(BaseActivity.getUid());
+                                Log.d("SIZE", "" + homestay.getFavorite().size());
+                                //set icon
+                                imgFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                                //show snackbar
+                                ShowSnackbar.showSnack(ActivityHomestayDetail.this, String.format("%s %s %s", getResources().getString(R.string.deleteFavorite),
+                                        homestay.getName(), getResources().getString(R.string.outOfFavorite)));
+                                Constants.IS_CHANGE_LIST_FAVORITE = true;
+                            } else {
+                                BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();
+                                bottomDialogFragment.setPositionCallback(new PositionCallback() {
+                                    @Override
+                                    public void positionCallBack(int position) {
+                                        homestay.getFavorite().put(BaseActivity.getUid(), true);
+                                        Log.d("SIZE", "" + homestay.getFavorite().size());
+                                        //set icon
+                                        imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+                                        //show snackbar
+                                        ShowSnackbar.showSnack(ActivityHomestayDetail.this, String.format("%s %s %s", getResources().getString(R.string.addFavorite),
+                                                homestay.getName(), getResources().getString(R.string.into)));
+                                        Constants.IS_CHANGE_LIST_FAVORITE = true;
+                                    }
+                                });
+//                        //change icon heart from FavoriteListAdapterBottom
+                                Bundle dataMove = new Bundle();
+                                dataMove.putSerializable(Constants.POST_INFO, postInfo);
+                                // dataMove.putSerializable(Constants.POSITION, position);
+                                bottomDialogFragment.setArguments(dataMove);
+                                bottomDialogFragment.show(getSupportFragmentManager(), bottomDialogFragment.getTag());
+
+                            }
                         } else {
                             BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();
                             bottomDialogFragment.setPositionCallback(new PositionCallback() {
                                 @Override
                                 public void positionCallBack(int position) {
+                                    Map<String, Boolean> data = new HashMap<>();
+                                    data.put(BaseActivity.getUid(), true);
+                                    homestay.setFavorite(data);
                                     homestay.getFavorite().put(BaseActivity.getUid(), true);
-                                    Log.d("SIZE", "" + homestay.getFavorite().size());
                                     //set icon
                                     imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
                                     //show snackbar
@@ -414,39 +444,17 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
                                     Constants.IS_CHANGE_LIST_FAVORITE = true;
                                 }
                             });
-//                        //change icon heart from FavoriteListAdapterBottom
                             Bundle dataMove = new Bundle();
                             dataMove.putSerializable(Constants.POST_INFO, postInfo);
-                            // dataMove.putSerializable(Constants.POSITION, position);
+                            //dataMove.putSerializable(Constants.POSITION, position);
                             bottomDialogFragment.setArguments(dataMove);
                             bottomDialogFragment.show(getSupportFragmentManager(), bottomDialogFragment.getTag());
-
                         }
                     } else {
-                        BottomDialogFragment bottomDialogFragment = new BottomDialogFragment();
-                        bottomDialogFragment.setPositionCallback(new PositionCallback() {
-                            @Override
-                            public void positionCallBack(int position) {
-                                Map<String, Boolean> data = new HashMap<>();
-                                data.put(BaseActivity.getUid(), true);
-                                homestay.setFavorite(data);
-                                homestay.getFavorite().put(BaseActivity.getUid(), true);
-                                //set icon
-                                imgFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
-                                //show snackbar
-                                ShowSnackbar.showSnack(ActivityHomestayDetail.this, String.format("%s %s %s", getResources().getString(R.string.addFavorite),
-                                        homestay.getName(), getResources().getString(R.string.into)));
-                                Constants.IS_CHANGE_LIST_FAVORITE = true;
-                            }
-                        });
-                        Bundle dataMove = new Bundle();
-                        dataMove.putSerializable(Constants.POST_INFO, postInfo);
-                        //dataMove.putSerializable(Constants.POSITION, position);
-                        bottomDialogFragment.setArguments(dataMove);
-                        bottomDialogFragment.show(getSupportFragmentManager(), bottomDialogFragment.getTag());
+                        ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), ActivityHomestayDetail.this);
                     }
-                } else {
-                    ShowAlertDialog.showAlert(getResources().getString(R.string.loginFirst), ActivityHomestayDetail.this);
+                } catch (Exception e) {
+                    ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
                 }
             } else {
                 ShowSnackbar.showSnack(ActivityHomestayDetail.this, getResources().getString(R.string.noInternet));
@@ -568,29 +576,37 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
     }
 
     private void deleteFavoriteHomstay(final PostInfo postInfo, final String uid) {
-        // mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).child(postInfo.getHomestayId()).removeValue();
-        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
-                .child(postInfo.getHomestayId()).child(Constants.FAVORITE).child(uid).removeValue();
-        mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    for (DataSnapshot snapshotListFavorite : dataSnapshot.getChildren()) {
-                        for (DataSnapshot snapshotListHomestay : snapshotListFavorite.child(Constants.LIST_HOMESTAY).getChildren()) {
-                            if (snapshotListHomestay.getKey().equals(postInfo.getHomestayId())) {
-                                mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).child(snapshotListFavorite.getKey())
-                                        .child(Constants.LIST_HOMESTAY).child(snapshotListHomestay.getKey()).removeValue();
+        try {
+            // mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).child(postInfo.getHomestayId()).removeValue();
+            mDatabase.child(Constants.HOMESTAY).child(String.valueOf(postInfo.getProvinceId())).child(String.valueOf(postInfo.getDistrictId()))
+                    .child(postInfo.getHomestayId()).child(Constants.FAVORITE).child(uid).removeValue();
+            mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        if (dataSnapshot != null) {
+                            for (DataSnapshot snapshotListFavorite : dataSnapshot.getChildren()) {
+                                for (DataSnapshot snapshotListHomestay : snapshotListFavorite.child(Constants.LIST_HOMESTAY).getChildren()) {
+                                    if (snapshotListHomestay.getKey().equals(postInfo.getHomestayId())) {
+                                        mDatabase.child(Constants.USERS).child(uid).child(Constants.FAVORITE).child(snapshotListFavorite.getKey())
+                                                .child(Constants.LIST_HOMESTAY).child(snapshotListHomestay.getKey()).removeValue();
+                                    }
+                                }
                             }
                         }
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(ActivityHomestayDetail.this, getResources().getString(R.string.error));
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     @Override
@@ -605,20 +621,24 @@ public class ActivityHomestayDetail extends BaseActivity implements OnMapReadyCa
     @Override
     public void homestayIsExists(boolean result) {
         if (result) {
-            presenter.addToRatingBy(getUid(), (int) ratingBar.getRating(), homestay);
-            //update homestay
-            if (homestay.getRatingBy() == null) {
-                Map<String, Object> data = new HashMap<>();
-                data.put(BaseActivity.getUid(), (long) ratingBar.getRating());
-                homestay.setRatingBy(data);
-                homestay.getRatingBy().put(BaseActivity.getUid(), (long) ratingBar.getRating());
-            } else {
-                homestay.getRatingBy().put(getUid(), (long) ratingBar.getRating());
+            try {
+                presenter.addToRatingBy(getUid(), (int) ratingBar.getRating(), homestay);
+                //update homestay
+                if (homestay.getRatingBy() == null) {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put(BaseActivity.getUid(), (long) ratingBar.getRating());
+                    homestay.setRatingBy(data);
+                    homestay.getRatingBy().put(BaseActivity.getUid(), (long) ratingBar.getRating());
+                } else {
+                    homestay.getRatingBy().put(getUid(), (long) ratingBar.getRating());
+                }
+                //dismiss
+                dialog.dismiss();
+                Snackbar snackbar = Snackbar.make(findViewById(activity), getResources().getString(R.string.ratingSave), Snackbar.LENGTH_LONG);
+                snackbar.show();
+            } catch (Exception e) {
+                ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
             }
-            //dismiss
-            dialog.dismiss();
-            Snackbar snackbar = Snackbar.make(findViewById(activity), getResources().getString(R.string.ratingSave), Snackbar.LENGTH_LONG);
-            snackbar.show();
         } else {
             imgFavorite.setEnabled(false);
             ShowAlertDialog.showAlert(getResources().getString(R.string.homestayDeleted), ActivityHomestayDetail.this);

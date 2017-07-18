@@ -163,19 +163,24 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void updateDataUser() {
-        String name = edtName.getText().toString().trim();
-        String phone = edtPhone.getText().toString().trim();
-        String description = edtDescription.getText().toString().trim();
-        Map<String, Object> address = new HashMap<>();
-        address.put(Constants.ADDRESS, txtAddress.getText().toString());
-        address.put(Constants.LAT, lat);
-        address.put(Constants.LNG, lng);
-        if (TextUtils.isEmpty(name)) {
-            ShowAlertDialog.showAlert(getResources().getString(R.string.nameRequired), EditProfileActivity.this);
-        } else {
-            //update data
-            presenter.updateUserInfo(getUid(), address, description, name, phone, gender);
-            finish();
+        try{
+            String name = edtName.getText().toString().trim();
+            String phone = edtPhone.getText().toString().trim();
+            String description = edtDescription.getText().toString().trim();
+            Map<String, Object> address = new HashMap<>();
+            address.put(Constants.ADDRESS, txtAddress.getText().toString());
+            address.put(Constants.LAT, lat);
+            address.put(Constants.LNG, lng);
+            if (TextUtils.isEmpty(name)) {
+                ShowAlertDialog.showAlert(getResources().getString(R.string.nameRequired), EditProfileActivity.this);
+            } else {
+                //update data
+                presenter.updateUserInfo(getUid(), address, description, name, phone, gender);
+                finish();
+            }
+        }
+        catch (Exception e){
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
         }
 
     }

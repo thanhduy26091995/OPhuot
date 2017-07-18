@@ -79,20 +79,24 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
     }
 
     private void sendEmailResetPassword(String email) {
-        //disable button
-        btnResetPassword.setEnabled(false);
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    ShowAlertDialog.showAlert(getResources().getString(R.string.sendEmailResetSuccess), ForgetPasswordActivity.this);
-                } else {
-                    ShowAlertDialog.showAlert(getResources().getString(R.string.sendEmailResetFail), ForgetPasswordActivity.this);
+        try {
+            //disable button
+            btnResetPassword.setEnabled(false);
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        ShowAlertDialog.showAlert(getResources().getString(R.string.sendEmailResetSuccess), ForgetPasswordActivity.this);
+                    } else {
+                        ShowAlertDialog.showAlert(getResources().getString(R.string.sendEmailResetFail), ForgetPasswordActivity.this);
+                    }
+                    btnResetPassword.setEnabled(true);
                 }
-                btnResetPassword.setEnabled(true);
-            }
-        });
+            });
+        } catch (Exception e) {
+           ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     @Override

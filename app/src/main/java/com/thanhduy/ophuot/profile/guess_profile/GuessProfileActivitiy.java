@@ -18,6 +18,7 @@ import com.thanhduy.ophuot.base.InternetConnection;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.report.view.ReportActivity;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,18 +63,22 @@ public class GuessProfileActivitiy extends BaseActivity {
 
     private void initInfo() {
         if (InternetConnection.getInstance().isOnline(GuessProfileActivitiy.this)) {
-            if (user != null) {
-                txtName.setText(user.getName());
-                txtAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
-                txtDescription.setText(user.getDescription());
-                txtPhone.setText(user.getPhone());
-                if (user.getGender() == 1) {
-                    txtGender.setText(getResources().getString(R.string.male));
-                } else {
-                    txtGender.setText(getResources().getString(R.string.female));
+            try {
+                if (user != null) {
+                    txtName.setText(user.getName());
+                    txtAddress.setText(user.getAddress().get(Constants.ADDRESS).toString());
+                    txtDescription.setText(user.getDescription());
+                    txtPhone.setText(user.getPhone());
+                    if (user.getGender() == 1) {
+                        txtGender.setText(getResources().getString(R.string.male));
+                    } else {
+                        txtGender.setText(getResources().getString(R.string.female));
+                    }
+                    //checkGender(user.getGender());
+                    ImageLoader.getInstance().loadImageAvatar(GuessProfileActivitiy.this, user.getAvatar(), imgAvatar);
                 }
-                //checkGender(user.getGender());
-                ImageLoader.getInstance().loadImageAvatar(GuessProfileActivitiy.this, user.getAvatar(), imgAvatar);
+            } catch (Exception e) {
+                ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
             }
         } else {
             Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), getResources().getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)

@@ -123,39 +123,47 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
 //    }
     //load all data comment
     private void loadDataComment() {
-        presenter.getAllComments(homestay).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot != null) {
-                    Comment comment = dataSnapshot.getValue(Comment.class);
-                    if (comment != null) {
-                        commentList.add(comment);
-                        commentAdapter.notifyDataSetChanged();
+        try {
+            presenter.getAllComments(homestay).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    try {
+                        if (dataSnapshot != null) {
+                            Comment comment = dataSnapshot.getValue(Comment.class);
+                            if (comment != null) {
+                                commentList.add(comment);
+                                commentAdapter.notifyDataSetChanged();
+                            }
+
+                        }
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(CommentActivity.this, getResources().getString(R.string.error));
                     }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
                 }
-            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            }
+                }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     @Override
@@ -185,23 +193,27 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
 
     //add comment into server
     private void addComment() {
-        long commentTime = new Date().getTime();
-        String content = edtContent.getText().toString();
-        // int rating = (int) ratingComment.getRating();
-        //call presenter
-        presenter.addComment(homestay, getUid(), content, 0, commentTime);
-        //update rating
-        //ratingComment.setRating(0);
-        //register topics
-        FirebaseMessaging.getInstance().subscribeToTopic(homestay.getId());
-        //send push
-        PushMessage.sendMessageComment(String.format("%s vừa bình luận", hashDataUser.get(SessionManagerUser.KEY_NAME)), content,
-                BaseActivity.getUid(), homestay.getId(), String.valueOf(homestay.getProvinceId()), String.valueOf(homestay.getDistrictId()), homestay.getId());
-        //clear edittext
-        edtContent.setText("");
-        mRecycler.smoothScrollToPosition(commentAdapter.getItemCount());
-        //thêm homestayId vào node NotiComment, sử dụng cho register và unregister FCM
-        presenter.addNotiComment(getUid(), homestay.getId());
+        try {
+            long commentTime = new Date().getTime();
+            String content = edtContent.getText().toString();
+            // int rating = (int) ratingComment.getRating();
+            //call presenter
+            presenter.addComment(homestay, getUid(), content, 0, commentTime);
+            //update rating
+            //ratingComment.setRating(0);
+            //register topics
+            FirebaseMessaging.getInstance().subscribeToTopic(homestay.getId());
+            //send push
+            PushMessage.sendMessageComment(String.format("%s vừa bình luận", hashDataUser.get(SessionManagerUser.KEY_NAME)), content,
+                    BaseActivity.getUid(), homestay.getId(), String.valueOf(homestay.getProvinceId()), String.valueOf(homestay.getDistrictId()), homestay.getId());
+            //clear edittext
+            edtContent.setText("");
+            mRecycler.smoothScrollToPosition(commentAdapter.getItemCount());
+            //thêm homestayId vào node NotiComment, sử dụng cho register và unregister FCM
+            presenter.addNotiComment(getUid(), homestay.getId());
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     @Override

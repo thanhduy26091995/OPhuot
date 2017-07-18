@@ -145,42 +145,47 @@ public class EditHomestayActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void loadData() {
-        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(homestay.getProvinceId())).child(String.valueOf(homestay.getDistrictId())).child(homestay.getId()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    Homestay homestay = dataSnapshot.getValue(Homestay.class);
-                    if (homestay != null) {
-                        //load title
-                        getSupportActionBar().setTitle(getResources().getString(R.string.editProfile));
-                        txtType.setText(homestay.getType());
-                        edtName.setText(homestay.getName());
-                        edtPrice.setText(homestay.getPrice());
-                        edtBathroom.setText(homestay.getDetails().get(Constants.BATH_ROOM).toString());
-                        edtDescription.setText(homestay.getDescription());
-                        // txtType.setText(homestay.getType());
-                        edtPassenger.setText(homestay.getDetails().get(Constants.MAX).toString());
-                        edtBedroom.setText(homestay.getDetails().get(Constants.BED_ROOM).toString());
-                        txtTimeClose.setText(homestay.getDetails().get(Constants.TIME_CLOSE).toString());
-                        txtTimeOpen.setText(homestay.getDetails().get(Constants.TIME_OPEN).toString());
-                        edtBed.setText(homestay.getDetails().get(Constants.BED).toString());
-                        edtConvenient.setText(homestay.getDetails().get(Constants.CONVENIENT).toString());
-                        if (Boolean.parseBoolean(homestay.getDetails().get(Constants.PET).toString())) {
-                            chkAnimal.setChecked(true);
-                        } else {
-                            chkAnimal.setChecked(false);
+        try{
+            mDatabase.child(Constants.HOMESTAY).child(String.valueOf(homestay.getProvinceId())).child(String.valueOf(homestay.getDistrictId())).child(homestay.getId()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        Homestay homestay = dataSnapshot.getValue(Homestay.class);
+                        if (homestay != null) {
+                            //load title
+                            getSupportActionBar().setTitle(getResources().getString(R.string.editProfile));
+                            txtType.setText(homestay.getType());
+                            edtName.setText(homestay.getName());
+                            edtPrice.setText(homestay.getPrice());
+                            edtBathroom.setText(homestay.getDetails().get(Constants.BATH_ROOM).toString());
+                            edtDescription.setText(homestay.getDescription());
+                            // txtType.setText(homestay.getType());
+                            edtPassenger.setText(homestay.getDetails().get(Constants.MAX).toString());
+                            edtBedroom.setText(homestay.getDetails().get(Constants.BED_ROOM).toString());
+                            txtTimeClose.setText(homestay.getDetails().get(Constants.TIME_CLOSE).toString());
+                            txtTimeOpen.setText(homestay.getDetails().get(Constants.TIME_OPEN).toString());
+                            edtBed.setText(homestay.getDetails().get(Constants.BED).toString());
+                            edtConvenient.setText(homestay.getDetails().get(Constants.CONVENIENT).toString());
+                            if (Boolean.parseBoolean(homestay.getDetails().get(Constants.PET).toString())) {
+                                chkAnimal.setChecked(true);
+                            } else {
+                                chkAnimal.setChecked(false);
+                            }
+                            timeOpenInMinute = handleTime(txtTimeOpen.getText().toString());
+                            timeCloseInMinute = handleTime(txtTimeClose.getText().toString());
                         }
-                        timeOpenInMinute = handleTime(txtTimeOpen.getText().toString());
-                        timeCloseInMinute = handleTime(txtTimeClose.getText().toString());
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+        catch (Exception e){
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     private boolean isEditSuccessfully() {
@@ -196,36 +201,40 @@ public class EditHomestayActivity extends BaseActivity implements View.OnClickLi
                 ShowAlertDialog.showAlert(getResources().getString(R.string.wrongTime), this);
             }
         }
-
         return isSuccess;
     }
 
     private void updateDataHomestay() {
-        String name = edtName.getText().toString().trim();
-        String description = edtDescription.getText().toString().trim();
-        String type = txtType.getText().toString();
-        String price = edtPrice.getText().toString().trim();
-        //map data details
-        int numberBathroom = Integer.parseInt(edtBathroom.getText().toString());
-        int numberBed = Integer.parseInt(edtBed.getText().toString());
-        int numberBedroom = Integer.parseInt(edtBedroom.getText().toString());
-        String convenient = edtConvenient.getText().toString().trim();
-        int maxPass = Integer.parseInt(edtPassenger.getText().toString());
-        boolean isAllowAnimal = chkAnimal.isChecked();
-        String timeOpen = txtTimeOpen.getText().toString();
-        String timeClose = txtTimeClose.getText().toString();
-        Map<String, Object> details = new HashMap<>();
-        details.put(Constants.BATH_ROOM, numberBathroom);
-        details.put(Constants.BED, numberBed);
-        details.put(Constants.BED_ROOM, numberBedroom);
-        details.put(Constants.CONVENIENT, convenient);
-        details.put(Constants.MAX, maxPass);
-        details.put(Constants.PET, isAllowAnimal);
-        details.put(Constants.TIME_OPEN, timeOpen);
-        details.put(Constants.TIME_CLOSE, timeClose);
-        //update data to firebaes
-        presenter.editHomestay(String.valueOf(homestay.getProvinceId()), String.valueOf(homestay.getDistrictId()),
-                homestay.getId(), name, description, price, type, details);
+        try{
+            String name = edtName.getText().toString().trim();
+            String description = edtDescription.getText().toString().trim();
+            String type = txtType.getText().toString();
+            String price = edtPrice.getText().toString().trim();
+            //map data details
+            int numberBathroom = Integer.parseInt(edtBathroom.getText().toString());
+            int numberBed = Integer.parseInt(edtBed.getText().toString());
+            int numberBedroom = Integer.parseInt(edtBedroom.getText().toString());
+            String convenient = edtConvenient.getText().toString().trim();
+            int maxPass = Integer.parseInt(edtPassenger.getText().toString());
+            boolean isAllowAnimal = chkAnimal.isChecked();
+            String timeOpen = txtTimeOpen.getText().toString();
+            String timeClose = txtTimeClose.getText().toString();
+            Map<String, Object> details = new HashMap<>();
+            details.put(Constants.BATH_ROOM, numberBathroom);
+            details.put(Constants.BED, numberBed);
+            details.put(Constants.BED_ROOM, numberBedroom);
+            details.put(Constants.CONVENIENT, convenient);
+            details.put(Constants.MAX, maxPass);
+            details.put(Constants.PET, isAllowAnimal);
+            details.put(Constants.TIME_OPEN, timeOpen);
+            details.put(Constants.TIME_CLOSE, timeClose);
+            //update data to firebaes
+            presenter.editHomestay(String.valueOf(homestay.getProvinceId()), String.valueOf(homestay.getDistrictId()),
+                    homestay.getId(), name, description, price, type, details);
+        }
+        catch (Exception e){
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     @Override

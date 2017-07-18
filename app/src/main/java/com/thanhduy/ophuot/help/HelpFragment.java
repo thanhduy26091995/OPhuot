@@ -13,12 +13,13 @@ import android.widget.LinearLayout;
 import com.thanhduy.ophuot.R;
 import com.thanhduy.ophuot.term.TermActivity;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 /**
  * Created by buivu on 24/04/2017.
  */
 
-public class HelpFragment extends Fragment implements View.OnClickListener{
+public class HelpFragment extends Fragment implements View.OnClickListener {
     private View rootView;
     private LinearLayout linearLayout, linearTemp;
 
@@ -35,17 +36,20 @@ public class HelpFragment extends Fragment implements View.OnClickListener{
     }
 
     private void sendEmail() {
-        Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", Constants.EMAIL_ADMIN, null));
-        startActivity(i);
+        try {
+            Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", Constants.EMAIL_ADMIN, null));
+            startActivity(i);
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(getActivity(), getResources().getString(R.string.error));
+        }
     }
 
     @Override
     public void onClick(View v) {
-        if (v == linearLayout){
+        if (v == linearLayout) {
             sendEmail();
-        }
-        else if (v == linearTemp){
+        } else if (v == linearTemp) {
             Intent intent = new Intent(getActivity(), TermActivity.class);
             startActivity(intent);
         }

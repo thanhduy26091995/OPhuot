@@ -197,6 +197,7 @@
     <string name="next">Next</string>
     <string name="loading">Loading...</string>
     <string name="send">Send</string>
+    <string name="error">Sorry, please try again</string>
     <string-array name="arr_language">
         <item>English</item>
         <item>Vietnamese</item>

@@ -21,6 +21,7 @@ import com.thanhduy.ophuot.chat.view.ChatActivity;
 import com.thanhduy.ophuot.model.Message;
 import com.thanhduy.ophuot.model.User;
 import com.thanhduy.ophuot.utils.Constants;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,86 +55,90 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
 
     @Override
     public void onBindViewHolder(final ChatListViewHolder holder, final int position) {
-        count = 0;
-        final String partnerId = listUid.get(position);
-        //load infor partner
-        mDatabase.child(Constants.USERS).child(partnerId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    final User user = dataSnapshot.getValue(User.class);
-                    if (user != null) {
-                        holder.txtName.setText(user.getName());
-                        ImageLoader.getInstance().loadImageAvatar(activity, user.getAvatar(), holder.imgAvatar);
-                    }
-                    //event click
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(activity, ChatActivity.class);
-                            intent.putExtra(Constants.USERS, user);
-                            activity.startActivity(intent);
+        try {
+            count = 0;
+            final String partnerId = listUid.get(position);
+            //load infor partner
+            mDatabase.child(Constants.USERS).child(partnerId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        final User user = dataSnapshot.getValue(User.class);
+                        if (user != null) {
+                            holder.txtName.setText(user.getName());
+                            ImageLoader.getInstance().loadImageAvatar(activity, user.getAvatar(), holder.imgAvatar);
                         }
-                    });
+                        //event click
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(activity, ChatActivity.class);
+                                intent.putExtra(Constants.USERS, user);
+                                activity.startActivity(intent);
+                            }
+                        });
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
                 }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        //load last message
-        mDatabase.child(Constants.MESSAGES).child(BaseActivity.getUid()).child(partnerId).limitToLast(1).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        Message message = data.getValue(Message.class);
-                        //save data
+            });
+            //load last message
+            mDatabase.child(Constants.MESSAGES).child(BaseActivity.getUid()).child(partnerId).limitToLast(1).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            Message message = data.getValue(Message.class);
+                            //save data
 //                        hashForLoadFirstTime.put(partnerId, true);
-                        count++;
-                        if (count <= listUid.size()) {
-                            if (message != null) {
-                                holder.txtTime.setText(caculateTimeAgo(message.getTimestamp()));
-                                if (message.getIsMine()) {
-                                    if (message.getIsImage()) {
-                                        holder.txtContent.setText(String.format("%s %s", activity.getResources().getString(R.string.you),
-                                                activity.getResources().getString(R.string.sendImage)));
+                            count++;
+                            if (count <= listUid.size()) {
+                                if (message != null) {
+                                    holder.txtTime.setText(caculateTimeAgo(message.getTimestamp()));
+                                    if (message.getIsMine()) {
+                                        if (message.getIsImage()) {
+                                            holder.txtContent.setText(String.format("%s %s", activity.getResources().getString(R.string.you),
+                                                    activity.getResources().getString(R.string.sendImage)));
+                                        } else {
+                                            holder.txtContent.setText(String.format("%s %s", activity.getResources().getString(R.string.you),
+                                                    message.getContent()));
+                                        }
                                     } else {
-                                        holder.txtContent.setText(String.format("%s %s", activity.getResources().getString(R.string.you),
-                                                message.getContent()));
-                                    }
-                                } else {
-                                    if (message.getIsImage()) {
-                                        holder.txtContent.setText(String.format("%s %s", activity.getResources().getString(R.string.you),
-                                                activity.getResources().getString(R.string.receiveImage)));
-                                    } else {
-                                        holder.txtContent.setText(String.format("%s",
-                                                message.getContent()));
+                                        if (message.getIsImage()) {
+                                            holder.txtContent.setText(String.format("%s %s", activity.getResources().getString(R.string.you),
+                                                    activity.getResources().getString(R.string.receiveImage)));
+                                        } else {
+                                            holder.txtContent.setText(String.format("%s",
+                                                    message.getContent()));
+                                        }
                                     }
                                 }
-                            }
-                        } else {
-                            String key = "";
-                            if (message.getIsMine()) {
-                                key = message.getReceiveBy();
                             } else {
-                                key = message.getSendBy();
+                                String key = "";
+                                if (message.getIsMine()) {
+                                    key = message.getReceiveBy();
+                                } else {
+                                    key = message.getSendBy();
+                                }
+                                updateLastMessage(key);
                             }
-                            updateLastMessage(key);
                         }
+
                     }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
                 }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(activity, activity.getResources().getString(R.string.error));
+        }
 
     }
 
@@ -192,18 +197,18 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
         return listUid.size();
     }
 
-public class ChatListViewHolder extends RecyclerView.ViewHolder {
+    public class ChatListViewHolder extends RecyclerView.ViewHolder {
 
-    public ImageView imgAvatar;
-    public TextView txtName, txtContent, txtTime;
+        public ImageView imgAvatar;
+        public TextView txtName, txtContent, txtTime;
 
-    public ChatListViewHolder(View itemView) {
-        super(itemView);
+        public ChatListViewHolder(View itemView) {
+            super(itemView);
 
-        imgAvatar = (ImageView) itemView.findViewById(R.id.img_mess_avatar);
-        txtName = (TextView) itemView.findViewById(R.id.txt_mess_name);
-        txtContent = (TextView) itemView.findViewById(R.id.txt_mess_content);
-        txtTime = (TextView) itemView.findViewById(R.id.txt_mess_time);
+            imgAvatar = (ImageView) itemView.findViewById(R.id.img_mess_avatar);
+            txtName = (TextView) itemView.findViewById(R.id.txt_mess_name);
+            txtContent = (TextView) itemView.findViewById(R.id.txt_mess_content);
+            txtTime = (TextView) itemView.findViewById(R.id.txt_mess_time);
+        }
     }
-}
 }

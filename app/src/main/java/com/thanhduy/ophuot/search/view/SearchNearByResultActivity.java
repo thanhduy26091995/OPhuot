@@ -42,6 +42,7 @@ import com.thanhduy.ophuot.database.SqlLiteDbHelper;
 import com.thanhduy.ophuot.list_homestay.ListHomestayAdapter;
 import com.thanhduy.ophuot.model.Homestay;
 import com.thanhduy.ophuot.search.presenter.SearchPresenter;
+import com.thanhduy.ophuot.utils.ShowSnackbar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -314,62 +315,70 @@ public class SearchNearByResultActivity extends BaseActivity implements Location
     }
 
     private void showDataSearchResult(final int provinceId) {
-        presenter.searchHomestayNearby(provinceId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    hideItemData();
-                    presenter.searchHomestayNearby(provinceId).addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            if (dataSnapshot != null) {
-                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                    Homestay homestay = snapshot.getValue(Homestay.class);
-                                    if (homestay != null) {
-                                        if (!homestayList.contains(homestay)) {
-                                            homestayList.add(homestay);
-                                            listHomestayAdapter.notifyDataSetChanged();
-                                            Log.d("DATA", homestay.getName());
+        try {
+            presenter.searchHomestayNearby(provinceId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        if (dataSnapshot.exists()) {
+                            hideItemData();
+                            presenter.searchHomestayNearby(provinceId).addChildEventListener(new ChildEventListener() {
+                                @Override
+                                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                    if (dataSnapshot != null) {
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            Homestay homestay = snapshot.getValue(Homestay.class);
+                                            if (homestay != null) {
+                                                if (!homestayList.contains(homestay)) {
+                                                    homestayList.add(homestay);
+                                                    listHomestayAdapter.notifyDataSetChanged();
+                                                    Log.d("DATA", homestay.getName());
+                                                }
+                                            }
                                         }
                                     }
+                                    showItemData();
                                 }
-                            }
-                            showItemData();
+
+                                @Override
+                                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                }
+
+                                @Override
+                                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                }
+
+                                @Override
+                                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    showItemData();
+                                }
+                            });
+                        } else {
+                            //nếu không có node này
+                            imgNoResult.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.GONE);
                         }
-
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            showItemData();
-                        }
-                    });
-                } else {
-                    //nếu không có node này
-                    imgNoResult.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(SearchNearByResultActivity.this, getResources().getString(R.string.error));
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
 
     }
 

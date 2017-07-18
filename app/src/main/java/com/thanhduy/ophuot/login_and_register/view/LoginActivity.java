@@ -179,68 +179,76 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void login() {
-        boolean isSuccess = true;
-        String email = edtEmail.getText().toString();
-        String password = edtPassword.getText().toString();
-        if (email.length() == 0 || password.length() == 0) {
-            ShowAlertDialog.showAlert(getResources().getString(R.string.fillAllData), this);
-            isSuccess = false;
-            return;
-        } else {
-            if (!EmailValidate.IsOk(email)) {
-                ShowAlertDialog.showAlert(getResources().getString(R.string.wrongFormatEmail), this);
+        try{
+            boolean isSuccess = true;
+            String email = edtEmail.getText().toString();
+            String password = edtPassword.getText().toString();
+            if (email.length() == 0 || password.length() == 0) {
+                ShowAlertDialog.showAlert(getResources().getString(R.string.fillAllData), this);
                 isSuccess = false;
                 return;
+            } else {
+                if (!EmailValidate.IsOk(email)) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.wrongFormatEmail), this);
+                    isSuccess = false;
+                    return;
+                }
+                if (password.length() < 6) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.largerThan6Letter), this);
+                    isSuccess = false;
+                    return;
+                }
             }
-            if (password.length() < 6) {
-                ShowAlertDialog.showAlert(getResources().getString(R.string.largerThan6Letter), this);
-                isSuccess = false;
-                return;
+
+            if (isSuccess) {
+                presenter.signIn(email, password);
             }
         }
-
-        if (isSuccess) {
-            presenter.signIn(email, password);
+        catch (Exception e){
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
         }
-
     }
 
     private void register() {
-        boolean isSuccess = true;
-        String email = edtRegisterEmail.getText().toString().trim();
-        String password = edtRegisterPassword.getText().toString().trim();
-        String confirmPassword = edtConfirmPassword.getText().toString().trim();
-        String phone = edtRegisterPhone.getText().toString().trim();
-        String name = edtRegisterUsername.getText().toString().trim();
-        if (email.length() == 0 || password.length() == 0 || confirmPassword.length() == 0
-                || phone.length() == 0 || name.length() == 0) {
-            ShowAlertDialog.showAlert(getResources().getString(R.string.fillAllData), this);
-            isSuccess = false;
-            return;
-        } else {
-            if (!EmailValidate.IsOk(email)) {
-                ShowAlertDialog.showAlert(getResources().getString(R.string.wrongFormatEmail), this);
+        try {
+            boolean isSuccess = true;
+            String email = edtRegisterEmail.getText().toString().trim();
+            String password = edtRegisterPassword.getText().toString().trim();
+            String confirmPassword = edtConfirmPassword.getText().toString().trim();
+            String phone = edtRegisterPhone.getText().toString().trim();
+            String name = edtRegisterUsername.getText().toString().trim();
+            if (email.length() == 0 || password.length() == 0 || confirmPassword.length() == 0
+                    || phone.length() == 0 || name.length() == 0) {
+                ShowAlertDialog.showAlert(getResources().getString(R.string.fillAllData), this);
                 isSuccess = false;
                 return;
+            } else {
+                if (!EmailValidate.IsOk(email)) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.wrongFormatEmail), this);
+                    isSuccess = false;
+                    return;
+                }
+                if (password.length() < 6) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.largerThan6Letter), this);
+                    isSuccess = false;
+                    return;
+                }
+                if (!password.equals(confirmPassword)) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.passwordDoesntMatch), this);
+                    isSuccess = false;
+                    return;
+                }
+                if (phone.length() < 10 || phone.length() > 11) {
+                    ShowAlertDialog.showAlert(getResources().getString(R.string.numberOfPhone), this);
+                    isSuccess = false;
+                    return;
+                }
             }
-            if (password.length() < 6) {
-                ShowAlertDialog.showAlert(getResources().getString(R.string.largerThan6Letter), this);
-                isSuccess = false;
-                return;
+            if (isSuccess) {
+                presenter.createAccount(name, phone, email, password);
             }
-            if (!password.equals(confirmPassword)) {
-                ShowAlertDialog.showAlert(getResources().getString(R.string.passwordDoesntMatch), this);
-                isSuccess = false;
-                return;
-            }
-            if (phone.length() < 10 || phone.length() > 11) {
-                ShowAlertDialog.showAlert(getResources().getString(R.string.numberOfPhone), this);
-                isSuccess = false;
-                return;
-            }
-        }
-        if (isSuccess) {
-            presenter.createAccount(name, phone, email, password);
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
         }
 
     }

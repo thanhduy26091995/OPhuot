@@ -172,53 +172,64 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
     }
 
     private void loadDataAfterEdited() {
-        mDatabase.child(Constants.HOMESTAY).child(String.valueOf(homestay.getProvinceId())).child(String.valueOf(homestay.getDistrictId())).child(homestay.getId()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    Homestay homestay = dataSnapshot.getValue(Homestay.class);
-                    if (homestay != null) {
-                        //load title
-                        getSupportActionBar().setTitle(homestay.getName());
-                        txtTitleType.setText(homestay.getType());
-                        txtTitlePrice.setText(homestay.getPrice());
-                        txtTitleNumberBathroom.setText(homestay.getDetails().get(Constants.BATH_ROOM).toString());
-                        txtDescription.setText(homestay.getDescription());
-                        txtType.setText(homestay.getType());
-                        txtNumberPassenger.setText(homestay.getDetails().get(Constants.MAX).toString());
-                        txtNumberBedroom.setText(homestay.getDetails().get(Constants.BED_ROOM).toString());
-                        txtTimeClose.setText(homestay.getDetails().get(Constants.TIME_CLOSE).toString());
-                        txtTimeOpen.setText(homestay.getDetails().get(Constants.TIME_OPEN).toString());
-                        txtNumberBed.setText(homestay.getDetails().get(Constants.BED).toString());
-                        txtConvenient.setText(homestay.getDetails().get(Constants.CONVENIENT).toString());
-                        txtAnimal.setText(Boolean.parseBoolean(homestay.getDetails().get(Constants.PET).toString()) ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
+        try {
+            mDatabase.child(Constants.HOMESTAY).child(String.valueOf(homestay.getProvinceId())).child(String.valueOf(homestay.getDistrictId())).child(homestay.getId()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        if (dataSnapshot != null) {
+                            Homestay homestay = dataSnapshot.getValue(Homestay.class);
+                            if (homestay != null) {
+                                //load title
+                                getSupportActionBar().setTitle(homestay.getName());
+                                txtTitleType.setText(homestay.getType());
+                                txtTitlePrice.setText(homestay.getPrice());
+                                txtTitleNumberBathroom.setText(homestay.getDetails().get(Constants.BATH_ROOM).toString());
+                                txtDescription.setText(homestay.getDescription());
+                                txtType.setText(homestay.getType());
+                                txtNumberPassenger.setText(homestay.getDetails().get(Constants.MAX).toString());
+                                txtNumberBedroom.setText(homestay.getDetails().get(Constants.BED_ROOM).toString());
+                                txtTimeClose.setText(homestay.getDetails().get(Constants.TIME_CLOSE).toString());
+                                txtTimeOpen.setText(homestay.getDetails().get(Constants.TIME_OPEN).toString());
+                                txtNumberBed.setText(homestay.getDetails().get(Constants.BED).toString());
+                                txtConvenient.setText(homestay.getDetails().get(Constants.CONVENIENT).toString());
+                                txtAnimal.setText(Boolean.parseBoolean(homestay.getDetails().get(Constants.PET).toString()) ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
+                            }
+                        }
+                    } catch (Exception e) {
+                        ShowSnackbar.showSnack(ManageHomestayActivity.this, getResources().getString(R.string.error));
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     private void loadData() {
-        //load title
-        getSupportActionBar().setTitle(homestay.getName());
-        txtTitleType.setText(homestay.getType());
-        txtTitlePrice.setText(homestay.getPrice());
-        txtTitleNumberBathroom.setText(homestay.getDetails().get(Constants.BATH_ROOM).toString());
-        txtDescription.setText(homestay.getDescription());
-        txtType.setText(homestay.getType());
-        txtNumberPassenger.setText(homestay.getDetails().get(Constants.MAX).toString());
-        txtNumberBedroom.setText(homestay.getDetails().get(Constants.BED_ROOM).toString());
-        txtTimeClose.setText(homestay.getDetails().get(Constants.TIME_CLOSE).toString());
-        txtTimeOpen.setText(homestay.getDetails().get(Constants.TIME_OPEN).toString());
-        txtNumberBed.setText(homestay.getDetails().get(Constants.BED).toString());
-        txtConvenient.setText(homestay.getDetails().get(Constants.CONVENIENT).toString());
-
-        txtAnimal.setText(Boolean.parseBoolean(homestay.getDetails().get(Constants.PET).toString()) ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
+        try {
+            //load title
+            getSupportActionBar().setTitle(homestay.getName());
+            txtTitleType.setText(homestay.getType());
+            txtTitlePrice.setText(homestay.getPrice());
+            txtTitleNumberBathroom.setText(homestay.getDetails().get(Constants.BATH_ROOM).toString());
+            txtDescription.setText(homestay.getDescription());
+            txtType.setText(homestay.getType());
+            txtNumberPassenger.setText(homestay.getDetails().get(Constants.MAX).toString());
+            txtNumberBedroom.setText(homestay.getDetails().get(Constants.BED_ROOM).toString());
+            txtTimeClose.setText(homestay.getDetails().get(Constants.TIME_CLOSE).toString());
+            txtTimeOpen.setText(homestay.getDetails().get(Constants.TIME_OPEN).toString());
+            txtNumberBed.setText(homestay.getDetails().get(Constants.BED).toString());
+            txtConvenient.setText(homestay.getDetails().get(Constants.CONVENIENT).toString());
+            txtAnimal.setText(Boolean.parseBoolean(homestay.getDetails().get(Constants.PET).toString()) ? getResources().getString(R.string.yes) : getResources().getString(R.string.no));
+        } catch (Exception e) {
+            ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
+        }
     }
 
     private void setUpMapIfNeeded() {
@@ -306,8 +317,13 @@ public class ManageHomestayActivity extends BaseActivity implements OnMapReadyCa
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (InternetConnection.getInstance().isOnline(ManageHomestayActivity.this)) {
-                            presenter.deleteHomestay(String.valueOf(homestay.getProvinceId()), String.valueOf(homestay.getDistrictId()), homestay.getId(), getUid());
-                            finish();
+                            try {
+                                presenter.deleteHomestay(String.valueOf(homestay.getProvinceId()), String.valueOf(homestay.getDistrictId()), homestay.getId(), getUid());
+                                finish();
+                            } catch (Exception e) {
+                                ShowSnackbar.showSnack(ManageHomestayActivity.this, getResources().getString(R.string.error));
+                            }
+
                         } else {
                             ShowSnackbar.showSnack(ManageHomestayActivity.this, getResources().getString(R.string.noInternet));
                         }
