@@ -428,6 +428,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                                 updateMessage(taskSnapshot.getDownloadUrl().toString(), key, partnerId, getUid());
                             }
                         });
+                    } else {
+                        ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
                     }
                 } catch (Exception e) {
                     ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
@@ -467,6 +469,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                                 updateMessage(taskSnapshot.getDownloadUrl().toString(), key, partnerId, getUid());
                             }
                         });
+                    } else {
+                        ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
                     }
 
                 } catch (Exception e) {

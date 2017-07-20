@@ -332,6 +332,8 @@ public class ProfileUserActivity extends BaseActivity implements View.OnClickLis
                                 presenter.editUserPhotoURL(getUid(), taskSnapshot.getDownloadUrl().toString());
                             }
                         });
+                    } else {
+                        ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
                     }
                 } catch (Exception e) {
                     ShowSnackbar.showSnack(this, getResources().getString(R.string.error));
